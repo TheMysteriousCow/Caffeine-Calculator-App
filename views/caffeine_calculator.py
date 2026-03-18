@@ -1,7 +1,7 @@
+import pandas as pd 
 import streamlit as st
+from utils.data_manager import DataManager  # --- NEW CODE: import data manager ---
 import os
-import streamlit.components.v1 as components
-import pandas as pd
 from datetime import datetime, date
 from functions.caffeine_math import caffeine_remaining
 
@@ -12,122 +12,6 @@ if "data_df" not in st.session_state:
     st.session_state["data_df"] = pd.DataFrame()
 
 HALF_LIFE = 5.0
-
-st.markdown("""
-<style>
-.stApp {
-    background-color: #FFFFFF;
-}
-
-.rain-item {
-    position: fixed;
-    top: -80px;
-    pointer-events: none;
-    z-index: 9999;
-    animation: fall linear forwards;
-}
-
-.coffee-bean {
-    width: 24px;
-    height: 32px;
-    background:
-        radial-gradient(circle at 35% 25%, #E8A855 0%, #C97C4C 15%, #8B4513 30%, #5C3317 60%, #2A1810 100%);
-    border-radius: 50% 50% 55% 45% / 65% 60% 40% 45%;
-    box-shadow:
-        inset -4px -4px 8px rgba(0,0,0,0.7),
-        inset 3px 2px 4px rgba(200,120,60,0.5),
-        inset -2px -1px 3px rgba(0,0,0,0.9),
-        inset 1px 1px 2px rgba(255,200,100,0.2),
-        0px 6px 12px rgba(0,0,0,0.4);
-    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)) brightness(0.95);
-}
-
-.leaf-item,
-.fruit-item,
-.energy-item,
-.default-item {
-    font-size: 28px;
-    line-height: 1;
-    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25));
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-</style>
-""", unsafe_allow_html=True)
-
-
-def drink_rain(drink):
-    components.html(f"""
-    <script>
-    const drink = {repr(drink)};
-    const container = window.parent.document.body;
-    const itemsCount = 120;
-
-    let mode = "default";
-    let symbols = ["💧"];
-
-    if (drink === "Kaffee" || drink === "Espresso") {{
-        mode = "coffee";
-    }} else if (drink === "Red Bull" || drink === "Energy Drink") {{
-        mode = "energy";
-        symbols = ["⚡"]
-    }} else if (drink === "Matcha" || drink === "Schwarzer Tee" || drink === "Mate") {{
-        mode = "leaf";
-        symbols = ["🍃", "🌿"]
-    }} else if (drink === "NOCCO") {{
-        mode = "fruit";
-        symbols = ["🍋", "🥭"];
-    }} else {{
-        mode = "default";
-        symbols = ["💧"];
-    }}
-
-    for (let i = 0; i < itemsCount; i++) {{
-        const item = document.createElement("div");
-        item.classList.add("rain-item");
-
-        item.style.left = Math.random() * 100 + "vw";
-        item.style.animationDuration = (4 + Math.random() * 4) + "s";
-        item.style.animationDelay = (Math.random() * 0.8) + "s";
-        item.style.transform = `rotate(${{Math.random() * 360}}deg)`;
-        item.style.opacity = 0.95;
-
-        if (mode === "coffee") {{
-            item.classList.add("coffee-bean");
-            item.style.width = (20 + Math.random() * 10) + "px";
-            item.style.height = (28 + Math.random() * 10) + "px";
-        }} else if (mode === "energy") {{
-            item.classList.add("energy-item");
-            item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-            item.style.fontSize = (24 + Math.random() * 12) + "px";
-        }} else if (mode === "leaf") {{
-            item.classList.add("leaf-item");
-            item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-            item.style.fontSize = (24 + Math.random() * 12) + "px";
-        }} else if (mode === "fruit") {{
-            item.classList.add("fruit-item");
-            item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-            item.style.fontSize = (24 + Math.random() * 12) + "px";
-        }} else {{
-            item.classList.add("default-item");
-            item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-            item.style.fontSize = (22 + Math.random() * 10) + "px";
-        }}
-
-        container.appendChild(item);
-
-        setTimeout(() => {{
-            item.remove();
-        }}, 9000);
-    }}
-    </script>
-    """, height=0)
-
 
 st.caption("Für alle Berechnungen wird eine feste Halbwertszeit von 5 Stunden verwendet.")
 
@@ -189,8 +73,6 @@ with st.form("caffeine_form"):
 
 if submit:
 
-    drink_rain(drink)
-
     now = datetime.now()
     taken_at = datetime.combine(date.today(), intake_time)
 
@@ -244,6 +126,9 @@ if submit:
         [st.session_state["data_df"], pd.DataFrame([new_row])],
         ignore_index=True
     )
-
+   # --- CODE UPDATE: save data to data manager ---
+    data_manager = DataManager()
+    data_manager.save_user_data(st.session_state['data_df'], 'data.csv')
+    # --- END OF CODE UPDATE ---
 st.subheader("Verlauf der Getränke")
 st.dataframe(st.session_state["data_df"])
