@@ -81,6 +81,8 @@ if submit:
         hours_since = 0
 
     current = caffeine_remaining(dose_mg, hours_since, HALF_LIFE)
+    remaining_after_24h = caffeine_remaining(dose_mg, 24, HALF_LIFE)
+    remaining_after_horizon = caffeine_remaining(dose_mg, horizon, HALF_LIFE)
 
     caffeine_zero_time = None
     for h in range(1, horizon + 1):
@@ -89,6 +91,7 @@ if submit:
             break
 
     st.metric("Koffein aktuell im Körper (mg)", f"{current:.1f}")
+    st.metric(f"Koffein nach {horizon} Stunde(n)", f"{remaining_after_horizon:.1f} mg")
     st.info(f"Verwendete Halbwertszeit: {HALF_LIFE:.1f} Stunden")
 
     if caffeine_zero_time:
@@ -101,25 +104,21 @@ if submit:
         remaining = caffeine_remaining(dose_mg, h, HALF_LIFE)
         data.append({
             "Stunden": h,
-            "Koffein (mg)": remaining
+            "Koffein (mg)": round(remaining, 1)
         })
 
     df_chart = pd.DataFrame(data).set_index("Stunden")
     st.line_chart(df_chart)
 
-    if caffeine_zero_time is not None:
-        zero_datetime = taken_at + pd.Timedelta(hours=caffeine_zero_time)
-        kein_koffein_text = f"nach {caffeine_zero_time} Stunde(n), um {zero_datetime.strftime('%H:%M')} Uhr"
-    else:
-        kein_koffein_text = f"nicht innerhalb von {horizon} Stunden"
+    st.subheader("Koffeinverlauf pro Stunde")
+    st.dataframe(pd.DataFrame(data), use_container_width=True)
 
     new_row = {
-        "timestamp": now, 
+        "timestamp": now,
         "Getränk": drink,
-        "Wann eingenommen": taken_at.strftime("%d.%m.%Y %H:%M"),
         "Koffeinmenge zu Beginn (mg)": round(dose_mg, 1),
-        "Halbwertszeit (h)": HALF_LIFE,
-        "Kein Koffein mehr": kein_koffein_text
+        "Koffeinmenge nach 24 h (mg)": round(remaining_after_24h, 1),
+        f"Koffeinmenge nach {horizon} h (mg)": round(remaining_after_horizon, 1)
     }
 
     st.session_state["data_df"] = pd.concat(
@@ -127,8 +126,19 @@ if submit:
         ignore_index=True
     )
 
+    cols = st.session_state["data_df"].columns.tolist()
+    if "timestamp" in cols:
+        cols = ["timestamp"] + [col for col in cols if col != "timestamp"]
+        st.session_state["data_df"] = st.session_state["data_df"][cols]
+
     data_manager = st.session_state["data_manager"]
-    data_manager.save_user_data(st.session_state["data_df"], 'data.csv')
+    data_manager.save_user_data(st.session_state["data_df"], "data.csv")
 
 st.subheader("Verlauf der Getränke")
-st.dataframe(st.session_state["data_df"])
+st.dataframe(st.session_state["data_df"], use_container_width=True)
+
+if st.button("🗑️ Verlauf löschen"):
+    st.session_state["data_df"] = pd.DataFrame()
+    data_manager = st.session_state["data_manager"]
+    data_manager.save_user_data(st.session_state["data_df"], "data.csv")
+    st.success("Verlauf wurde gelöscht!")
