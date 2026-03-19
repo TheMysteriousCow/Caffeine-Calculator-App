@@ -130,10 +130,10 @@ if submit:
     if "timestamp" in cols:
         cols = ["timestamp"] + [col for col in cols if col != "timestamp"]
         st.session_state["data_df"] = st.session_state["data_df"][cols]
-
+#data_manager soll so bleiben
     data_manager = st.session_state["data_manager"]
     data_manager.save_user_data(st.session_state["data_df"], "data.csv")
-
+#st.subheader soll so bleiben
 st.subheader("Verlauf der Getränke")
 st.dataframe(st.session_state["data_df"], use_container_width=True)
 
