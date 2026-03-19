@@ -133,12 +133,3 @@ if submit:
 
     data_manager = st.session_state["data_manager"]
     data_manager.save_user_data(st.session_state["data_df"], "data.csv")
-
-st.subheader("Verlauf der Getränke")
-st.dataframe(st.session_state["data_df"], use_container_width=True)
-
-if st.button("🗑️ Verlauf löschen"):
-    st.session_state["data_df"] = pd.DataFrame()
-    data_manager = st.session_state["data_manager"]
-    data_manager.save_user_data(st.session_state["data_df"], "data.csv")
-    st.success("Verlauf wurde gelöscht!")

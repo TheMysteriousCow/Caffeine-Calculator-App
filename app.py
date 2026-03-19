@@ -28,6 +28,7 @@ if 'data_df' not in st.session_state:
 
 home = st.Page("views/home.py", title="Home", icon="🏠")
 calculator = st.Page("views/caffeine_calculator.py", title="Koffein Rechner", icon="☕")
+statistics = st.Page("views/statistic.py", title="Statistik", icon="☕")
 
-pg = st.navigation([home, calculator])
+pg = st.navigation([home, calculator, statistics])
 pg.run()
