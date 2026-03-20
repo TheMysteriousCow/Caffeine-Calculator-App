@@ -1,8 +1,10 @@
 import streamlit as st
 import pandas as pd
+from pandas.errors import EmptyDataError
 
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
+
 
 data_manager = DataManager(
     fs_protocol='webdav',
@@ -15,10 +17,13 @@ login_manager = LoginManager(data_manager)
 login_manager.login_register()
 
 if 'data_df' not in st.session_state:
-    df = data_manager.load_user_data(
-        'data.csv',
-        initial_value=pd.DataFrame()
-    )
+    try:
+        df = data_manager.load_user_data(
+            'data.csv',
+            initial_value=pd.DataFrame()
+        )
+    except EmptyDataError:
+        df = pd.DataFrame()
 
     if not df.empty:
         if 'timestamp' in df.columns:
