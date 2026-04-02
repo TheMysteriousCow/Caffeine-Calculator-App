@@ -1,7 +1,7 @@
-## App Nutzertest
+# App Nutzertest
 Ziel des Tests: Was wollen wir herausfinden?
 
-# Folgende Fragen stehen dabei im Fokus:
+## Folgende Fragen stehen dabei im Fokus:
 •	Ist die App ohne Anleitung bedienbar?
 
 •	Finden Nutzer:innen die wichtigsten Funktionen sofort?
