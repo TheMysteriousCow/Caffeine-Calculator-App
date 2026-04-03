@@ -1,24 +1,21 @@
 # App Nutzertest
-Ziel des Tests: Was wollen wir herausfinden?
+Mit dem Nutzertest möchten wir prüfen, ob unsere App ohne Erklärung verständlich und benutzerfreundlich ist. Im Fokus steht nicht die Bestätigung der Idee, sondern das frühzeitige Erkennen von Problemen, Missverständnissen und Schwächen im Ablauf. So können wir die App gezielt verbessern.
 
 ## Folgende Fragen stehen dabei im Fokus:
-Ist die App ohne Anleitung bedienbar?
+Lässt sich die App ohne Anleitung bedienen?
 
 Finden Nutzer:innen die wichtigsten Funktionen sofort?
 
-Verstehen sie die Rückmeldungen der App?
+Wirkt der Inhalt logisch und übersichtlich?
 
 Besteht Interesse an einer Koffeinrechner-App?
 
-Welche Daten würden Nutzer:innen gerne erfassen?
-
-Gibt es viele oder zu wenige Einteilungen?
-
-Wirkt der Inhalt logisch und übersichtlich?
+Gibt es zu viele oder zu wenige Einteilungen?
 
 Wird das Design als ansprechend empfunden?
 
 Gibt es technische Hürden (Buttons zu gross oder Schriftgrösse nicht gut lesbar)?
 
-•	Würden Nutzer:innen die App weiterempfehlen?
-->dann alle Fragen beantworten und Schlussfazit ziehen
+Würden Nutzer:innen die App weiterempfehlen?
+
+## Testergebnisse:
