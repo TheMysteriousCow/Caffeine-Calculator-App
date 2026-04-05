@@ -23,7 +23,18 @@ Ausgabe:
 - Anzeige des verbleibenden Koffeins
 - Erste einfache textliche Rückmeldung
 
-## Version 3.0 - Erweiterung: Benutzerprofil
+## Version 3.0 - Erweiterung: Verlauf (History)
+Datenspeicherung:
+- Speicherung der eingegebenen Koffeinwerte
+Übersicht:
+- Darstellung der Werte in Tabellenform
+- Zugriff auf vergangene Einträge
+Analyse:
+- Vergleich verschiedener Tage
+
+Ziel: langfristiges Tracking des Konsums.
+
+## Version 4.0 - Erweiterung: Benutzerprofil
 Profilseite (Your Profile):
 - Name, Alter, Gewicht
 - Geschlecht
@@ -35,17 +46,6 @@ Personalisierung:
 - genauere Berechnung basierend auf Nutzerdaten
 
 Ziel: individuellere und genauere Ergebnisse.
-
-## Version 4.0 - Erweiterung: Verlauf (History)
-Datenspeicherung:
-- Speicherung der eingegebenen Koffeinwerte
-Übersicht:
-- Darstellung der Werte in Tabellenform
-- Zugriff auf vergangene Einträge
-Analyse:
-- Vergleich verschiedener Tage
-
-Ziel: langfristiges Tracking des Konsums.
 
 ## Version 5.0 - Erweiterung: Empfehlungen (Recommendations)
 Visualisierung des Koffeinverlaufs:
