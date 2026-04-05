@@ -5,7 +5,7 @@ Diese Roadmap zeigt die geplanten Entwicklungsschritte für unsere App zur Berec
 Die Funktionen wurden nach Priorität und Nutzermehrwert in mehrere aufeinanderfolgende Versionen gegliedert.
 Jede Version ist funktionsfähig und erweiterbar.
 
-## Version 1.0 – MVP (Minimal Viable Product)
+## Version 1.0 - MVP (Minimal Viable Product)
 Login-System:
 - Benutzername & Passwort
 Mehrere Nutzer:
@@ -24,7 +24,7 @@ Ausgabe:
 
 Diese Version bildet die Basis der App und ermöglicht erste Tests.
 
-## Version 2.0 – Erweiterung: Benutzerprofil
+## Version 2.0 - Erweiterung: Benutzerprofil
 Profilseite (Your Profile):
 - Name, Alter, Gewicht
 - Geschlecht
@@ -37,7 +37,7 @@ Personalisierung:
 
 Ziel: individuellere und genauere Ergebnisse.
 
-## Version 3.0 – Erweiterung: Verlauf (History)
+## Version 3.0 - Erweiterung: Verlauf (History)
 Datenspeicherung:
 - Speicherung der eingegebenen Koffeinwerte
 Übersicht:
@@ -49,7 +49,7 @@ Analyse:
 Ziel: langfristiges Tracking des Konsums.
 
 
-## Version 4.0 – Erweiterung: Empfehlungen (Recommendations)
+## Version 4.0 - Erweiterung: Empfehlungen (Recommendations)
 Visualisierung des Koffeinverlaufs:
 - Darstellung in Form einer Kurve (z. B. Peak, Abbau, Müdigkeit)
 Empfehlungs-System:
@@ -67,7 +67,7 @@ Detailseiten (z. B. „I can’t fall asleep“):
 
 Ziel: Nutzer versteht seinen Koffeinzustand besser und direkte Hilfe bei Problemen (hoher Nutzermehrwert)
 
-## Version 5.0 – Erweiterung: Alternativen
+## Version 5.0 - Erweiterung: Alternativen
 Alternative Getränke:
 - mit Koffein (z. B. Guarana, Matcha)
 - ohne Koffein (z. B. Kräutertee, Wasser)
@@ -78,5 +78,27 @@ Informationsbereich:
 
 Ziel: bewusster Konsum statt nur Berechnung.
 
+### Optional  Weiterführende Ideen (nicht Teil des aktuellen Zeitrahmens)
+Diese weiterführenden Ideen zeigen das Potenzial der App und mögliche Ausbaustufen, die im Rahmen dieses Projekts nicht umgesetzt werden, aber zukünftige Weiterentwicklungen ermöglichen.
+
+Verknüpfung mit Fachpersonen:
+- Weiterleitung zu Ernährungsberater:innen oder medizinischen Fachstellen
+- Unterstützung bei starkem Koffeinkonsum oder gesundheitlichen Problemen
+
+Soziale Funktionen:
+- Verbindung mit Freund:innen
+- gegenseitiges Teilen des Koffeinkonsums
+- Motivation und Unterstützung im Alltag (z. B. Challenges oder Limits)
+
+Wearable-Integration:
+- Verbindung mit Smartwatch oder Fitness-Tracker
+- Einbezug von Puls, Schlafdaten und Aktivität
+
+Smart Notifications:
+- Warnungen bei zu hohem Koffeinlevel
+-Empfehlungen zum richtigen Zeitpunkt für Konsum oder Verzicht
+
+Spielerische Elemente:
+- Belohnungssystem (z. B. Punkte, Levels)
 
 
