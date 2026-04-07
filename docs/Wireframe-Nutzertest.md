@@ -1,4 +1,5 @@
-# Hypothesenbildung
+# Hypothesenbildung <img width="28" height="24" alt="image" src="https://github.com/user-attachments/assets/2c048514-f14a-4e13-87ce-b22b65cd041c" />
+
 ## Was wollen wir im Nutzertest lernen?
 Wir wollen herausfinden, ob die App bedienbar ist und ob Nutzer:innen die wichtigsten Funktionen schnell verstehen und dann auch nutzen können. Zudem interesssiert uns sehr, ob die App im Alltag als hilfreich und mtivierend wahrgenommen wird.
 
@@ -14,7 +15,8 @@ Die Resultate werden anhand von Feedback und Beobachtungen der Nutzer:innen ausg
 ## Wann haben wir unser Ziel erreicht?
 Unser Ziel ist erreicht, wenn sich die Nutzer:innen in der App zurechtfinden, das Design ansprechend finden und sie weiterempfehlen würden.
 
-# Nutzertest:
+# Nutzertest <img width="28" height="24" alt="image" src="https://github.com/user-attachments/assets/2c048514-f14a-4e13-87ce-b22b65cd041c" /> :
+
 ## Nutzertest Lisanne H. (51J.), Mutter und Mitarbeitein der SBB
 
 ### Was war gut?
