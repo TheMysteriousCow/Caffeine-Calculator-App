@@ -1,10 +1,11 @@
-# MVP-Reflexion
-Konnte das MVP so umgesetzt werden wie erwünscht?
+# MVP-Reflexion <img width="28" height="24" alt="image" src="https://github.com/user-attachments/assets/2c048514-f14a-4e13-87ce-b22b65cd041c" />
 
-Was konnte nicht umgesetzt werden?
+## Konnte das MVP so umgesetzt werden wie erwünscht?
 
-Müssen wir die Roadmap anpassen? Falls ja, wieso?
+## Was konnte nicht umgesetzt werden?
 
-Brauchen wir Untersützung?
+## Müssen wir die Roadmap anpassen? Falls ja, wieso?
 
-Was würden wir beim nächsten Mal anders machen?
+## Brauchen wir Untersützung?
+
+## Was würden wir beim nächsten Mal anders machen?
