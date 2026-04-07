@@ -1,15 +1,18 @@
 # Hypothesenbildung
-Was wollen wir im Nutzertest lernen?
+## Was wollen wir im Nutzertest lernen?
+Wir wollen herausfinden, ob die App bedienbar ist und ob Nutzer:innen die wichtigsten Funktionen schnell verstehen und dann auch nutzen können. Zudem interesssiert uns sehr, ob die App im Alltag als hilfreich und mtivierend wahrgenommen wird.
 
-Was wissen wir und was wissen wir nicht?
+## Was wissen wir nicht?
+Uns ist noch unklar, welche Funktionen als wirklich relevant oder überflüssig von dern Nuter:innen empfunden wird.
 
-Was wollen wir testen?
+## Was wollen wir testen?
+Wir wollen die Benutzerfreundlichkeit, die Navigation, die Verständlichkeit der Inhalte sowie das generelle Interesse an der App testen.
 
-Wie wollen wir die Resultate bewerten?
+## Wie wollen wir das Resultat des Nutzertests bewerten?
+Die Resultate werden anhand von Feedback und Beobachtungen der Nutzer:innen ausgewwertet. Besonders wichtig sind die Verbesserungsvorschläge für uns.
 
-Wie wollen wir das Resultat des Nutzertests bewerten?
-
-Wann haben wir unser Ziel erreicht?
+## Wann haben wir unser Ziel erreicht?
+Unser Ziel ist erreicht, wenn sich die Nutzer:innen in der App zurechtfinden, das Design ansprechend finden und sie weiterempfehlen würden.
 
 # Nutzertest:
 ## Nutzertest Lisanne H. (51J.), Mutter und Mitarbeitein der SBB
