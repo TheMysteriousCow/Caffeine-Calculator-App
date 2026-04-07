@@ -1,4 +1,4 @@
-# Persona
+# Persona <img width="28" height="24" alt="image" src="https://github.com/user-attachments/assets/2c048514-f14a-4e13-87ce-b22b65cd041c" />
 
 ## Beschreibung: 
 21 Jahre alt, rote lockige Haare, ca. 1.70 m gross. Studiert an einer pädagogischen Hochschule (2. Semester) und möchte Lehrerin werden. Offen, freundlich und eher aktiv, aber oft durch das Studium gestresst.
