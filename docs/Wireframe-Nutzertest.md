@@ -39,3 +39,12 @@ Die Notwendigkeit der Angabe des vollständigen Namens wird hinterfragt; eine an
 Es wird angemerkt, dass bei den Empfehlungen (z. B. „I feel tired“) unklar ist, ob eine vorgegebene Auswahl oder eine freie Eingabe sinnvoller wäre. Zudem wird eine größere Auswahl an Getränken gewünscht, beispielsweise auch Cola, Alkohol oder eine freie Getränkewahl, sodass der gesamte Konsum eines Tages zusammen berechnet werden kann. Die optionalen Erweiterungen werden grundsätzlich positiv bewertet. Funktionen wie „Professional Help“ und „Challenges“ könnten direkt in die App integriert werden. Ergänzend wird ein Belohnungssystem (z. B. Streaks oder ähnliche Mechanismen) vorgeschlagen, um die Motivation der Nutzer:innen zu steigern.
 
 ## Nutzertest Shapena K.
+
+### Was war gut?
+Design farblich ansprechend und überblicklich, vor allem für junge Leute. Alternativen sind eine sehr gute Idee. 
+
+### Was war schlecht?
+Ältere Generationen sind eventuell etwas überfordert weil es "zu viele" Auswahlen hat.
+
+### Neue Ideen/Probleme (Verbesserungen / Ergänzungen)
+-
