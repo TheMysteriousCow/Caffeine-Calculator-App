@@ -3,21 +3,27 @@ Diese Roadmap zeigt die geplanten Entwicklungsschritte für unsere App zur Berec
 Die Funktionen wurden nach Priorität und Nutzermehrwert in mehrere aufeinanderfolgende Versionen gegliedert.
 Jede Version ist funktionsfähig und erweiterbar.
 
-# Version 0.1 - Leere App
+## MVP Basis - Auf dem Weg zum MVP
 Grundstruktur der App erstellen:
 - Leere lauffähige App aufsetzen (ca.10min)
 - Navigation mit ersten Seiten vorbereiten, z.B Home, Calculator (ca.20min)
 - App veröffentlichen (ca.10min)
 
-## Version 1.0 - Login-System (MVP Basis)
-Login-System:
-- Einfaches Login mit Benutzername und Passwort erstellen (ca.30min)
+Profilseite (Your Profile):
+- Name, Alter, Gewicht (ca.15min)
+- Geschlecht (ca.15min)
+Zusätzliche Daten (Additional Data):
+- Medikamenteneinnahme (ca.20min)
+- weitere relevante Faktoren (z.B Grunderkrankungen, Allergien) (ca.20min)
+Personalisierung:
+- Anpassung der Berechnung basierung auf Nutzerdatem (z.B Gewicht) (ca.60min)
+Logins:
 - Mehrere Nutzer: Nutzung durch verschiedene Personen
 - Datensicherung: Speicherung der Daten pro Nutzer
 
-Diese Version bildet die Basis der App und ermöglicht erste Tests.
+Diese Version bildet die Basis der App
 
-## Version 2.0 - Calculator - MVP (Minimal Viable Product)
+## Version 1.0 - Calculator - MVP (Minimal Viable Product)
 Eingaben:
 - Auswahl der verschiedenen koffeinhaltigen Getränken (z. B. Kaffee, Energy Drink, Mate) (ca.20min)
 - Eingabe der konsumierten Menge (ml) (ca.10min)
@@ -32,7 +38,7 @@ Ausgabe:
 
 Ziel: Funktionierender Kern der App, Berechnung von Koffein im Körper
 
-## Version 3.0 - Erweiterung: Verlauf (History)
+### Koffein-History
 Datenspeicherung:
 - Speicherung der eingegebenen Koffeinwerte (ca.20min)
 - Darstellung der Werte in Tabellenform (ca.30min)
@@ -41,7 +47,7 @@ Analyse:
 
 Ziel: langfristiges Tracking des Konsums
 
-## Version 4.0 - Erweiterung: Benutzerprofil
+## Benutzerprofil
 Profilseite (Your Profile):
 - Name, Alter, Gewicht (ca.15min)
 - Geschlecht (ca.15min)
@@ -53,7 +59,7 @@ Personalisierung:
 
 Ziel: individuellere und genauere Ergebnisse
 
-## Version 5.0 - Erweiterung: Empfehlungen (Recommendations)
+## Version 2.0 - Erweiterung: Empfehlungen (Recommendations)
 Visualisierung:
 - Darstellung in Form einer Kurve (z. B. Peak, Abbau, Müdigkeit) (ca.45min)
 Empfehlungs-System: (ca.45min)
@@ -71,7 +77,7 @@ Detailseiten (z. B. „I can’t fall asleep“):
 
 Ziel: Nutzer versteht seinen Koffeinzustand besser und direkte Hilfe bei Problemen (hoher Nutzermehrwert) 
 
-## Version 6.0 - Erweiterung: Alternativen
+## Version 3.0 - Erweiterung: Alternativen
 Auswahl alternative Getränke:
 - mit Koffein (z. B. Guarana, Matcha) (ca.15min)
 - ohne Koffein (z. B. Kräutertee, Wasser) (ca.15min)
@@ -82,7 +88,6 @@ Informationsbereich:
 
 Ziel: bewusster Konsum statt nur Berechnung
 
-## Version 6.5 - Erweiterung: Farbcodierte Alternativen
 Alternativen nach Farben sortieren:
 - Grün = Gesunde Alternative
 - Gelb = Weniger gesunde Alternative
@@ -90,7 +95,7 @@ Alternativen nach Farben sortieren:
 
 Ziel: Schnelle, intuitive Bewertung von Alternativen für bewussteren Konsum
 
-### Optional  Weiterführende Ideen (nicht Teil des aktuellen Zeitrahmens)
+### Version 4.0: Optional  Weiterführende Ideen (nicht Teil des aktuellen Zeitrahmens)
 Diese weiterführenden Ideen zeigen das Potenzial der App und mögliche Ausbaustufen, die im Rahmen dieses Projekts nicht umgesetzt werden, aber zukünftige Weiterentwicklungen ermöglichen.
 
 Verknüpfung mit Fachpersonen:
