@@ -1,7 +1,7 @@
 # Persona
 
 ## Beschreibung: 
-21 Jahre alt, rote lockige Haare, ca. 1.70 m gross. Studiert an einer pädagogischen Hochschule (2. Semester) und möchte Lehrerin werden. Offen, freundlich und eher aktiv, aber oft durch das Studium gestresst.
+Lynn Lemate, 21 Jahre alt, rote lockige Haare, ca. 1.70 m gross. Studiert an einer pädagogischen Hochschule (2. Semester) und möchte Lehrerin werden. Offen, freundlich und eher aktiv, aber oft durch das Studium gestresst.
 
 ## Ein typischer Tag: 
 Mein Tag beginnt morgens meistens mit einem Kaffee, damit ich wach werde. Danach gehe ich in den Unterricht an der Hochschule. Am Vormittag merke ich schon die erste Müdigkeit und greife dann zu Mate. Mittags esse ich mit Kolleginnen und Kollegen. Am Nachmittag habe ich weitere Vorlesungen oder arbeite an Aufgaben. Gegen 16 Uhr kommt oft ein zweites Tief, weshalb ich noch mehr Koffein trinke. Nach dem Unterricht treffe ich mich manchmal mit Freundinnen auf einen Kaffee. Abends erledige ich Aufgaben, gehe joggen oder versuche etwas zu entspannen.
