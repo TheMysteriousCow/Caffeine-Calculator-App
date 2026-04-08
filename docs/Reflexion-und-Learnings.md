@@ -18,7 +18,8 @@ Insgesamt haben wir unsere Zeit sehr sinnvoll und gut eingeplant. Wir sind immer
 ### Technische Umsetzung 
 (wird bis zum 26.04 vervollständigt)
 
-### Was gab es für Herausforderungen? 
+### Was gab es für Herausforderungen?
+Wir fanden es herausfordernd, durchdachte Wireframes zu erstellen. Sobald diese jedoch ausgearbeitet waren, liess sich das Storyboard problemlos entwickeln.
 (wird bis zum 26.04 vervollständigt)
 
 ### Wie sind wir damit umgegangen?
@@ -26,5 +27,5 @@ Probleme wurden gemeinsam besprochen und anschliessend nach Lösungen gesucht, w
 
 ## Learnings
 Was haben wir gelernt? (wird bis zum 26.04 vervollständigt)
-Wie lief unsere Zusammenarbeit? (wird bis zum 26.04 vervollständigt)
+Wie lief unsere Zusammenarbeit? Unsere Zusammenarbeit verlief sehr gut, da wir stets offen kommuniziert und uns gegenseitig unterstützt haben. (wird bis zum 26.04 vervollständigt)
 Was hätte besser laufen können? (wird bis zum 26.04 vervollständigt)
