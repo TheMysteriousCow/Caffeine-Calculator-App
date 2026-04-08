@@ -84,7 +84,7 @@ Informationsbereich:
 
 Ziel: bewusster Konsum statt nur Berechnung
 
-# Version 6.5 - Erweiterung: Farbcodierte Alternativen
+## Version 6.5 - Erweiterung: Farbcodierte Alternativen
 Alternativen nach Farben sortieren:
 - Grün = Gesunde Alternative
 - Gelb = Weniger gesunde Alternative
