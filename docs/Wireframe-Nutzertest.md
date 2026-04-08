@@ -15,7 +15,7 @@ Die Resultate werden anhand von Feedback und Beobachtungen der Nutzer:innen ausg
 ## Wann haben wir unser Ziel erreicht?
 Unser Ziel ist erreicht, wenn sich die Nutzer:innen in der App zurechtfinden, das Design ansprechend finden und sie die App weiterempfehlen würden.
 
-# Nutzertest:
+# Nutzertest
 
 ## Nutzertest Lisanne H. (51J.), Mutter und Mitarbeitein der SBB
 
