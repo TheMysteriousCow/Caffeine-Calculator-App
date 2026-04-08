@@ -4,22 +4,22 @@ Mit dem Nutzertest möchten wir prüfen, ob unsere App ohne Erklärung verständ
 
 ## Folgende Fragen stehen dabei im Fokus:
 ### 1. Lässt sich die App ohne Anleitung bedienen?
-Ja. Die Nutzung wird durchgehend als intuitiv, simple und selbsterklärend eschrieben. Nutzer:innen finden sich schnell zurecht, auch ohne Einführung oder Anleitung.
+Ja. Die Nutzung wird durchgehend als intuitiv, simple und selbsterklärend beschrieben. Nutzer:innen finden sich schnell zurecht, auch ohne Einführung oder Anleitung.
 
 ### 2. Finden Nutzer:innen die wichtigsten Funktionen sofort?
 Ja. Die wichtigsten Funktionen sind leicht auffindbar, vor allem durch die übersichtliche Seitenleiste, die eine klare Navigation ermöglicht.
 
 ### 3. Wirkt der Inhalt logisch und übersichtlich?
-Ja. Die Inhalte sind strukturiert und verständlich aufgebaut. Die Seitenleiste trägt massgeblich dazu bei, dass die App logisch gegliedert wirkt. Durch die Farben hat man stetig einen Überblick.
+Ja. Die Inhalte sind strukturiert und verständlich aufgebaut. Die Seitenleiste trägt dazu bei, dass die App logisch gegliedert wirkt. Durch die Farben hat man stetig einen guten Überblick.
 
 ### 4. Besteht Interesse an einer Koffeinrechner-App?
-Ja, grundsätzlich schon. Das Interesse hängt jedoch stark von der Zielgruppe (Koffeinkonsumenten) ab. Auch für ältere Personen könnte die App relevant sein, vorausgesetzt, die Bedienung bleibt einfach. Teils besteht auch kein Interesse.
+Grundsätzlich besteht Interesse an einer Koffeinrechner-App, jedoch sind die Meinungen unterschiedlich. Besonders für regelmässige Koffeinkonsument:innen wird die App als sinnvoll und hilfreiche Idee wahrgenommen. Wenn jedoch keine Probleme oder ein bewusster Umgang mit Koffein besteht, ist das Interesse eher geringer.
 
 ### 5. Gibt es zu viele oder zu wenige Einteilungen?
-Die Einteilungen werden insgesamt als passend empfunden. Einige Nutzer:innen wünschten sich jedoch zusätzliche Funktionen oder Erweiterungen (z.B. Challenges oder Professional Help), um die App noch vielseitiger zu machen.
+Die Einteilungen werden insgesamt als passend empfunden. Einige Nutzer:innen wünschten sich jedoch zusätzliche Funktionen oder Erweiterungen, um die App noch vielseitiger zu machen.
 
 ### 6. Wird das Design als ansprechend empfunden?
-Teilweise. Die Farbwahl wird als passend bewertet, jedoch wird das Design insgesamt als eher schlicht und funktional beschrieben. Es ist nicht besonders auffällig, aber angenehm und zweckmässig. Für junge sehr ansprechend.
+Das Design wird von allen Nutzer:innen als sehr ansprechend wahrgenommen. Die Farbwahl ist ebenfalls äusserst passend.
 
 ### 7. Wissen Nutzer:innen jederzeit, wo sie sich befinden?
 Ja. Die Orientierung innerhalb der App ist klar gegeben, sodass Nutzer:innen jederzeit wissen, in welchem Bereich sie sich befinden.
