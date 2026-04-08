@@ -1,4 +1,4 @@
-# Reflexion und Learnings (wird bis zum 26.04, Abgabe MVP, vervollständigt)
+# Allgemeine Reflexion und Learnings (wird bis zum 26.04, Abgabe MVP, vervollständigt)
 
 ## Ziel
 ### Was war das Ziel?
