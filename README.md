@@ -1,9 +1,9 @@
-# BMLD-Inf2-AppV0
+## BMLD-Inf2-AppV0
 
 https://diagnostic-detective-app.streamlit.app/
 
 ## Projektbeschrieb
-Die CoffeinCalculator-App dient Nutzer:innen
+Die Coffeincalculator-App hilft Nutzer:innen dabei, ihren täglichen Koffeinkonsum zu berechnen und bewusster damit umzugehen. Ziel ist eine benutzerfreundliche Anwendung, die ein besseres Verständnis für den eigenen Konsum schafft. Die App ermöglicht das Erfassen von Getränken sowie die Visualisierung der Wirkung des Koffeins über die Zeit. Ergänzend bietet die App Empfehlungen, Alternativen und Hinweise zu Nebenwirkungen sowie motivierende Features wie Challenges und Freundesfunktionen an. 
 
 ## Autorinnen
 
