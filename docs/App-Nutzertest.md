@@ -1,4 +1,4 @@
-# App Nutzertest <img width="28" height="24" alt="image" src="https://github.com/user-attachments/assets/2c048514-f14a-4e13-87ce-b22b65cd041c" />
+# App Nutzertest
 
 Mit dem Nutzertest möchten wir prüfen, ob unsere App ohne Erklärung verständlich und benutzerfreundlich ist. Im Fokus steht nicht die Bestätigung der Idee, sondern das frühzeitige Erkennen von Problemen, Missverständnissen und Schwächen im Ablauf. So können wir die App gezielt verbessern.
 
