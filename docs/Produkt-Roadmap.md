@@ -12,7 +12,7 @@ Technisches Setup:
 - Grundstruktur der App (Navigation, Seiten) (ca.20min)
 - Einrichten von .streamlit/secrets.toml (ca.15min)   # Hemer das so??
 - Erste einfache Datenstruktur erstellen (ca.15min)
-- Veröffentlichung der App
+- Veröffentlichung der App (ca.5min)
 
 Diese Version bildet die Basis der App und ermöglicht erste Tests.
 
