@@ -5,86 +5,74 @@ Jede Version ist funktionsfähig und erweiterbar.
 
 ## MVP Basis - Auf dem Weg zum MVP
 Grundstruktur der App erstellen:
-- Leere lauffähige App aufsetzen (ca.10min)
+- Leere lauffähige App aufsetzen 
 - Navigation mit ersten Seiten vorbereiten, z.B Home, Calculator (ca.20min)
-- App veröffentlichen (ca.10min)
+- App veröffentlichen 
 
 Profilseite (Your Profile):
-- Name, Alter, Gewicht (ca.15min)
-- Geschlecht (ca.15min)
+- Name, Alter, Gewicht 
+- Geschlecht 
 Zusätzliche Daten (Additional Data):
-- Medikamenteneinnahme (ca.20min)
-- weitere relevante Faktoren (z.B Grunderkrankungen, Allergien) (ca.20min)
+- Medikamenteneinnahme 
+- weitere relevante Faktoren (z.B Grunderkrankungen, Allergien) 
 Personalisierung:
-- Anpassung der Berechnung basierung auf Nutzerdatem (z.B Gewicht) (ca.60min)
+- Anpassung der Berechnung basierung auf Nutzerdatem (z.B Gewicht)
 Logins:
-- Mehrere Nutzer: Nutzung durch verschiedene Personen
+- Mehrere Nutzer: Nutzung durch verschiedene Personen 
 - Datensicherung: Speicherung der Daten pro Nutzer
 
 Diese Version bildet die Basis der App
 
 ## Version 1.0 - Calculator - MVP (Minimal Viable Product)
 Eingaben:
-- Auswahl der verschiedenen koffeinhaltigen Getränken (z. B. Kaffee, Energy Drink, Mate) (ca.20min)
-- Eingabe der konsumierten Menge (ml) (ca.10min)
-- Eingabe des Zeitpunkts der Einnahme (ca.10min)
+- Auswahl der verschiedenen koffeinhaltigen Getränken (z. B. Kaffee, Energy Drink, Mate)
+- Eingabe der konsumierten Menge (ml) 
+- Eingabe des Zeitpunkts der Einnahme 
 Berechnung:
-- Berechnung des aktuellen Koffeinlevels im Körper (ca.30min)
-- Berechnung basierend auf der Halbwertszeit von Koffein (ca.30min)
+- Berechnung des aktuellen Koffeinlevels im Körper 
+- Berechnung basierend auf der Halbwertszeit von Koffein 
 
 Ausgabe:
-- Anzeige des verbleibenden Koffeins (ca.15min)
-- Erste einfache Rückmeldung mit Text (ca.15min)
+- Anzeige des verbleibenden Koffeins 
+- Erste einfache Rückmeldung mit Text
 
-Ziel: Funktionierender Kern der App, Berechnung von Koffein im Körper
+Ziel: Funktionierender Kern der App
 
 ### Koffein-History
 Datenspeicherung:
-- Speicherung der eingegebenen Koffeinwerte (ca.20min)
-- Darstellung der Werte in Tabellenform (ca.30min)
+- Speicherung der eingegebenen Koffeinwerte
+- Darstellung der Werte in Tabellenform 
 Analyse:
-- Sortierung nach Datum und Zeit (Timestamp) (ca.30min)
+- Sortierung nach Datum und Zeit (Timestamp) 
 
 Ziel: langfristiges Tracking des Konsums
 
-## Benutzerprofil
-Profilseite (Your Profile):
-- Name, Alter, Gewicht (ca.15min)
-- Geschlecht (ca.15min)
-Zusätzliche Daten (Additional Data):
-- Medikamenteneinnahme (ca.20min)
-- weitere relevante Faktoren (z.B Grunderkrankungen, Allergien) (ca.20min)
-Personalisierung:
-- Anpassung der Berechnung basierung auf Nutzerdatem (z.B Gewicht) (ca.60min)
-
-Ziel: individuellere und genauere Ergebnisse
-
 ## Version 2.0 - Erweiterung: Empfehlungen (Recommendations)
 Visualisierung:
-- Darstellung in Form einer Kurve (z. B. Peak, Abbau, Müdigkeit) (ca.45min)
-Empfehlungs-System: (ca.45min)
+- Darstellung in Form einer Kurve (z. B. Peak, Abbau, Müdigkeit) 
+Empfehlungs-System: 
 Anzeige von Zuständen wie:
 - „Peak“
 - „I can't fall asleep“
 - „I feel tired“
 
 Interaktive Auswahl:
-- Nutzer kann auswählen, wie er sich fühlt (ca.20min)
-- passende Empfehlungen werden angezeigt (ca.30min)
+- Nutzer kann auswählen, wie er sich fühlt 
+- passende Empfehlungen werden angezeigt 
 Detailseiten (z. B. „I can’t fall asleep“):
-- konkrete Tipps zur Verbesserung (ca.30min)
-- Hinweise zum Umgang mit zu viel Koffein (ca.30min)
+- konkrete Tipps zur Verbesserung 
+- Hinweise zum Umgang mit zu viel Koffein 
 
 Ziel: Nutzer versteht seinen Koffeinzustand besser und direkte Hilfe bei Problemen (hoher Nutzermehrwert) 
 
 ## Version 3.0 - Erweiterung: Alternativen
 Auswahl alternative Getränke:
-- mit Koffein (z. B. Guarana, Matcha) (ca.15min)
-- ohne Koffein (z. B. Kräutertee, Wasser) (ca.15min)
+- mit Koffein (z. B. Guarana, Matcha)
+- ohne Koffein (z. B. Kräutertee, Wasser) 
 Empfehlungen je nach Situation:
-- z. B. bei Müdigkeit oder Schlafproblemen (ca.30min)
+- z. B. bei Müdigkeit oder Schlafproblemen 
 Informationsbereich:
-- kurze Beschreibung der Alternativen (ca.20min)
+- kurze Beschreibung der Alternativen 
 
 Ziel: bewusster Konsum statt nur Berechnung
 
