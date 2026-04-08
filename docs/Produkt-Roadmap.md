@@ -3,16 +3,17 @@ Diese Roadmap zeigt die geplanten Entwicklungsschritte für unsere App zur Berec
 Die Funktionen wurden nach Priorität und Nutzermehrwert in mehrere aufeinanderfolgende Versionen gegliedert.
 Jede Version ist funktionsfähig und erweiterbar.
 
-## Version 1.0 - Einfaches Login-System erstellen (MVP Basis)
+# Version 0.1 - Leere App
+Grundstruktur der App erstellen:
+- Leere lauffähige App aufsetzen (ca.10min)
+- Navigation mit ersten Seiten vorbereiten, z.B Home, Calculator (ca.20min)
+- App veröffentlichen (ca.10min)
+
+## Version 1.0 - Login-System (MVP Basis)
 Login-System:
-- Benutzername & Passwort
+- Einfaches Login mit Benutzername und Passwort erstellen (ca.30min)
 - Mehrere Nutzer: Nutzung durch verschiedene Personen
 - Datensicherung: Speicherung der Daten pro Nutzer
-Technisches Setup:
-- Grundstruktur der App (Navigation, Seiten) (ca.20min)
-- Einrichten von .streamlit/secrets.toml (ca.15min)   # Hemer das so??
-- Erste einfache Datenstruktur erstellen (ca.15min)
-- Veröffentlichung der App (ca.5min)
 
 Diese Version bildet die Basis der App und ermöglicht erste Tests.
 
@@ -34,9 +35,7 @@ Ziel: Funktionierender Kern der App, Berechnung von Koffein im Körper
 ## Version 3.0 - Erweiterung: Verlauf (History)
 Datenspeicherung:
 - Speicherung der eingegebenen Koffeinwerte (ca.20min)
-Übersicht:
 - Darstellung der Werte in Tabellenform (ca.30min)
-- Zugriff auf vergangene Einträge (60min)
 Analyse:
 - Sortierung nach Datum und Zeit (Timestamp) (ca.30min)
 
@@ -44,9 +43,8 @@ Ziel: langfristiges Tracking des Konsums
 
 ## Version 4.0 - Erweiterung: Benutzerprofil
 Profilseite (Your Profile):
-- Name, Alter, Gewicht  (ca.15min)
+- Name, Alter, Gewicht (ca.15min)
 - Geschlecht (ca.15min)
-- Sprache (ca.15min) # Machemer das??
 Zusätzliche Daten (Additional Data):
 - Medikamenteneinnahme (ca.20min)
 - weitere relevante Faktoren (z.B Grunderkrankungen, Allergien) (ca.20min)
