@@ -1,4 +1,4 @@
-# MVP-Reflexion <img width="28" height="24" alt="image" src="https://github.com/user-attachments/assets/2c048514-f14a-4e13-87ce-b22b65cd041c" />
+# MVP-Reflexion
 
 ## Konnte das MVP so umgesetzt werden wie erwünscht?
 
