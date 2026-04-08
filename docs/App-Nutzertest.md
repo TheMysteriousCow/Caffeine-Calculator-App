@@ -10,25 +10,25 @@ Ja. Die Nutzung wird durchgehend als intuitiv, simple und selbsterklärend eschr
 Ja. Die wichtigsten Funktionen sind leicht auffindbar, vor allem durch die übersichtliche Seitenleiste, die eine klare Navigation ermöglicht.
 
 ### 3. Wirkt der Inhalt logisch und übersichtlich?
-Ja. Die Inhalte sind strukturiert und verständlich aufgebaut. Die Seitenleiste trägt massgeblich dazu bei, dass die App logisch gegliedert wirkt.
+Ja. Die Inhalte sind strukturiert und verständlich aufgebaut. Die Seitenleiste trägt massgeblich dazu bei, dass die App logisch gegliedert wirkt. Durch die Farben hat man stetig einen Überblick.
 
 ### 4. Besteht Interesse an einer Koffeinrechner-App?
-Ja, grundsätzlich schon. Das Interesse hängt jedoch stark von der Zielgruppe (Koffeinkonsumenten) ab. Auch für ältere Personen könnte die App relevant sein, vorausgesetzt, die Bedienung bleibt einfach.
+Ja, grundsätzlich schon. Das Interesse hängt jedoch stark von der Zielgruppe (Koffeinkonsumenten) ab. Auch für ältere Personen könnte die App relevant sein, vorausgesetzt, die Bedienung bleibt einfach. Teils besteht auch kein Interesse.
 
 ### 5. Gibt es zu viele oder zu wenige Einteilungen?
 Die Einteilungen werden insgesamt als passend empfunden. Einige Nutzer:innen wünschten sich jedoch zusätzliche Funktionen oder Erweiterungen (z.B. Challenges oder Professional Help), um die App noch vielseitiger zu machen.
 
 ### 6. Wird das Design als ansprechend empfunden?
-Teilweise. Die Farbwahl wird als passend bewertet, jedoch wird das Design insgesamt als eher schlicht und funktional beschrieben. Es ist nicht besonders auffällig, aber angenehm und zweckmässig.
+Teilweise. Die Farbwahl wird als passend bewertet, jedoch wird das Design insgesamt als eher schlicht und funktional beschrieben. Es ist nicht besonders auffällig, aber angenehm und zweckmässig. Für junge sehr ansprechend.
 
 ### 7. Wissen Nutzer:innen jederzeit, wo sie sich befinden?
 Ja. Die Orientierung innerhalb der App ist klar gegeben, sodass Nutzer:innen jederzeit wissen, in welchem Bereich sie sich befinden.
 
 ### 8. Gehen die Eingaben zu lange für den täglichen Gebrauch?
-Teilweise. Nach der Registrierung wird die Nutzung als akzeptabel empfunden, jedoch empfinden einige Nutzer:innen die Eingaben im Alltag dennoch als etwas zeitaufwendig.
+Teilweise. Nach der Registrierung wird die Nutzung als akzeptabel empfunden, jedoch empfinden einige Nutzer:innen die Eingaben im Alltag dennoch als etwas zeitaufwendig vor allem im Stress.
 
 ### 9. Ist ein Teil der App überflüssig?
-Nein. Die meisten Funktionen sind sinnvoll zusammenhängend.
+Nein. Die meisten Funktionen sind sinnvoll zusammenhängend. 
 
 ### 10. Gibt es technische Hürden (Buttons zu gross oder Schriftgrösse nicht gut lesbar)?
 Nein. Es wurden keine auffälligen technischen Probleme oder Schwierigkeiten bei der Bedienung festgestellt. Die Schriftgrösse ist gut lesbar und die Buttons haben die richtige grösse.
