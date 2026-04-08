@@ -1,10 +1,9 @@
 # Produkt-Roadmap
-*Wichtig: Mit jedem Schritt fügt ihr EIN neues ELement dazu.--> Lösche, hans dinne glah, als erinnerig*
 Diese Roadmap zeigt die geplanten Entwicklungsschritte für unsere App zur Berechnung und zum bewussten Umgang mit Koffein.
 Die Funktionen wurden nach Priorität und Nutzermehrwert in mehrere aufeinanderfolgende Versionen gegliedert.
 Jede Version ist funktionsfähig und erweiterbar.
 
-## Version 1.0 - MVP (Minimal Viable Product)
+## Version 1.0 - Einfaches Login-System erstellen
 Login-System:
 - Benutzername & Passwort
 - Mehrere Nutzer: Nutzung durch verschiedene Personen
@@ -12,7 +11,7 @@ Login-System:
 
 Diese Version bildet die Basis der App und ermöglicht erste Tests.
 
-## Version 2.0 - Erweiterung: Calculator (Kernfunktion)
+## Version 2.0 - Calculator - MVP (Minimal Viable Product)
 - Auswahl eines Getränks (z. B. Kaffee, Energy Drink, Mate)
 - Eingabe der konsumierten Menge (ml)
 - Eingabe des Zeitpunkts der Einnahme
