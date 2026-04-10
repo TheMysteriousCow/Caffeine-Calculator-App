@@ -13,10 +13,10 @@ Mein Tag beginnt morgens meistens mit einem Kaffee, damit ich wach werde. Danach
 Ich möchte besser schlafen, meinen Koffeinkonsum reduzieren und eine gesunde Lernroutine entwickeln. Gleichzeitig will ich im Studium leistungsfähig bleiben und meine Prüfungen gut bestehen.
 
 ## Das ist mein Problem 
-Ich trinke zu viel Kaffee und Mate, oft auch, ohne es wirklich zu brauchen. Dadurch habe ich Schlafprobleme und fühle mich manchmal unruhig oder nervös, besonders vor Prüfungen. Zudem schwankt meine Leistung, je nachdem wie müde ich bin. Die Coffein-Calculator-App ist daher ideal für mich.
+Ich trinke zu viel Kaffee und Mate, oft auch, ohne es wirklich zu brauchen. Dadurch habe ich Schlafprobleme und fühle mich manchmal unruhig oder nervös, besonders vor Prüfungen. Zudem schwankt meine Leistung, je nachdem wie müde ich bin. Die Caffeine-Calculator-App ist daher ideal für mich.
 
 ## Meine Lieblings-Apps 
-WhatsApp, Spotify und nun probiere ich die Coffein-Calculator-App.
+WhatsApp, Spotify und nun probiere ich die Caffeine-Calculator-App.
 
 ## Mein nächster Urlaub 
 Ein Städtetrip nach Wien mit Freundinnen mit Fokus auf Sightseeing, Cafés und Entspannung.
