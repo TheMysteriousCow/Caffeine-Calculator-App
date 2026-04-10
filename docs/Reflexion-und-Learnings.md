@@ -9,18 +9,16 @@ Unser Ziel war es, eine benutzerfreundliche Koffeinrechner-App zu entwickeln, di
 
 ## Planung
 ### Wie haben wir uns organisiert?
-Wir haben uns im Team klar aufgeteilt un die Aufagben nach Bereichen wie Design, Funktionen und Tests verteilt. Durch regelmässigen Austausch konnten wie den Fortschritt koordinieren und Probleme früh erkennen.
+Wir haben uns im Team klar aufgeteilt und die Aufgaben nach Bereichen wie Design, Funktionen und Tests verteilt. Durch regelmässigen Austausch konnten wir den Überblick behalten und Probleme früh erkennen.
 
 ### Zeitmanagement?
-Insgesamt haben wir unsere Zeit sehr sinnvoll und gut eingeplant. Wir sind immer gemäss den Angaben für KW06-08 vorgegangen welche wir von unseren Dozenten bekommen haben.
-(wird bis zum 26.04 vervollständigt)
+KW 06-08: Insgesamt haben wir unsere Zeit sehr sinnvoll und gut eingeplant. Wir haben uns an die Vorgaben unserer Dozenten gehalten und sind entsprechend vorgegangen. (wird bis zum 26.04 vervollständigt)
 
 ### Technische Umsetzung 
 (wird bis zum 26.04 vervollständigt)
 
 ### Was gab es für Herausforderungen?
-Wir fanden es herausfordernd, durchdachte Wireframes zu erstellen. Sobald diese jedoch ausgearbeitet waren, liess sich das Storyboard problemlos entwickeln.
-(wird bis zum 26.04 vervollständigt)
+Wir fanden es herausfordernd, durchdachte Wireframes zu erstellen. Sobald diese jedoch ausgearbeitet waren, liess sich das Storyboard problemlos entwickeln. (wird bis zum 26.04 vervollständigt)
 
 ### Wie sind wir damit umgegangen?
 Probleme wurden gemeinsam besprochen und anschliessend nach Lösungen gesucht, wodurch wir effizient weiterarbeiten konnten.
