@@ -10,7 +10,7 @@ Uns ist noch unklar, welche Funktionen als wirklich relevant oder überflüssig 
 Wir wollen die Benutzerfreundlichkeit, die Navigation, die Verständlichkeit der Inhalte sowie das generelle Interesse an der App testen.
 
 ## Wie wollen wir das Resultat des Nutzertests bewerten?
-Die Resultate werden anhand von Feedback und Beobachtungen der Nutzer:innen ausgewertet. Besonders wichtig sind die Verbesserungsvorschläge für uns. Wir werden anhand der Verbesserungsvorschläge schauen, wie sie im Verhältnis zur verfügbaren Zeit umsetzbar sind. Bei negativen Bewertungen unserer App werden wir prüfen, wie wir diese verbessern können. Ideen sind herzlich willkommen und werden von uns ebenfalls umzusetzen versucht.
+Die Resultate werden anhand von Feedback und Beobachtungen der Nutzer:innen ausgewertet. Besonders wichtig sind die Verbesserungsvorschläge für uns. Wir werden anhand der Verbesserungsvorschläge schauen, wie sie im Verhältnis zur verfügbaren Zeit umsetzbar sind. Bei negativen Bewertungen unserer App werden wir prüfen, wie wir diese verbessern können. Ideen sind herzlich willkommen und werden von uns nach Möglichkeit umgesetzt.
 
 ## Wann haben wir unser Ziel erreicht?
 Unser Ziel ist erreicht, wenn sich die Nutzer:innen in der App zurechtfinden, das Design ansprechend finden und sie die App weiterempfehlen würden.
