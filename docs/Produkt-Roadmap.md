@@ -71,8 +71,8 @@ Ziel: Nutzer verstehen ihren Koffeinzustand besser und erhalten direkte Hilfe be
 
 ## Version 3.0 - Erweiterung: Alternativen
 Auswahl alternativer Getränke:
-- mit Koffein (z. B. Guarana, Matcha)
-- ohne Koffein (z. B. Kräutertee, Wasser) 
+- mit Koffein (z. B. Guarana)
+- ohne Koffein (z. B. Kräutertee) 
 
 Empfehlungen je nach Situation:
 - z. B. bei Müdigkeit oder Schlafproblemen 
