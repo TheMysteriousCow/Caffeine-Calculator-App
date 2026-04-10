@@ -6,20 +6,22 @@ Jede Version ist funktionsfähig und erweiterbar.
 ## MVP Basis - Auf dem Weg zum MVP
 Grundstruktur der App erstellen:
 - Leere, lauffähige App aufsetzen 
-- Navigation mit ersten Seiten vorbereiten, z. B Home, Calculator
+- Navigation mit ersten Seiten vorbereiten, z. B. Home, Calculator
 - App veröffentlichen 
 
 Profilseite (Your Profile):
 - Name, Alter, Gewicht 
 - Geschlecht 
+
 Zusätzliche Daten (Additional Data):
 - Medikamenteneinnahme 
-- weitere relevante Faktoren (z.B Grunderkrankungen, Allergien)
+- weitere relevante Faktoren (z. B. Grunderkrankungen, Allergien)
+
 Logins:
 - Mehrere Nutzer: Nutzung durch verschiedene Personen 
 - Datensicherung: Speicherung der Daten pro Nutzer
 
-Diese Version bildet die Basis der App
+Diese Version bildet die Basis der App.
 
 ## Version 1.0 - Calculator - MVP (Minimal Viable Product)
 Eingaben:
@@ -50,6 +52,7 @@ Ziel: langfristiges Tracking des Konsums
 ## Version 2.0 - Erweiterung: Empfehlungen (Recommendations)
 Visualisierung:
 - Darstellung in Form einer Kurve (z. B. Peak, Abbau, Müdigkeit) 
+
 Empfehlungssystem: 
 Anzeige von Zuständen wie:
 - „Peak“
@@ -67,7 +70,7 @@ Detailseiten (z. B. „I can’t fall asleep“):
 Ziel: Nutzer verstehen ihren Koffeinzustand besser und erhalten direkte Hilfe bei Problemen 
 
 ## Version 3.0 - Erweiterung: Alternativen
-Auswahl alternative Getränke:
+Auswahl alternativer Getränke:
 - mit Koffein (z. B. Guarana, Matcha)
 - ohne Koffein (z. B. Kräutertee, Wasser) 
 
