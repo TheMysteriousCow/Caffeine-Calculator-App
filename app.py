@@ -54,7 +54,7 @@ section[data-testid="stSidebar"] a[href*="your_profile"] {
     background-color: #FFD8B1 !important;
 }
 
-/* Additional Data – Pastell grün */
+/* Additional Data – orange */
 section[data-testid="stSidebar"] a[href*="additional_data"] {
     background-color: #FFE5B4 !important;
 }
