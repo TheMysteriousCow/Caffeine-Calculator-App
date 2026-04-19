@@ -84,6 +84,11 @@ section[data-testid="stSidebar"] a[href*="recommendations"] {
 section[data-testid="stSidebar"] a[href*="alternatives"] {
     background-color: #CFE8FF !important;
 }
+            
+/* Professional Help – mitteldunkles blau */
+section[data-testid="stSidebar"] a[href*="professional_help"] {
+    background-color: #5B8DB8 !important;
+}
 
 /* optional: Hover */
 section[data-testid="stSidebar"] a:hover {
@@ -101,6 +106,7 @@ calculator = st.Page("views/caffeine_calculator.py", title="Caffeine Calculator"
 statistics = st.Page("views/statistic.py", title="History", icon="☕")
 recommendations = st.Page("views/recommendations.py", title="Recommendations", icon="☕")
 alternatives = st.Page("views/alternatives.py", title="Alternatives", icon="☕")
+professional_help = st.Page("views/professional_help.py", title="Professional Help", icon="☕")
 
-pg = st.navigation([home, your_profile, additional_data, home1, calculator, statistics, recommendations, alternatives])
+pg = st.navigation([home, your_profile, additional_data, home1, calculator, statistics, recommendations, alternatives, professional_help])
 pg.run()
