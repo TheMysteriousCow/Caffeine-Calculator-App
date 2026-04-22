@@ -2,19 +2,13 @@ import streamlit as st
 
 st.set_page_config(page_title="Caffeine Calculator", layout="wide")
 
-# -------------------------------------------------
-# CSS (Design + Layout)
-# -------------------------------------------------
 st.markdown("""
 <style>
-
-/* Abstand */
 .block-container {
     padding-top: 2rem;
     padding-bottom: 2rem;
 }
 
-/* TITEL */
 .main-title {
     text-align: center;
     font-size: 3.4rem;
@@ -25,7 +19,6 @@ st.markdown("""
     letter-spacing: 1px;
 }
 
-/* SLOGAN */
 .subtitle {
     text-align: center;
     font-size: 1.1rem;
@@ -35,92 +28,64 @@ st.markdown("""
     font-family: 'Georgia', 'Times New Roman', serif;
 }
 
-/* BUTTON STYLE */
-div[data-testid="stButton"] > button {
+.menu-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    margin-top: 1rem;
+}
+
+.menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    height: 80px;
+    height: 120px;
+    text-decoration: none !important;
     font-size: 1.5rem;
-    font-weight: 600;
-    border-radius: 0px;
-    border: 4px solid #5C4033;
-    color: #5C4033;
-    box-shadow: none;
-    transition: 0.15s;
+    font-weight: 500;
+    font-family: Arial, sans-serif;
+    border: 5px solid #6b4a3b;
+    color: #6b4a3b !important;
+    box-sizing: border-box;
+    transition: transform 0.12s ease, filter 0.12s ease;
 }
 
-/* Hover */
-div[data-testid="stButton"] > button:hover {
+.menu-btn:hover {
     filter: brightness(0.97);
+    transform: scale(1.01);
 }
 
-/* Fokus entfernen */
-div[data-testid="stButton"] > button:focus {
-    outline: none !important;
-    box-shadow: none !important;
+/* Farben exakt wie Sidebar */
+.home { background-color: #FFE5B4; }
+.profile { background-color: #FFF4B8; }
+.data { background-color: #FFD8B1; }
+.calculator { background-color: #F7C6C7; }
+.statistic { background-color: #E7A8C9; }
+.recommendations { background-color: #F8D6E6; }
+.alternatives { background-color: #CFE8FF; }
+.help { 
+    background-color: #5B8DB8; 
+    color: white !important;
 }
-
-/* Farben exakt pro Button (mittlere Spalte!) */
-section.main div[data-testid="column"]:nth-of-type(2) div[data-testid="stButton"]:nth-of-type(1) > button {
-    background-color: #f3cfe0 !important;
-}
-section.main div[data-testid="column"]:nth-of-type(2) div[data-testid="stButton"]:nth-of-type(2) > button {
-    background-color: #f0c5d7 !important;
-}
-section.main div[data-testid="column"]:nth-of-type(2) div[data-testid="stButton"]:nth-of-type(3) > button {
-    background-color: #f7f3bf !important;
-}
-section.main div[data-testid="column"]:nth-of-type(2) div[data-testid="stButton"]:nth-of-type(4) > button {
-    background-color: #cfe7ff !important;
-}
-section.main div[data-testid="column"]:nth-of-type(2) div[data-testid="stButton"]:nth-of-type(5) > button {
-    background-color: #d7f5c9 !important;
-}
-section.main div[data-testid="column"]:nth-of-type(2) div[data-testid="stButton"]:nth-of-type(6) > button {
-    background-color: #c9f2c8 !important;
-}
-section.main div[data-testid="column"]:nth-of-type(2) div[data-testid="stButton"]:nth-of-type(7) > button {
-    background-color: #f7b5a8 !important;
-}
-section.main div[data-testid="column"]:nth-of-type(2) div[data-testid="stButton"]:nth-of-type(8) > button {
-    background-color: #4db3ff !important;
-    color: #5C4033 !important;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
-# -------------------------------------------------
-# TITEL + SLOGAN
-# -------------------------------------------------
 st.markdown("<div class='main-title'>Caffeine Calculator</div>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>track it. understand it. control it</div>", unsafe_allow_html=True)
 
-# -------------------------------------------------
-# MITTIGE BUTTONS
-# -------------------------------------------------
 left, center, right = st.columns([1.2, 1.6, 1.2])
 
 with center:
-    if st.button("Home", use_container_width=True):
-        st.switch_page("views/home.py")
-
-    if st.button("Calculator", use_container_width=True):
-        st.switch_page("views/caffeine_calculator.py")
-
-    if st.button("Statistic", use_container_width=True):
-        st.switch_page("views/statistic.py")
-
-    if st.button("Recommendations", use_container_width=True):
-        st.switch_page("views/recommendations.py")
-
-    if st.button("Alternatives", use_container_width=True):
-        st.switch_page("views/alternatives.py")
-
-    if st.button("Professional Help", use_container_width=True):
-        st.switch_page("views/professional_help.py")
-
-    if st.button("Additional Data", use_container_width=True):
-        st.switch_page("views/additional_data.py")
-
-    if st.button("Your Profile", use_container_width=True):
-        st.switch_page("views/your_profile.py")
+    st.markdown("""
+    <div class="menu-wrap">
+        <a class="menu-btn home" href="/home1" target="_self">Home</a>
+        <a class="menu-btn profile" href="/your_profile" target="_self">Your Profile</a>
+        <a class="menu-btn data" href="/additional_data" target="_self">Additional Data</a>
+        <a class="menu-btn calculator" href="/caffeine_calculator" target="_self">Caffeine Calculator</a>
+        <a class="menu-btn statistic" href="/statistic" target="_self">Statistic</a>
+        <a class="menu-btn recommendations" href="/recommendations" target="_self">Recommendations</a>
+        <a class="menu-btn alternatives" href="/alternatives" target="_self">Alternatives</a>
+        <a class="menu-btn help" href="/professional_help" target="_self">Professional Help</a>
+    </div>
+    """, unsafe_allow_html=True)
