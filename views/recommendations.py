@@ -144,20 +144,22 @@ def smoothstep(x, edge0, edge1):
 
 
 def build_curve(initial_mg: float, total_hours: int = 10):
-    x = np.linspace(0, total_hours, 600)
+    x = np.linspace(0, total_hours, 800)
 
     # Sanfter Anstieg bis ca. Stunde 5
     rise = smoothstep(x, 0.0, 5.0)
 
-    # Sanfter, kontinuierlicher Abfall nach dem Peak
-    decay = np.exp(-0.28 * np.clip(x - 5.0, 0, None))
+    # Sanfter, rund beginnender Abfall nach dem Peak
+    # Durch die Potenz 1.6 startet der Abfall ohne abrupten Knick
+    t_after_peak = np.clip(x - 5.0, 0, None)
+    decay = np.exp(-0.22 * (t_after_peak ** 1.6))
 
     y = rise * decay
 
-    # auf 1 normieren
+    # Normieren
     y = y / np.max(y)
 
-    # leichte Skalierung je nach Menge, ohne die Kurvenform kaputt zu machen
+    # Leichte Skalierung je nach Menge, Form bleibt stabil
     scale = max(0.85, min(initial_mg / 100, 1.15))
     y = y * scale
 
