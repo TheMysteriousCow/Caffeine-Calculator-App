@@ -124,31 +124,42 @@ import base64
 import streamlit as st
 import os
 
-def set_background(image_file):
-    # Sicherheitsprüfung: Existiert die Datei wirklich?
+def set_logo(image_file):
+    # Sicherheitsprüfung
     if not os.path.exists(image_file):
-        st.error(f"FEHLER: Datei nicht gefunden unter: {image_file}")
-        st.stop()  # Stoppt das Skript, damit du den Fehler siehst
+        st.warning(f"Bild konnte nicht geladen werden. Pfad: {image_file}")
+        return
 
     with open(image_file, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
 
+    # CSS für das Logo: Klein, mittig, ohne den Rest zu überlagern
     css = f"""
     <style>
-    .stApp {{
-        background-image: url("data:image/png;base64,{encoded}");
-        background-size: 400px;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-attachment: fixed;
+    .logo-container {{
+        display: flex;
+        justify-content: center;
+        padding-top: 10px;
+        padding-bottom: 20px;
+    }}
+    .logo-img {{
+        width: 150px; /* Hier kannst du die Größe anpassen */
+        height: auto;
     }}
     </style>
+    
+    <div class="logo-container">
+        <img src="data:image/png;base64,{encoded}" class="logo-img" alt="Logo">
+    </div>
     """
     st.markdown(css, unsafe_allow_html=True)
 
-# Pfad dynamisch ermitteln (relativ zu DIESER Python-Datei)
+# --- Pfad korrekt berechnen ---
+# Wir starten im 'utils' Ordner, gehen mit '..' eine Ebene hoch 
+# und suchen dann den Ordner 'images'
 script_dir = os.path.dirname(os.path.abspath(__file__))
 image_path = os.path.join(script_dir, "..", "images", "Logo Infapp.png")
 
 # Funktion aufrufen
-set_background(image_path)
+set_logo(image_path)
+
