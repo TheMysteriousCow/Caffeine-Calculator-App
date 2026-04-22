@@ -1,25 +1,38 @@
 import streamlit as st
 
-# Titel
+# Titel + Beschreibung (ELEGANTE SCHRIFT)
 st.markdown(
-    "<h1 style='color:#5C4033;'>Alternatives</h1>",
+    "<h1 style='color:#5C4033; font-family: serif;'>Alternatives</h1>",
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    "<p style='color:#5C4033; font-size:16px; font-family: serif;'>"
+    "Here you can explore alternative options to your usual caffeine intake. "
+    "Choosing the right alternative can help you better manage your energy levels, "
+    "reduce side effects such as nervousness or crashes, and support a more balanced and sustainable routine. "
+    "Whether you want a smoother caffeine source or avoid caffeine completely, these options can support your well-being."
+    "</p>",
     unsafe_allow_html=True
 )
 
 st.write("")
 
-# Styling
+
+# Styling (ELEGANT + GRÖSSERE BUTTONS)
 st.markdown("""
 <style>
 div.stButton > button {
     width: 100%;
     background-color: #CDECCF;
     color: black;
-    border-radius: 10px;
-    height: 60px;
-    font-size: 16px;
-    margin-bottom: 10px;
+    border-radius: 14px;
+    height: 65px; /* etwas grösser */
+    font-size: 17px; /* minimal grösser */
+    margin-bottom: 18px;
     border: none;
+    padding: 0px 25px;
+    font-family: serif; /* gleiche Schrift */
 }
 
 .info-box {
@@ -29,9 +42,11 @@ div.stButton > button {
     margin-top: 20px;
     background-color: white;
     color: black;
+    font-family: serif;
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 # Texte
 texts = {
@@ -70,15 +85,16 @@ A common recommendation is about 1–2 cups per day (200–400 ml), ideally with
 """
 }
 
-# Auswahl speichern
+
+# Session State
 if "selected_alternative" not in st.session_state:
     st.session_state.selected_alternative = None
 
 
 # --- WITH CAFFEINE ---
-st.markdown("<h3 style='color:#5C4033;'>With Caffeine</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='color:#5C4033; font-family: serif;'>With Caffeine</h3>", unsafe_allow_html=True)
 
-left, col1, col2, right = st.columns([1,1,1,1])
+col1, col2, col3 = st.columns(3)
 
 with col1:
     if st.button("Guarana"):
@@ -88,28 +104,31 @@ with col2:
     if st.button("Green tea"):
         st.session_state.selected_alternative = "Green tea"
 
+with col3:
+    st.write("")
+
 st.write("")
 
 
 # --- WITHOUT CAFFEINE ---
-st.markdown("<h3 style='color:#5C4033;'>Without Caffeine</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='color:#5C4033; font-family: serif;'>Without Caffeine</h3>", unsafe_allow_html=True)
 
-left, col3, col4, col5, right = st.columns([0.5,1,1,1,0.5])
+col4, col5, col6 = st.columns(3)
 
-with col3:
+with col4:
     if st.button("Ginger"):
         st.session_state.selected_alternative = "Ginger"
 
-with col4:
+with col5:
     if st.button("Herbal tea"):
         st.session_state.selected_alternative = "Herbal tea"
 
-with col5:
+with col6:
     if st.button("Kokoa"):
         st.session_state.selected_alternative = "Kokoa"
 
 
-# Infobox unten anzeigen
+# Infobox
 if st.session_state.selected_alternative:
     selected = st.session_state.selected_alternative
     st.markdown(
