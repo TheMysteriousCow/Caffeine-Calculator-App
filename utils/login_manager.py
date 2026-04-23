@@ -124,7 +124,7 @@ import base64
 import streamlit as st
 import os
 
-def set_logo(image_file):
+def set_logo_top_right(image_file):
     # Sicherheitsprüfung
     if not os.path.exists(image_file):
         st.warning(f"Bild konnte nicht geladen werden. Pfad: {image_file}")
@@ -133,33 +133,32 @@ def set_logo(image_file):
     with open(image_file, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
 
-    # CSS für das Logo: Klein, mittig, ohne den Rest zu überlagern
+    # CSS für oben rechts fixiertes Logo
     css = f"""
     <style>
     .logo-container {{
-        display: flex;
-        justify-content: center;
-        padding-top: 10px;
-        padding-bottom: 20px;
+        position: fixed;
+        top: 10px;
+        right: 20px;
+        z-index: 100;
     }}
     .logo-img {{
-        width: 150px; /* Hier kannst du die Größe anpassen */
+        width: 120px;  /* Größe anpassen */
         height: auto;
     }}
     </style>
-    
+
     <div class="logo-container">
         <img src="data:image/png;base64,{encoded}" class="logo-img" alt="Logo">
     </div>
     """
+
     st.markdown(css, unsafe_allow_html=True)
 
+
 # --- Pfad korrekt berechnen ---
-# Wir starten im 'utils' Ordner, gehen mit '..' eine Ebene hoch 
-# und suchen dann den Ordner 'images'
 script_dir = os.path.dirname(os.path.abspath(__file__))
-image_path = os.path.join(script_dir, "..", "images", "Logo Infapp.png")
+image_path = os.path.join(script_dir, "..", "images", "logo.png")
 
 # Funktion aufrufen
-set_logo(image_path)
-
+set_logo_top_right(image_path)
