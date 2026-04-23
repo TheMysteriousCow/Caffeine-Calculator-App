@@ -26,7 +26,7 @@ def set_logo_top_right(image_file: str):
         z-index: 100;
     }}
     .logo-img {{
-        width: 150px;
+        width: 170px;
         height: auto;
         opacity: 0.95;
     }}
