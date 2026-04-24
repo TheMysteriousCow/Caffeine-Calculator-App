@@ -4,9 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-
 # -----------------------------
-# GLOBAL STYLE (MATCH ADDITIONAL DATA)
+# GLOBAL STYLE
 # -----------------------------
 st.markdown("""
 <style>
@@ -17,11 +16,24 @@ html, body, [class*="css"] {
     color: #5a3e36;
 }
 
-/* Titel */
-h1 {
-    font-family: 'Georgia', serif;
-    color: #5a3e36 !important;
-    font-weight: 700;
+/* Titel wie auf allen Seiten */
+.main-title {
+    text-align: center;
+    font-size: 3.4rem;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-weight: 600;
+    color: #5C4033;
+    margin-bottom: 0.3rem;
+    letter-spacing: 1px;
+}
+
+/* Untertitel (normale Schrift) */
+.subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    font-family: Arial, sans-serif;
+    color: #6b7280;
+    margin-bottom: 2rem;
 }
 
 /* Untertitel */
@@ -62,13 +74,11 @@ p, span, label {
 </style>
 """, unsafe_allow_html=True)
 
-
 # -----------------------------
-# PAGE CONFIG / TITLE
+# TITLE
 # -----------------------------
-st.title("Recommendations")
-st.caption("Understand your caffeine state and get direct help.")
-
+st.markdown("<div class='main-title'>Recommendations</div>", unsafe_allow_html=True)
+st.markdown("<div class='subtitle'>Understand your caffeine state and get direct help.</div>", unsafe_allow_html=True)
 
 # -----------------------------
 # SESSION STATE
@@ -81,12 +91,10 @@ if "recommendation_detail" not in st.session_state:
 
 data_df = st.session_state["data_df"]
 
-
 # -----------------------------
 # HELPER FUNCTIONS
 # -----------------------------
 HALF_LIFE = 5.0
-
 
 def caffeine_remaining(initial_mg: float, hours_passed: float, half_life: float = 5.0) -> float:
     if initial_mg <= 0:
@@ -94,7 +102,6 @@ def caffeine_remaining(initial_mg: float, hours_passed: float, half_life: float 
     if hours_passed < 0:
         hours_passed = 0.0
     return initial_mg * (0.5 ** (hours_passed / half_life))
-
 
 def get_latest_entry(df: pd.DataFrame):
     if df.empty:
@@ -111,7 +118,6 @@ def get_latest_entry(df: pd.DataFrame):
 
     return df_copy.iloc[-1]
 
-
 def get_hours_since_latest_entry(entry) -> float:
     if entry is None or "timestamp" not in entry:
         return 0.0
@@ -123,7 +129,6 @@ def get_hours_since_latest_entry(entry) -> float:
     now = pd.Timestamp.now()
     hours_passed = (now - ts).total_seconds() / 3600
     return max(0.0, hours_passed)
-
 
 def get_phase_info(hours_passed: float):
     if hours_passed < 2:
@@ -137,34 +142,24 @@ def get_phase_info(hours_passed: float):
     else:
         return "Recovery", "Your body is slowly calming down."
 
-
 def smoothstep(x, edge0, edge1):
     t = np.clip((x - edge0) / (edge1 - edge0), 0, 1)
     return t * t * (3 - 2 * t)
 
-
 def build_curve(initial_mg: float, total_hours: int = 10):
     x = np.linspace(0, total_hours, 800)
 
-    # Sanfter Anstieg bis ca. Stunde 5
     rise = smoothstep(x, 0.0, 5.0)
-
-    # Sanfter, rund beginnender Abfall nach dem Peak
-    # Durch die Potenz 1.6 startet der Abfall ohne abrupten Knick
     t_after_peak = np.clip(x - 5.0, 0, None)
     decay = np.exp(-0.22 * (t_after_peak ** 1.6))
 
     y = rise * decay
-
-    # Normieren
     y = y / np.max(y)
 
-    # Leichte Skalierung je nach Menge, Form bleibt stabil
     scale = max(0.85, min(initial_mg / 100, 1.15))
     y = y * scale
 
     return x, y
-
 
 def add_vertical_gradient(ax, x0, x1, y0, y1, color_rgb, alpha_top=0.40, alpha_bottom=0.18, zorder=0):
     n = 256
@@ -181,7 +176,6 @@ def add_vertical_gradient(ax, x0, x1, y0, y1, color_rgb, alpha_top=0.40, alpha_b
         origin="lower",
         zorder=zorder
     )
-
 
 def draw_phase_bar(ax):
     bar_y = -0.02
@@ -217,7 +211,6 @@ def draw_phase_bar(ax):
             zorder=4
         )
 
-
 def plot_colored_segments(ax, x, y):
     phase_segments = [
         (0, 2, "#7da61b"),
@@ -230,7 +223,6 @@ def plot_colored_segments(ax, x, y):
     for x0, x1, color in phase_segments:
         mask = (x >= x0) & (x <= x1)
         ax.plot(x[mask], y[mask], color=color, linewidth=3, zorder=5)
-
 
 # -----------------------------
 # CHART
@@ -285,9 +277,8 @@ def draw_recommendation_chart(initial_mg: float, hours_passed: float):
 
     st.pyplot(fig, clear_figure=True)
 
-
 # -----------------------------
-# MAIN PAGE
+# MAIN
 # -----------------------------
 latest_entry = get_latest_entry(data_df)
 
