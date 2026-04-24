@@ -42,6 +42,7 @@ def set_logo_top_right(image_file: str):
 # =========================
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
+
 # -----------------------------
 # GLOBAL STYLE
 # -----------------------------
@@ -114,7 +115,11 @@ st.markdown("<div class='subtitle'>Understand your caffeine state and get direct
 # SESSION STATE
 # -----------------------------
 if "data_df" not in st.session_state:
-    st.session_state["data_df"] = pd.DataFrame()
+    st.session_state["data_df"] = pd.DataFrame(columns=[
+        "timestamp",
+        "Drink",
+        "Caffeine (mg)"
+    ])
 
 if "recommendation_detail" not in st.session_state:
     st.session_state["recommendation_detail"] = None
@@ -160,6 +165,17 @@ def get_hours_since_latest_entry(entry) -> float:
     hours_passed = (now - ts).total_seconds() / 3600
     return max(0.0, hours_passed)
 
+def get_initial_caffeine(entry) -> float:
+    if entry is None:
+        return 0.0
+
+    value = entry.get("Caffeine (mg)", entry.get("Koffeinmenge zu Beginn (mg)", 0))
+
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
+
 def get_phase_info(hours_passed: float):
     if hours_passed < 2:
         return "Start", "Caffeine is just entering your body."
@@ -184,7 +200,9 @@ def build_curve(initial_mg: float, total_hours: int = 10):
     decay = np.exp(-0.22 * (t_after_peak ** 1.6))
 
     y = rise * decay
-    y = y / np.max(y)
+
+    if np.max(y) > 0:
+        y = y / np.max(y)
 
     scale = max(0.85, min(initial_mg / 100, 1.15))
     y = y * scale
@@ -517,7 +535,7 @@ if latest_entry is None:
     st.info("No caffeine data available yet. Please use the Caffeine Calculator first.")
     st.stop()
 
-initial_mg = float(latest_entry.get("Koffeinmenge zu Beginn (mg)", 0))
+initial_mg = get_initial_caffeine(latest_entry)
 hours_passed = get_hours_since_latest_entry(latest_entry)
 current_mg = caffeine_remaining(initial_mg, hours_passed, HALF_LIFE)
 
