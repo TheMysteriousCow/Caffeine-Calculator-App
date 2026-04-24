@@ -12,11 +12,10 @@ st.markdown("""
 .main-title {
     text-align: center;
     font-size: 3.4rem;
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: Georgia, serif;
     font-weight: 600;
     color: #5C4033;
     margin-bottom: 0.3rem;
-    letter-spacing: 1px;
 }
 
 .subtitle {
@@ -25,49 +24,67 @@ st.markdown("""
     font-style: italic;
     color: #5C4033;
     margin-bottom: 2.5rem;
-    font-family: 'Georgia', 'Times New Roman', serif;
 }
 
-.menu-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 26px;
-    margin-top: 1rem;
+/* Wrapper volle Breite */
+div[data-testid="stPageLink"] {
+    width: 100% !important;
+    margin-bottom: 24px;
 }
 
-.menu-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 120px;
+/* Link selbst als große Karte */
+div[data-testid="stPageLink"] a {
+    width: 100% !important;
+    height: 120px !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     text-decoration: none !important;
-    font-size: 1.5rem;
-    font-weight: 500;
-    font-family: Arial, sans-serif;
-    border: none;
+    font-size: 1.5rem !important;
+    font-weight: 500 !important;
     color: #6b4a3b !important;
-    box-sizing: border-box;
-    transition: transform 0.12s ease, filter 0.12s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    border-radius: 12px;
 }
 
-.menu-btn:hover {
-    filter: brightness(0.97);
-    transform: scale(1.01);
+/* Text mittig */
+div[data-testid="stPageLink"] a p {
+    font-size: 1.5rem !important;
+    color: #6b4a3b !important;
 }
 
 /* Farben */
-.profile { background-color: #FFF4B8; }
-.data { background-color: #FFD8B1; }
-.calculator { background-color: #F7C6C7; }
-.statistic { background-color: #E7A8C9; }
-.recommendations { background-color: #F8D6E6; }
-.alternatives { background-color: #CFE8FF; }
-.help {
-    background-color: #6FA3CC;
-    color: #6b4a3b !important;
+div[data-testid="stPageLink"] a[href*="your_profile"] {
+    background-color: #FFF4B8 !important;
+}
+
+div[data-testid="stPageLink"] a[href*="additional_data"] {
+    background-color: #FFD8B1 !important;
+}
+
+div[data-testid="stPageLink"] a[href*="caffeine_calculator"] {
+    background-color: #F7C6C7 !important;
+}
+
+div[data-testid="stPageLink"] a[href*="statistic"] {
+    background-color: #E7A8C9 !important;
+}
+
+div[data-testid="stPageLink"] a[href*="recommendations"] {
+    background-color: #F8D6E6 !important;
+}
+
+div[data-testid="stPageLink"] a[href*="alternatives"] {
+    background-color: #CFE8FF !important;
+}
+
+div[data-testid="stPageLink"] a[href*="professional_help"] {
+    background-color: #6FA3CC !important;
+}
+
+div[data-testid="stPageLink"] a:hover {
+    filter: brightness(0.97);
+    transform: scale(1.01);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -78,14 +95,10 @@ st.markdown("<div class='subtitle'>Track it. Understand it. Control it.</div>", 
 left, center, right = st.columns([1.2, 1.6, 1.2])
 
 with center:
-    st.markdown("""
-    <div class="menu-wrap">
-        <a class="menu-btn profile" href="/your_profile" target="_self">Your Profile</a>
-        <a class="menu-btn data" href="/additional_data" target="_self">Additional Data</a>
-        <a class="menu-btn calculator" href="/caffeine_calculator" target="_self">Caffeine Calculator</a>
-        <a class="menu-btn statistic" href="/statistic" target="_self">History</a>
-        <a class="menu-btn recommendations" href="/recommendations" target="_self">Recommendations</a>
-        <a class="menu-btn alternatives" href="/alternatives" target="_self">Alternatives</a>
-        <a class="menu-btn help" href="/professional_help" target="_self">Professional Help</a>
-    </div>
-    """, unsafe_allow_html=True)
+    st.page_link("views/your_profile.py", label="Your Profile", use_container_width=True)
+    st.page_link("views/additional_data.py", label="Additional Data", use_container_width=True)
+    st.page_link("views/caffeine_calculator.py", label="Caffeine Calculator", use_container_width=True)
+    st.page_link("views/statistic.py", label="History", use_container_width=True)
+    st.page_link("views/recommendations.py", label="Recommendations", use_container_width=True)
+    st.page_link("views/alternatives.py", label="Alternatives", use_container_width=True)
+    st.page_link("views/professional_help.py", label="Professional Help", use_container_width=True)
