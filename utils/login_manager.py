@@ -70,10 +70,10 @@ class LoginManager:
         login_tab, register_tab = st.tabs((login_title, register_title))
 
         with login_tab:
-        self._login()
+            self._login()
 
         with register_tab:
-        self._register()
+            self._register()
 
     # =========================
     # Login
