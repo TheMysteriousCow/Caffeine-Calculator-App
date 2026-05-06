@@ -40,6 +40,8 @@ def set_logo_top_right(image_file: str):
 # =========================
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
+
+
 # -------------------------------------------------
 # CSS
 # -------------------------------------------------
@@ -79,13 +81,21 @@ div.stButton > button {
     border-radius: 12px;
     font-weight: 600;
 }
+
+/* Logout Button bleibt normal */
+[data-testid="stSidebar"] button {
+    background-color: white !important;
+    color: black !important;
+}
 </style>
 """, unsafe_allow_html=True)
+
 
 # -------------------------------------------------
 # TITLE
 # -------------------------------------------------
 st.markdown("<div class='main-title'>History</div>", unsafe_allow_html=True)
+
 
 # -------------------------------------------------
 # HISTORY DATA
@@ -120,6 +130,7 @@ else:
 
     st.dataframe(display_df[existing_columns], use_container_width=True)
 
+
 # -------------------------------------------------
 # DELETE HISTORY
 # -------------------------------------------------
@@ -137,29 +148,62 @@ if st.button("🗑️ Clear History"):
     st.success("History has been cleared!")
     st.rerun()
 
+
 # -------------------------------------------------
 # MY DIARY
 # -------------------------------------------------
-st.markdown("<div class='section-title'>My caffeine diary</div>", unsafe_allow_html=True)
+st.markdown("<div class='section-title'>My Diary</div>", unsafe_allow_html=True)
 
+
+# -------------------------------------------------
+# DIARY DATA
+# -------------------------------------------------
 if "diary_df" not in st.session_state:
     st.session_state["diary_df"] = pd.DataFrame(columns=[
         "timestamp",
         "Diary Entry"
     ])
 
+
+# -------------------------------------------------
+# DATE + TIME INPUT
+# -------------------------------------------------
+col_date, col_time = st.columns(2)
+
+with col_date:
+    diary_date = st.date_input(
+        "Choose a date:",
+        value=datetime.now().date()
+    )
+
+with col_time:
+    diary_time = st.time_input(
+        "Choose a time:",
+        value=datetime.now().time().replace(second=0, microsecond=0)
+    )
+
+diary_timestamp = datetime.combine(diary_date, diary_time)
+
+
+# -------------------------------------------------
+# DIARY TEXT INPUT
+# -------------------------------------------------
 diary_text = st.text_area(
     "Write your diary entry here:",
     height=180,
     placeholder="How do you feel today? Did caffeine affect your energy, sleep, mood or concentration?"
 )
 
+
+# -------------------------------------------------
+# SAVE DIARY ENTRY
+# -------------------------------------------------
 if st.button("💾 Save Diary Entry"):
     if diary_text.strip() == "":
         st.warning("Please write something before saving.")
     else:
         new_entry = pd.DataFrame([{
-            "timestamp": datetime.now(),
+            "timestamp": diary_timestamp,
             "Diary Entry": diary_text.strip()
         }])
 
@@ -174,6 +218,7 @@ if st.button("💾 Save Diary Entry"):
 
         st.success("Diary entry saved!")
         st.rerun()
+
 
 # -------------------------------------------------
 # SHOW DIARY ENTRIES
