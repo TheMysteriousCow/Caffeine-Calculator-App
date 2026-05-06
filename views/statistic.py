@@ -4,6 +4,9 @@ from datetime import datetime
 import base64
 import os
 
+DIARY_FILE = "diary.csv"
+
+
 def set_logo_top_right(image_file: str):
     if not os.path.exists(image_file):
         st.warning(f"Bild konnte nicht geladen werden. Pfad: {image_file}")
@@ -33,6 +36,42 @@ def set_logo_top_right(image_file: str):
     """
 
     st.markdown(css, unsafe_allow_html=True)
+
+
+def empty_diary_df():
+    return pd.DataFrame(columns=["timestamp", "Diary Entry"])
+
+
+def load_diary_data():
+    if "data_manager" in st.session_state:
+        try:
+            data_manager = st.session_state["data_manager"]
+            df = data_manager.load_user_data(DIARY_FILE)
+
+            if df is not None and not df.empty:
+                return df
+        except:
+            pass
+
+    if os.path.exists(DIARY_FILE):
+        try:
+            return pd.read_csv(DIARY_FILE)
+        except:
+            return empty_diary_df()
+
+    return empty_diary_df()
+
+
+def save_diary_data(df):
+    if "data_manager" in st.session_state:
+        try:
+            data_manager = st.session_state["data_manager"]
+            data_manager.save_user_data(df, DIARY_FILE)
+            return
+        except:
+            pass
+
+    df.to_csv(DIARY_FILE, index=False)
 
 
 # =========================
@@ -82,7 +121,6 @@ div.stButton > button {
     font-weight: 600;
 }
 
-/* Logout Button bleibt normal */
 [data-testid="stSidebar"] button {
     background-color: white !important;
     color: black !important;
@@ -156,13 +194,13 @@ st.markdown("<div class='section-title'>My Diary</div>", unsafe_allow_html=True)
 
 
 # -------------------------------------------------
-# DIARY DATA
+# LOAD DIARY DATA
 # -------------------------------------------------
 if "diary_df" not in st.session_state:
-    st.session_state["diary_df"] = pd.DataFrame(columns=[
-        "timestamp",
-        "Diary Entry"
-    ])
+    st.session_state["diary_df"] = load_diary_data()
+
+if "diary_df" not in st.session_state or st.session_state["diary_df"] is None:
+    st.session_state["diary_df"] = empty_diary_df()
 
 
 # -------------------------------------------------
@@ -212,26 +250,25 @@ if st.button("💾 Save Diary Entry"):
             ignore_index=True
         )
 
-        if "data_manager" in st.session_state:
-            data_manager = st.session_state["data_manager"]
-            data_manager.save_user_data(st.session_state["diary_df"], "diary.csv")
+        save_diary_data(st.session_state["diary_df"])
 
         st.success("Diary entry saved!")
         st.rerun()
 
 
 # -------------------------------------------------
-# SHOW DIARY ENTRIES
+# SHOW + DELETE DIARY ENTRIES
 # -------------------------------------------------
 diary_df = st.session_state["diary_df"]
 
 if not diary_df.empty:
     diary_df["timestamp"] = pd.to_datetime(diary_df["timestamp"], errors="coerce")
-    diary_df = diary_df.sort_values("timestamp", ascending=False)
+    diary_df = diary_df.sort_values("timestamp", ascending=False).reset_index(drop=True)
+    st.session_state["diary_df"] = diary_df
 
     st.markdown("<div class='section-title'>Saved Diary Entries</div>", unsafe_allow_html=True)
 
-    for _, row in diary_df.iterrows():
+    for index, row in diary_df.iterrows():
         date_time = row["timestamp"].strftime("%d.%m.%Y %H:%M")
         entry = row["Diary Entry"]
 
@@ -240,10 +277,20 @@ if not diary_df.empty:
             border: 2px solid #CDECCF;
             border-radius: 14px;
             padding: 16px;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
             background-color: #FAFFFA;
         ">
             <strong>{date_time}</strong><br><br>
             {entry}
         </div>
         """, unsafe_allow_html=True)
+
+        if st.button("🗑️ Delete Entry", key=f"delete_diary_{index}"):
+            st.session_state["diary_df"] = diary_df.drop(index).reset_index(drop=True)
+            save_diary_data(st.session_state["diary_df"])
+
+            st.success("Diary entry deleted!")
+            st.rerun()
+
+else:
+    st.info("No diary entries yet.")
