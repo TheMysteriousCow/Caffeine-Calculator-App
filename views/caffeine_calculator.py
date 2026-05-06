@@ -4,8 +4,12 @@ import os
 import time
 import streamlit.components.v1 as components
 import base64
+import re
+import unicodedata
+from difflib import SequenceMatcher
 
 st.set_page_config(page_title="Caffeine Calculator", layout="wide")
+
 
 def set_logo_top_right(image_file: str):
     if not os.path.exists(image_file):
@@ -43,6 +47,7 @@ def set_logo_top_right(image_file: str):
 # =========================
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
+
 
 # -----------------------------
 # STYLE
@@ -95,15 +100,30 @@ div.stButton > button {
 
 div.stButton > button:hover {
     background-color: #BEE6C2;
+    color: #5C4033;
+}
+
+input {
+    color: #5C4033 !important;
+}
+
+label {
+    color: #5C4033 !important;
+}
+
+.drink-card {
+    margin-bottom: 25px;
 }
 </style>
 """, unsafe_allow_html=True)
+
 
 # -----------------------------
 # TITLE
 # -----------------------------
 st.markdown("<div class='main-title'>Caffeine Calculator</div>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Choose your drink and calculate your caffeine intake.</div>", unsafe_allow_html=True)
+
 
 # -----------------------------
 # DRINK DATA
@@ -126,6 +146,33 @@ drinks = {
     "Cold Brew": {"image": "ColdBrew.png", "caffeine_mg": 140, "volume_ml": 250}
 }
 
+
+# -----------------------------
+# SEARCH FUNCTION
+# -----------------------------
+def normalize_text(text):
+    text = text.lower()
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(c for c in text if not unicodedata.combining(c))
+    text = re.sub(r"[^a-z0-9]", "", text)
+    return text
+
+
+def search_matches(search_text, drink_name):
+    if search_text.strip() == "":
+        return True
+
+    search_clean = normalize_text(search_text)
+    drink_clean = normalize_text(drink_name)
+
+    if search_clean in drink_clean:
+        return True
+
+    similarity = SequenceMatcher(None, search_clean, drink_clean).ratio()
+
+    return similarity >= 0.45
+
+
 # -----------------------------
 # CALCULATION SETTINGS
 # -----------------------------
@@ -133,28 +180,25 @@ PEAK_MINUTES = 45
 CRASH_HOURS = 4
 RECOVERY_HOURS = 8
 
-# Wirkung statt kompletter Abbau
 BASE_EFFECT_HOURS = 3.0
 REFERENCE_CAFFEINE_MG = 80
 MAX_EFFECT_HOURS = 6.0
 
+
 def caffeine_effect_duration_hours(caffeine_mg):
-    """
-    Schätzt, wie lange Koffein spürbar wirkt.
-    Höhere Koffeinmenge = längere spürbare Wirkung.
-    Die Wirkung wird aber realistisch gedeckelt.
-    """
     if caffeine_mg <= 0:
         return 0
 
     effect_hours = BASE_EFFECT_HOURS + (caffeine_mg / REFERENCE_CAFFEINE_MG) * 1.2
     return min(effect_hours, MAX_EFFECT_HOURS)
 
+
 def format_hours(hours):
     total_minutes = int(round(hours * 60))
     h = total_minutes // 60
     m = total_minutes % 60
     return f"{h} h {m} min"
+
 
 # -----------------------------
 # SESSION STATE
@@ -171,6 +215,9 @@ if "selected_volume_ml" not in st.session_state:
 if "drink_start_time" not in st.session_state:
     st.session_state.drink_start_time = None
 
+if "scroll_to_timeline" not in st.session_state:
+    st.session_state.scroll_to_timeline = False
+
 if "data_df" not in st.session_state:
     st.session_state["data_df"] = pd.DataFrame(columns=[
         "timestamp",
@@ -178,51 +225,93 @@ if "data_df" not in st.session_state:
         "Caffeine (mg)"
     ])
 
+
 # -----------------------------
 # CHOOSE DRINK
 # -----------------------------
 st.markdown("<div class='section-title'>Choose your Drink</div>", unsafe_allow_html=True)
 
-left, center, right = st.columns([1, 2, 1])
+left, center, right = st.columns([1, 4, 1])
 
 with center:
-    for drink_name, info in drinks.items():
-        image_path = os.path.join("images", info["image"])
+    search_text = st.text_input(
+        "Search drink",
+        placeholder="Example: redbull, latte machiato, coffe..."
+    )
 
-        col_img, col_btn = st.columns([2, 5])
+    filtered_drinks = {
+        name: info
+        for name, info in drinks.items()
+        if search_matches(search_text, name)
+    }
 
-        with col_img:
-            if os.path.exists(image_path):
-                st.image(image_path, use_container_width=True)
-            else:
-                st.write("🥤")
+    if len(filtered_drinks) == 0:
+        st.info("No drink found. Try another spelling.")
 
-        with col_btn:
-            if st.button(drink_name, key=f"drink_{drink_name}", use_container_width=True):
-                st.session_state.selected_drink = drink_name
-                st.session_state.selected_caffeine_mg = info["caffeine_mg"]
-                st.session_state.selected_volume_ml = info["volume_ml"]
-                st.session_state.drink_start_time = int(time.time())
+    drink_items = list(filtered_drinks.items())
 
-                new_entry = pd.DataFrame([{
-                    "timestamp": pd.Timestamp.now(),
-                    "Drink": drink_name,
-                    "Caffeine (mg)": info["caffeine_mg"]
-                }])
+    for i in range(0, len(drink_items), 3):
+        cols = st.columns(3)
 
-                st.session_state["data_df"] = pd.concat(
-                    [st.session_state["data_df"], new_entry],
-                    ignore_index=True
-                )
+        for col, item in zip(cols, drink_items[i:i + 3]):
+            drink_name, info = item
 
-                if "data_manager" in st.session_state:
-                    data_manager = st.session_state["data_manager"]
-                    data_manager.save_user_data(st.session_state["data_df"], "data.csv")
+            with col:
+                st.markdown("<div class='drink-card'>", unsafe_allow_html=True)
+
+                image_path = os.path.join("images", info["image"])
+
+                if os.path.exists(image_path):
+                    st.image(image_path, use_container_width=True)
+                else:
+                    st.write("🥤")
+
+                if st.button(drink_name, key=f"drink_{drink_name}", use_container_width=True):
+                    st.session_state.selected_drink = drink_name
+                    st.session_state.selected_caffeine_mg = info["caffeine_mg"]
+                    st.session_state.selected_volume_ml = info["volume_ml"]
+                    st.session_state.drink_start_time = int(time.time())
+                    st.session_state.scroll_to_timeline = True
+
+                    new_entry = pd.DataFrame([{
+                        "timestamp": pd.Timestamp.now(),
+                        "Drink": drink_name,
+                        "Caffeine (mg)": info["caffeine_mg"]
+                    }])
+
+                    st.session_state["data_df"] = pd.concat(
+                        [st.session_state["data_df"], new_entry],
+                        ignore_index=True
+                    )
+
+                    if "data_manager" in st.session_state:
+                        data_manager = st.session_state["data_manager"]
+                        data_manager.save_user_data(st.session_state["data_df"], "data.csv")
+
+                    st.rerun()
+
+                st.markdown("</div>", unsafe_allow_html=True)
+
 
 # -----------------------------
 # RESULT + COUNTDOWN
 # -----------------------------
 if st.session_state.selected_drink:
+
+    st.markdown("<div id='caffeine-timeline'></div>", unsafe_allow_html=True)
+
+    if st.session_state.scroll_to_timeline:
+        components.html("""
+        <script>
+            const timeline = window.parent.document.querySelector('#caffeine-timeline');
+            if (timeline) {
+                timeline.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        </script>
+        """, height=0)
+
+        st.session_state.scroll_to_timeline = False
+
     selected_drink = st.session_state.selected_drink
     caffeine_mg = st.session_state.selected_caffeine_mg
     volume_ml = st.session_state.selected_volume_ml
@@ -369,6 +458,3 @@ if st.session_state.selected_drink:
         f"{selected_drink} contains **{caffeine_mg} mg caffeine** in **{volume_ml} ml**. "
         f"The noticeable caffeine effect is estimated to last about **{format_hours(effect_hours)}**."
     )
-
-# Die Formel, die ich verwendet habe Die Wirkzeit wird so berechnet:
-# Wirkdauer = 3h + (Koffein in mg / 80) *1.2
