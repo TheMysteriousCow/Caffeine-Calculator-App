@@ -1,8 +1,10 @@
 import os
 import streamlit as st
 import base64
+import streamlit.components.v1 as components
 
 st.set_page_config(page_title="Alternatives", layout="wide")
+
 
 def set_logo_top_right(image_file: str):
     if not os.path.exists(image_file):
@@ -40,6 +42,8 @@ def set_logo_top_right(image_file: str):
 # =========================
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
+
+
 # =========================
 # Styling
 # =========================
@@ -53,7 +57,6 @@ h1, h2, h3, h4, h5, h6, label {
     color: #5C4033 !important;
 }
 
-/* Titel wie bei Your Profile */
 .main-title {
     text-align: center;
     font-size: 3.4rem;
@@ -64,7 +67,6 @@ h1, h2, h3, h4, h5, h6, label {
     letter-spacing: 1px;
 }
 
-/* Beschreibung: normale Standardschrift */
 .description-text {
     color: #5C4033;
     font-size: 16px;
@@ -97,6 +99,7 @@ div.stButton > button {
 </style>
 """, unsafe_allow_html=True)
 
+
 # =========================
 # Titel + Beschreibung
 # =========================
@@ -118,6 +121,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 # =========================
 # Texte
@@ -170,19 +174,27 @@ One cup usually contains around 40–70 mg of caffeine, depending on the strengt
 """
 }
 
+
 # =========================
-# Session
+# Session State
 # =========================
 if "selected_alternative" not in st.session_state:
     st.session_state.selected_alternative = None
+
+if "scroll_counter" not in st.session_state:
+    st.session_state.scroll_counter = 0
+
 
 # =========================
 # Bild + Button Funktion
 # =========================
 def image_button(label, image_path):
     st.image(image_path, use_container_width=True)
+
     if st.button(label, key=label):
         st.session_state.selected_alternative = label
+        st.session_state.scroll_counter += 1
+
 
 # =========================
 # With Caffeine
@@ -203,6 +215,7 @@ with col2:
 with col3:
     image_button("Black tea", "images/Blacktea.png")
 
+
 # =========================
 # Without Caffeine
 # =========================
@@ -222,11 +235,15 @@ with col5:
 with col6:
     image_button("Kokoa", "images/Cocoa.png")
 
+
 # =========================
-# Infobox
+# Infobox + automatisches Scrollen
 # =========================
 if st.session_state.selected_alternative:
     selected = st.session_state.selected_alternative
+
+    st.markdown('<div id="result-box"></div>', unsafe_allow_html=True)
+
     st.markdown(
         f"""
         <div class="info-box">
@@ -235,4 +252,25 @@ if st.session_state.selected_alternative:
         </div>
         """,
         unsafe_allow_html=True
+    )
+
+    components.html(
+        f"""
+        <script>
+            setTimeout(function() {{
+                const element = window.parent.document.getElementById("result-box");
+                if (element) {{
+                    element.scrollIntoView({{
+                        behavior: "smooth",
+                        block: "start"
+                    }});
+                }}
+            }}, 150);
+        </script>
+
+        <div style="display:none;">
+            {st.session_state.scroll_counter}
+        </div>
+        """,
+        height=0
     )
