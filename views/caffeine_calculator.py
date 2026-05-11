@@ -6,11 +6,47 @@ import streamlit.components.v1 as components
 import base64
 import re
 import unicodedata
+import json
 from difflib import SequenceMatcher
 
 st.set_page_config(page_title="Caffeine Calculator", layout="wide")
 
 
+# =========================
+# PROFILE LOAD
+# =========================
+PROFILE_FILE = "profile.json"
+
+
+def load_profile():
+    if os.path.exists(PROFILE_FILE):
+        with open(PROFILE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    return {
+        "name": "",
+        "first_name": "",
+        "gender": "Female",
+        "weight": "",
+        "height": ""
+    }
+
+
+def safe_float(value):
+    try:
+        return float(str(value).replace(",", "."))
+    except:
+        return None
+
+
+profile = load_profile()
+profile_weight = safe_float(profile.get("weight", ""))
+profile_height = safe_float(profile.get("height", ""))
+
+
+# =========================
+# LOGO
+# =========================
 def set_logo_top_right(image_file: str):
     if not os.path.exists(image_file):
         st.warning(f"Bild konnte nicht geladen werden. Pfad: {image_file}")
@@ -42,16 +78,13 @@ def set_logo_top_right(image_file: str):
     st.markdown(css, unsafe_allow_html=True)
 
 
-# =========================
-# Logo anzeigen
-# =========================
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
 
 
-# -----------------------------
+# =========================
 # STYLE
-# -----------------------------
+# =========================
 st.markdown("""
 <style>
 .stApp {
@@ -114,20 +147,38 @@ label {
 .drink-card {
     margin-bottom: 25px;
 }
+
+.personal-card {
+    background-color: #f7f4f1;
+    border-radius: 24px;
+    padding: 28px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.personal-title {
+    color: #5C4033;
+    font-size: 1.6rem;
+    font-family: Georgia, serif;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+}
 </style>
 """, unsafe_allow_html=True)
 
 
-# -----------------------------
+# =========================
 # TITLE
-# -----------------------------
+# =========================
 st.markdown("<div class='main-title'>Caffeine Calculator</div>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Choose your drink and calculate your caffeine intake.</div>", unsafe_allow_html=True)
 
 
-# -----------------------------
+# =========================
 # DRINK DATA
-# -----------------------------
+# =========================
 drinks = {
     "Red Bull": {"image": "Redbull.png", "caffeine_mg": 114, "volume_ml": 355},
     "Monster": {"image": "Monster.png", "caffeine_mg": 160, "volume_ml": 500},
@@ -147,9 +198,9 @@ drinks = {
 }
 
 
-# -----------------------------
+# =========================
 # SEARCH FUNCTION
-# -----------------------------
+# =========================
 def normalize_text(text):
     text = text.lower()
     text = unicodedata.normalize("NFKD", text)
@@ -169,13 +220,12 @@ def search_matches(search_text, drink_name):
         return True
 
     similarity = SequenceMatcher(None, search_clean, drink_clean).ratio()
-
     return similarity >= 0.45
 
 
-# -----------------------------
+# =========================
 # CALCULATION SETTINGS
-# -----------------------------
+# =========================
 PEAK_MINUTES = 45
 CRASH_HOURS = 4
 RECOVERY_HOURS = 8
@@ -200,9 +250,18 @@ def format_hours(hours):
     return f"{h} h {m} min"
 
 
-# -----------------------------
+def get_risk_level(mg_per_kg):
+    if mg_per_kg < 1:
+        return "Low", "Your caffeine dose is low for your body weight."
+    elif mg_per_kg < 3:
+        return "Moderate", "Your caffeine dose is moderate for your body weight."
+    else:
+        return "High", "This is a high caffeine dose for your body weight."
+
+
+# =========================
 # SESSION STATE
-# -----------------------------
+# =========================
 if "selected_drink" not in st.session_state:
     st.session_state.selected_drink = None
 
@@ -226,9 +285,9 @@ if "data_df" not in st.session_state:
     ])
 
 
-# -----------------------------
+# =========================
 # CHOOSE DRINK
-# -----------------------------
+# =========================
 st.markdown("<div class='section-title'>Choose your Drink</div>", unsafe_allow_html=True)
 
 left, center, right = st.columns([1, 4, 1])
@@ -293,9 +352,9 @@ with center:
                 st.markdown("</div>", unsafe_allow_html=True)
 
 
-# -----------------------------
+# =========================
 # RESULT + COUNTDOWN
-# -----------------------------
+# =========================
 if st.session_state.selected_drink:
 
     st.markdown("<div id='caffeine-timeline'></div>", unsafe_allow_html=True)
@@ -458,3 +517,61 @@ if st.session_state.selected_drink:
         f"{selected_drink} contains **{caffeine_mg} mg caffeine** in **{volume_ml} ml**. "
         f"The noticeable caffeine effect is estimated to last about **{format_hours(effect_hours)}**."
     )
+
+    # =========================
+    # PERSONALIZED CALCULATION
+    # =========================
+    st.markdown("<div class='personal-card'>", unsafe_allow_html=True)
+    st.markdown("<div class='personal-title'>Personalized Caffeine Impact</div>", unsafe_allow_html=True)
+
+    if profile_weight and profile_weight > 0:
+
+        mg_per_kg = caffeine_mg / profile_weight
+        personal_daily_limit = profile_weight * 3
+
+        today = pd.Timestamp.now().date()
+        data_df = st.session_state["data_df"].copy()
+
+        if not data_df.empty:
+            data_df["timestamp"] = pd.to_datetime(data_df["timestamp"])
+            today_total = data_df[data_df["timestamp"].dt.date == today]["Caffeine (mg)"].sum()
+        else:
+            today_total = caffeine_mg
+
+        daily_percentage = min((today_total / personal_daily_limit) * 100, 999)
+
+        risk_level, risk_text = get_risk_level(mg_per_kg)
+
+        pcol1, pcol2, pcol3, pcol4 = st.columns(4)
+
+        with pcol1:
+            st.metric("Body weight", f"{profile_weight:g} kg")
+
+        with pcol2:
+            st.metric("Dose per kg", f"{mg_per_kg:.2f} mg/kg")
+
+        with pcol3:
+            st.metric("Today's intake", f"{today_total:.0f} mg")
+
+        with pcol4:
+            st.metric("Personal daily guide", f"{personal_daily_limit:.0f} mg")
+
+        st.progress(min(daily_percentage / 100, 1.0))
+
+        st.write(f"Today you have used **{daily_percentage:.0f}%** of your personal daily caffeine guide.")
+
+        if risk_level == "Low":
+            st.success(f"Risk level: {risk_level} — {risk_text}")
+        elif risk_level == "Moderate":
+            st.warning(f"Risk level: {risk_level} — {risk_text}")
+        else:
+            st.error(f"Risk level: {risk_level} — {risk_text}")
+
+        if profile_height and profile_height > 0:
+            bmi = profile_weight / (profile_height ** 2)
+            st.caption(f"Your saved height is {profile_height:g} m. Your BMI is approximately {bmi:.1f}. Height is shown for profile context, but caffeine impact is mainly calculated using body weight.")
+
+    else:
+        st.warning("No valid weight found in your profile. Please enter your weight in Your Profile to get a personalized caffeine calculation.")
+
+    st.markdown("</div>", unsafe_allow_html=True)

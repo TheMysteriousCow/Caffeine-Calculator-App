@@ -168,12 +168,12 @@ gender = st.selectbox(
 )
 
 weight = st.text_input(
-    "Weight",
+    "Weight in kilograms",
     value=profile["weight"]
 )
 
 height = st.text_input(
-    "Height in meters",
+    "Height in centimeters",
     value=profile["height"]
 )
 
