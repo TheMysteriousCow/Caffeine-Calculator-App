@@ -1,0 +1,22 @@
+{
+    "entries": [
+        {
+            "timestamp": "2026-05-11T13:56:12.757001",
+            "Drink": "Flat White",
+            "Caffeine (mg)": 120,
+            "Volume (ml)": 160,
+            "effect_seconds": 17280,
+            "start_time": 1778500572
+        }
+    ],
+    "countdown_end_time": 1778517852,
+    "countdown_total_seconds": 17280,
+    "last_drink": {
+        "timestamp": "2026-05-11T13:56:12.757001",
+        "Drink": "Flat White",
+        "Caffeine (mg)": 120,
+        "Volume (ml)": 160,
+        "effect_seconds": 17280,
+        "start_time": 1778500572
+    }
+}
