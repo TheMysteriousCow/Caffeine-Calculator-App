@@ -8,6 +8,7 @@ import re
 import unicodedata
 import json
 from difflib import SequenceMatcher
+from datetime import datetime
 
 st.set_page_config(page_title="Caffeine Calculator", layout="wide")
 
@@ -16,8 +17,8 @@ st.set_page_config(page_title="Caffeine Calculator", layout="wide")
 # FILES
 # =========================
 PROFILE_FILE = "profile.json"
-DATA_FILE = "data.csv"                 # History
-CURRENT_FILE = "current_caffeine.json"  # Only current calculator entries
+DATA_FILE = "data.csv"
+CURRENT_FILE = "current_caffeine.json"
 
 
 # =========================
@@ -171,14 +172,52 @@ st.markdown("""
 <style>
 .stApp {
     background-color: white;
+    color: #5C4033 !important;
 }
 
+/* Alle normalen Texte braun */
+html, body, p, div, span, label, input, textarea,
+h1, h2, h3, h4, h5, h6,
+.stMarkdown, .stText, .stCaption,
+[data-testid="stMarkdownContainer"],
+[data-testid="stText"],
+[data-testid="stMetricLabel"],
+[data-testid="stMetricValue"],
+[data-testid="stMetricDelta"],
+[data-testid="stWidgetLabel"],
+[data-testid="stCaptionContainer"] {
+    color: #5C4033 !important;
+}
+
+/* Input-Felder */
+input {
+    color: #5C4033 !important;
+}
+
+input::placeholder {
+    color: #8B6F63 !important;
+}
+
+/* Date / Time Inputs */
+div[data-baseweb="input"] input {
+    color: #5C4033 !important;
+}
+
+/* Dropdown / Kalender / Time picker Texte */
+div[data-baseweb="popover"],
+div[data-baseweb="menu"],
+div[data-baseweb="select"],
+div[data-baseweb="calendar"] {
+    color: #5C4033 !important;
+}
+
+/* Titel */
 .main-title {
     text-align: center;
     font-size: 3.4rem;
     font-family: 'Georgia', 'Times New Roman', serif;
     font-weight: 600;
-    color: #5C4033;
+    color: #5C4033 !important;
     margin-bottom: 0.3rem;
     letter-spacing: 1px;
 }
@@ -187,7 +226,7 @@ st.markdown("""
     text-align: center;
     font-size: 1.1rem;
     font-family: Arial, sans-serif;
-    color: #6b7280;
+    color: #5C4033 !important;
     margin-bottom: 2rem;
 }
 
@@ -196,7 +235,7 @@ st.markdown("""
     font-size: 1.8rem;
     font-family: 'Georgia', serif;
     font-weight: 600;
-    color: #5C4033;
+    color: #5C4033 !important;
     margin-bottom: 2rem;
 }
 
@@ -204,7 +243,7 @@ div.stButton > button {
     width: 100%;
     height: 55px;
     background-color: #CDECCF;
-    color: #5C4033;
+    color: #5C4033 !important;
     border: none;
     border-radius: 16px;
     font-size: 1.1rem;
@@ -215,14 +254,6 @@ div.stButton > button {
 
 div.stButton > button:hover {
     background-color: #BEE6C2;
-    color: #5C4033;
-}
-
-input {
-    color: #5C4033 !important;
-}
-
-label {
     color: #5C4033 !important;
 }
 
@@ -237,10 +268,11 @@ label {
     margin-top: 20px;
     margin-bottom: 25px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    color: #5C4033 !important;
 }
 
 .personal-title {
-    color: #5C4033;
+    color: #5C4033 !important;
     font-size: 1.6rem;
     font-family: Georgia, serif;
     font-weight: 600;
@@ -255,6 +287,7 @@ label {
     margin-top: 10px;
     margin-bottom: 25px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    color: #5C4033 !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -380,8 +413,15 @@ if "data_df" not in st.session_state:
 if "current_data" not in st.session_state:
     st.session_state.current_data = load_current_data()
 
+# Wichtig: Datum/Uhrzeit nur EINMAL setzen,
+# damit deine Auswahl nicht bei jedem Rerun überschrieben wird.
+if "intake_date" not in st.session_state:
+    st.session_state.intake_date = datetime.now().date()
 
-# Always reload current calculator data from its own file
+if "intake_time" not in st.session_state:
+    st.session_state.intake_time = datetime.now().time().replace(microsecond=0)
+
+
 current_data = load_current_data()
 st.session_state.current_data = current_data
 
@@ -413,6 +453,32 @@ st.markdown("<div class='section-title'>Choose your Drink</div>", unsafe_allow_h
 left, center, right = st.columns([1, 4, 1])
 
 with center:
+
+    st.markdown("### Select date and time")
+
+    date_col, time_col = st.columns(2)
+
+    with date_col:
+        selected_date = st.date_input(
+            "Date",
+            key="intake_date"
+        )
+
+    with time_col:
+        selected_time = st.time_input(
+            "Time",
+            key="intake_time",
+            step=60
+        )
+
+    selected_datetime = datetime.combine(
+        st.session_state.intake_date,
+        st.session_state.intake_time
+    )
+
+    selected_timestamp = pd.Timestamp(selected_datetime)
+    selected_unix_time = int(selected_timestamp.timestamp())
+
     search_text = st.text_input(
         "Search drink",
         placeholder="Example: redbull, latte machiato, coffe..."
@@ -456,23 +522,23 @@ with center:
                     current_data = load_current_data()
                     current_end_time = current_data.get("countdown_end_time")
 
-                    if current_end_time and current_end_time > now:
+                    if current_end_time and current_end_time > selected_unix_time:
                         new_end_time = current_end_time + effect_seconds
                     else:
-                        new_end_time = now + effect_seconds
+                        new_end_time = selected_unix_time + effect_seconds
 
                     entry = {
-                        "timestamp": pd.Timestamp.now().isoformat(),
+                        "timestamp": selected_timestamp.isoformat(),
                         "Drink": drink_name,
                         "Caffeine (mg)": caffeine_mg,
                         "Volume (ml)": volume_ml,
                         "effect_seconds": effect_seconds,
-                        "start_time": now
+                        "start_time": selected_unix_time
                     }
 
                     current_data["entries"].append(entry)
                     current_data["countdown_end_time"] = new_end_time
-                    current_data["countdown_total_seconds"] = max(new_end_time - now, 1)
+                    current_data["countdown_total_seconds"] = max(new_end_time - selected_unix_time, 1)
                     current_data["last_drink"] = entry
 
                     save_current_data(current_data)
@@ -481,14 +547,13 @@ with center:
                     st.session_state.selected_drink = drink_name
                     st.session_state.selected_caffeine_mg = caffeine_mg
                     st.session_state.selected_volume_ml = volume_ml
-                    st.session_state.drink_start_time = now
+                    st.session_state.drink_start_time = selected_unix_time
                     st.session_state.countdown_end_time = new_end_time
-                    st.session_state.countdown_total_seconds = max(new_end_time - now, 1)
+                    st.session_state.countdown_total_seconds = max(new_end_time - selected_unix_time, 1)
                     st.session_state.scroll_to_timeline = True
 
-                    # Save to history separately
                     history_entry = pd.DataFrame([{
-                        "timestamp": pd.Timestamp.now(),
+                        "timestamp": selected_timestamp,
                         "Drink": drink_name,
                         "Caffeine (mg)": caffeine_mg,
                         "Volume (ml)": volume_ml
@@ -547,12 +612,17 @@ if has_active_current_entries:
     selected_drink = last_drink.get("Drink", "Selected drink")
     caffeine_mg = last_drink.get("Caffeine (mg)", 0)
     volume_ml = last_drink.get("Volume (ml)", 0)
-    start_time = last_drink.get("start_time", now)
 
     total_seconds = max(current_data.get("countdown_total_seconds", 1), 1)
     effect_hours = caffeine_effect_duration_hours(caffeine_mg)
 
+    saved_timestamp = last_drink.get("timestamp", "")
+    saved_timestamp_display = pd.to_datetime(saved_timestamp, errors="coerce")
+
     st.success(f"You selected: **{selected_drink}**")
+
+    if not pd.isna(saved_timestamp_display):
+        st.write(f"Saved date and time: **{saved_timestamp_display.strftime('%d.%m.%Y %H:%M')}**")
 
     st.markdown("### Caffeine Timeline")
 
@@ -581,6 +651,7 @@ if has_active_current_entries:
         margin-top:35px;
         margin-bottom:25px;
         font-family:Arial, sans-serif;
+        color:#5C4033;
     ">
         <div style="
             background:#f7f4f1;
@@ -589,6 +660,7 @@ if has_active_current_entries:
             min-width:300px;
             text-align:center;
             box-shadow:0 8px 20px rgba(0,0,0,0.08);
+            color:#5C4033;
         ">
             <div style="
                 color:#5C4033;
@@ -608,7 +680,7 @@ if has_active_current_entries:
             </div>
 
             <div id="status" style="
-                color:#6b7280;
+                color:#5C4033;
                 font-size:0.95rem;
                 margin-top:10px;
             ">

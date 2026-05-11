@@ -1,22 +1,30 @@
 {
     "entries": [
         {
-            "timestamp": "2026-05-11T13:56:12.757001",
-            "Drink": "Flat White",
-            "Caffeine (mg)": 120,
-            "Volume (ml)": 160,
-            "effect_seconds": 17280,
-            "start_time": 1778500572
+            "timestamp": "2026-05-11T05:48:00",
+            "Drink": "El Tony Mate",
+            "Caffeine (mg)": 76,
+            "Volume (ml)": 330,
+            "effect_seconds": 14903,
+            "start_time": 1778478480
+        },
+        {
+            "timestamp": "2026-05-11T05:48:00",
+            "Drink": "El Tony Mate",
+            "Caffeine (mg)": 76,
+            "Volume (ml)": 330,
+            "effect_seconds": 14903,
+            "start_time": 1778478480
         }
     ],
-    "countdown_end_time": 1778517852,
-    "countdown_total_seconds": 17280,
+    "countdown_end_time": 1778508286,
+    "countdown_total_seconds": 29806,
     "last_drink": {
-        "timestamp": "2026-05-11T13:56:12.757001",
-        "Drink": "Flat White",
-        "Caffeine (mg)": 120,
-        "Volume (ml)": 160,
-        "effect_seconds": 17280,
-        "start_time": 1778500572
+        "timestamp": "2026-05-11T05:48:00",
+        "Drink": "El Tony Mate",
+        "Caffeine (mg)": 76,
+        "Volume (ml)": 330,
+        "effect_seconds": 14903,
+        "start_time": 1778478480
     }
 }
