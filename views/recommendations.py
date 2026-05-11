@@ -37,18 +37,11 @@ def set_logo_top_right(image_file: str):
     st.markdown(css, unsafe_allow_html=True)
 
 
-# =========================
-# Logo anzeigen
-# =========================
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
 
-# -----------------------------
-# GLOBAL STYLE
-# -----------------------------
 st.markdown("""
 <style>
-
 html, body, [class*="css"] {
     font-family: 'Georgia', 'Times New Roman', serif;
     color: #5a3e36;
@@ -101,19 +94,12 @@ p, span, label {
     font-family: 'Georgia', serif;
     color: #5a3e36 !important;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
-# -----------------------------
-# TITLE
-# -----------------------------
 st.markdown("<div class='main-title'>Recommendations</div>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Understand your caffeine state and get direct help.</div>", unsafe_allow_html=True)
 
-# -----------------------------
-# SESSION STATE
-# -----------------------------
 if "data_df" not in st.session_state:
     st.session_state["data_df"] = pd.DataFrame(columns=[
         "timestamp",
@@ -126,9 +112,6 @@ if "recommendation_detail" not in st.session_state:
 
 data_df = st.session_state["data_df"]
 
-# -----------------------------
-# HELPER FUNCTIONS
-# -----------------------------
 HALF_LIFE = 5.0
 
 def caffeine_remaining(initial_mg: float, hours_passed: float, half_life: float = 5.0) -> float:
@@ -272,9 +255,6 @@ def plot_colored_segments(ax, x, y):
         mask = (x >= x0) & (x <= x1)
         ax.plot(x[mask], y[mask], color=color, linewidth=3, zorder=5)
 
-# -----------------------------
-# DETAIL PAGE
-# -----------------------------
 def show_detail_page(title: str, intro: str, tips: list[str], warning: str):
     st.subheader(title)
     st.write(intro)
@@ -290,9 +270,6 @@ def show_detail_page(title: str, intro: str, tips: list[str], warning: str):
         st.session_state["recommendation_detail"] = None
         st.rerun()
 
-# -----------------------------
-# HELP SECTION
-# -----------------------------
 def show_phase_help():
     st.markdown("### Help: What do the phases mean?")
 
@@ -311,9 +288,6 @@ def show_phase_help():
     with st.expander("Recovery"):
         st.write("Your body is slowly calming down again. The caffeine level is lower and the effect becomes weaker.")
 
-# -----------------------------
-# DETAIL ROUTING
-# -----------------------------
 selected_detail = st.session_state["recommendation_detail"]
 
 if selected_detail == "Peak":
@@ -473,9 +447,6 @@ elif selected_detail == "I am training soon or doing sports":
     )
     st.stop()
 
-# -----------------------------
-# CHART
-# -----------------------------
 def draw_recommendation_chart(initial_mg: float, hours_passed: float):
     x, y = build_curve(initial_mg)
 
@@ -526,9 +497,6 @@ def draw_recommendation_chart(initial_mg: float, hours_passed: float):
 
     st.pyplot(fig, clear_figure=True)
 
-# -----------------------------
-# MAIN
-# -----------------------------
 latest_entry = get_latest_entry(data_df)
 
 if latest_entry is None:
@@ -542,14 +510,19 @@ current_mg = caffeine_remaining(initial_mg, hours_passed, HALF_LIFE)
 phase_name, phase_text = get_phase_info(hours_passed)
 
 col1, col2, col3 = st.columns(3)
+
 with col1:
     st.metric("Initial caffeine", f"{initial_mg:.1f} mg")
+
 with col2:
     st.metric("Estimated current caffeine", f"{current_mg:.1f} mg")
+
 with col3:
     st.metric("Current phase", phase_name)
 
 draw_recommendation_chart(initial_mg, hours_passed)
+
+show_phase_help()
 
 st.success(f"Current interpretation: **{phase_name}** — {phase_text}")
 
@@ -602,5 +575,3 @@ with col_b:
     if st.button("Recovery", use_container_width=True):
         st.session_state["recommendation_detail"] = "Recovery"
         st.rerun()
-
-show_phase_help()

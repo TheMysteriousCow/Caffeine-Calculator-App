@@ -1,30 +1,22 @@
 {
     "entries": [
         {
-            "timestamp": "2026-05-11T05:48:00",
-            "Drink": "El Tony Mate",
-            "Caffeine (mg)": 76,
-            "Volume (ml)": 330,
-            "effect_seconds": 14903,
-            "start_time": 1778478480
-        },
-        {
-            "timestamp": "2026-05-11T05:48:00",
-            "Drink": "El Tony Mate",
-            "Caffeine (mg)": 76,
-            "Volume (ml)": 330,
-            "effect_seconds": 14903,
-            "start_time": 1778478480
+            "timestamp": "2026-05-11T14:40:00",
+            "Drink": "Caf\u00e9 Cr\u00e8me",
+            "Caffeine (mg)": 90,
+            "Volume (ml)": 180,
+            "effect_seconds": 15659,
+            "start_time": 1778510400
         }
     ],
-    "countdown_end_time": 1778508286,
-    "countdown_total_seconds": 29806,
+    "countdown_end_time": 1778526059,
+    "countdown_total_seconds": 15659,
     "last_drink": {
-        "timestamp": "2026-05-11T05:48:00",
-        "Drink": "El Tony Mate",
-        "Caffeine (mg)": 76,
-        "Volume (ml)": 330,
-        "effect_seconds": 14903,
-        "start_time": 1778478480
+        "timestamp": "2026-05-11T14:40:00",
+        "Drink": "Caf\u00e9 Cr\u00e8me",
+        "Caffeine (mg)": 90,
+        "Volume (ml)": 180,
+        "effect_seconds": 15659,
+        "start_time": 1778510400
     }
 }
