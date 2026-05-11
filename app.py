@@ -81,6 +81,43 @@ section[data-testid="stSidebar"] a[href*="professional_help"] {
 section[data-testid="stSidebar"] a:hover {
     opacity: 0.85;
 }
+
+/* NUR Logout Button in der Sidebar */
+section[data-testid="stSidebar"] div[data-testid="stButton"] button {
+    background-color: #CDECCF !important;
+    color: black !important;
+
+    border-radius: 14px !important;
+    border: none !important;
+
+    font-size: 15px !important;
+    font-family: Arial, sans-serif !important;
+
+    box-shadow: none !important;
+}
+
+/* Hover nur für Logout */
+section[data-testid="stSidebar"] div[data-testid="stButton"] button:hover {
+    background-color: #BFE3C1 !important;
+    color: black !important;
+    border: none !important;
+}
+
+/* Fokus nur für Logout */
+section[data-testid="stSidebar"] div[data-testid="stButton"] button:focus {
+    background-color: #CDECCF !important;
+    color: black !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Klick nur für Logout */
+section[data-testid="stSidebar"] div[data-testid="stButton"] button:active {
+    background-color: #BFE3C1 !important;
+    color: black !important;
+    border: none !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
