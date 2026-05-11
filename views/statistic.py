@@ -3,8 +3,45 @@ import streamlit as st
 from datetime import datetime
 import base64
 import os
+import json
 
 DIARY_FILE = "diary.csv"
+PROFILE_FILE = "profile.json"
+
+
+# =========================
+# PROFILE LOAD
+# =========================
+def load_profile():
+    if os.path.exists(PROFILE_FILE):
+        try:
+            with open(PROFILE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except:
+            pass
+
+    return {
+        "name": "",
+        "first_name": "",
+        "gender": "Female",
+        "weight": "",
+        "height": ""
+    }
+
+
+profile = load_profile()
+first_name = str(profile.get("first_name", "")).strip()
+
+if first_name:
+    diary_title = f"{first_name}'s Diary"
+else:
+    diary_title = "My Diary"
+
+
+# =========================
+# FILES
+# =========================
+DATA_FILE = "data.csv"
 
 
 def set_logo_top_right(image_file: str):
@@ -38,8 +75,49 @@ def set_logo_top_right(image_file: str):
     st.markdown(css, unsafe_allow_html=True)
 
 
+def empty_history_df():
+    return pd.DataFrame(columns=[
+        "timestamp",
+        "Drink",
+        "Caffeine (mg)",
+        "Volume (ml)"
+    ])
+
+
 def empty_diary_df():
     return pd.DataFrame(columns=["timestamp", "Diary Entry"])
+
+
+def load_history_data():
+    if "data_manager" in st.session_state:
+        try:
+            data_manager = st.session_state["data_manager"]
+            df = data_manager.load_user_data(DATA_FILE)
+
+            if df is not None:
+                return df
+        except:
+            pass
+
+    if os.path.exists(DATA_FILE):
+        try:
+            return pd.read_csv(DATA_FILE)
+        except:
+            return empty_history_df()
+
+    return empty_history_df()
+
+
+def save_history_data(df):
+    if "data_manager" in st.session_state:
+        try:
+            data_manager = st.session_state["data_manager"]
+            data_manager.save_user_data(df, DATA_FILE)
+            return
+        except:
+            pass
+
+    df.to_csv(DATA_FILE, index=False)
 
 
 def load_diary_data():
@@ -75,15 +153,15 @@ def save_diary_data(df):
 
 
 # =========================
-# Logo anzeigen
+# LOGO
 # =========================
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
 
 
-# -------------------------------------------------
+# =========================
 # CSS
-# -------------------------------------------------
+# =========================
 st.markdown("""
 <style>
 .stApp {
@@ -129,26 +207,26 @@ div.stButton > button {
 """, unsafe_allow_html=True)
 
 
-# -------------------------------------------------
+# =========================
 # TITLE
-# -------------------------------------------------
+# =========================
 st.markdown("<div class='main-title'>History</div>", unsafe_allow_html=True)
 
 
-# -------------------------------------------------
+# =========================
 # HISTORY DATA
-# -------------------------------------------------
+# =========================
 if "data_df" not in st.session_state:
-    st.session_state["data_df"] = pd.DataFrame(columns=[
-        "timestamp",
-        "Drink",
-        "Caffeine (mg)"
-    ])
+    st.session_state["data_df"] = load_history_data()
+
+if st.session_state["data_df"] is None:
+    st.session_state["data_df"] = empty_history_df()
 
 data_df = st.session_state["data_df"]
 
 if not data_df.empty and "timestamp" in data_df.columns:
     data_df["timestamp"] = pd.to_datetime(data_df["timestamp"], errors="coerce")
+    data_df = data_df.dropna(subset=["timestamp"])
     data_df = data_df.sort_values("timestamp", ascending=False)
     st.session_state["data_df"] = data_df
 
@@ -163,39 +241,38 @@ else:
         display_df["Date"] = display_df["timestamp"].dt.strftime("%d.%m.%Y")
         display_df["Time"] = display_df["timestamp"].dt.strftime("%H:%M")
 
-    columns_to_show = ["Date", "Time", "Drink", "Caffeine (mg)"]
+    columns_to_show = ["Date", "Time", "Drink", "Caffeine (mg)", "Volume (ml)"]
     existing_columns = [col for col in columns_to_show if col in display_df.columns]
 
-    st.dataframe(display_df[existing_columns], use_container_width=True)
+    st.dataframe(
+        display_df[existing_columns],
+        use_container_width=True,
+        hide_index=True
+    )
 
 
-# -------------------------------------------------
+# =========================
 # DELETE HISTORY
-# -------------------------------------------------
+# =========================
 if st.button("🗑️ Clear History"):
-    st.session_state["data_df"] = pd.DataFrame(columns=[
-        "timestamp",
-        "Drink",
-        "Caffeine (mg)"
-    ])
+    empty_df = empty_history_df()
 
-    if "data_manager" in st.session_state:
-        data_manager = st.session_state["data_manager"]
-        data_manager.save_user_data(st.session_state["data_df"], "data.csv")
+    st.session_state["data_df"] = empty_df
+    save_history_data(empty_df)
 
     st.success("History has been cleared!")
     st.rerun()
 
 
-# -------------------------------------------------
-# MY DIARY
-# -------------------------------------------------
-st.markdown("<div class='section-title'>My Diary</div>", unsafe_allow_html=True)
+# =========================
+# DIARY
+# =========================
+st.markdown(f"<div class='section-title'>{diary_title}</div>", unsafe_allow_html=True)
 
 
-# -------------------------------------------------
+# =========================
 # LOAD DIARY DATA
-# -------------------------------------------------
+# =========================
 if "diary_df" not in st.session_state:
     st.session_state["diary_df"] = load_diary_data()
 
@@ -203,9 +280,9 @@ if "diary_df" not in st.session_state or st.session_state["diary_df"] is None:
     st.session_state["diary_df"] = empty_diary_df()
 
 
-# -------------------------------------------------
+# =========================
 # DATE + TIME INPUT
-# -------------------------------------------------
+# =========================
 col_date, col_time = st.columns(2)
 
 with col_date:
@@ -223,9 +300,9 @@ with col_time:
 diary_timestamp = datetime.combine(diary_date, diary_time)
 
 
-# -------------------------------------------------
+# =========================
 # DIARY TEXT INPUT
-# -------------------------------------------------
+# =========================
 diary_text = st.text_area(
     "Write your diary entry here:",
     height=180,
@@ -233,9 +310,9 @@ diary_text = st.text_area(
 )
 
 
-# -------------------------------------------------
+# =========================
 # SAVE DIARY ENTRY
-# -------------------------------------------------
+# =========================
 if st.button("💾 Save Diary Entry"):
     if diary_text.strip() == "":
         st.warning("Please write something before saving.")
@@ -256,13 +333,14 @@ if st.button("💾 Save Diary Entry"):
         st.rerun()
 
 
-# -------------------------------------------------
+# =========================
 # SHOW + DELETE DIARY ENTRIES
-# -------------------------------------------------
+# =========================
 diary_df = st.session_state["diary_df"]
 
 if not diary_df.empty:
     diary_df["timestamp"] = pd.to_datetime(diary_df["timestamp"], errors="coerce")
+    diary_df = diary_df.dropna(subset=["timestamp"])
     diary_df = diary_df.sort_values("timestamp", ascending=False).reset_index(drop=True)
     st.session_state["diary_df"] = diary_df
 
