@@ -2,42 +2,19 @@ import os
 import streamlit as st
 import base64
 import streamlit.components.v1 as components
+from functions.logo import set_logo
 
 st.set_page_config(page_title="Alternatives", layout="wide")
 
-def set_logo_top_right(image_file: str):
-    if not os.path.exists(image_file):
-        st.warning(f"Bild konnte nicht geladen werden. Pfad: {image_file}")
-        return
 
-    with open(image_file, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode()
-
-    css = f"""
-    <style>
-    .logo-container {{
-        position: absolute;
-        top: -40px;
-        right: -20px;
-        z-index: 100;
-    }}
-
-    .logo-img {{
-        width: 140px;
-        height: auto;
-    }}
-    </style>
-
-    <div class="logo-container">
-        <img src="data:image/png;base64,{encoded}" class="logo-img">
-    </div>
-    """
-
-    st.markdown(css, unsafe_allow_html=True)
-
-# Logo anzeigen
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
-set_logo_top_right(image_path)
+# Logo anzeigen
+set_logo(
+    image_path,
+    top=-30,
+    right=-20,
+    width=140
+)
 
 # Styling
 st.markdown("""

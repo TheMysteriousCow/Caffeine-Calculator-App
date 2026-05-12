@@ -4,6 +4,7 @@ from datetime import datetime
 import base64
 import os
 from utils.profile_utils import load_profile
+from functions.logo import set_logo
 
 username = st.session_state.get("username", "default_user")
 
@@ -13,34 +14,6 @@ DIARY_FILE = f"diary_{username}.csv"
 profile = load_profile(username)
 first_name = str(profile.get("first_name", "")).strip()
 diary_title = f"{first_name}'s Diary" if first_name else "My Diary"
-
-def set_logo_top_right(image_file: str):
-    if not os.path.exists(image_file):
-        st.warning(f"Bild konnte nicht geladen werden. Pfad: {image_file}")
-        return
-
-    with open(image_file, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode()
-
-    st.markdown(f"""
-    <style>
-    .logo-container {{
-        position: absolute;
-        top: -40px;
-        right: -20px;
-        z-index: 100;
-    }}
-
-    .logo-img {{
-        width: 140px;
-        height: auto;
-    }}
-    </style>
-
-    <div class="logo-container">
-        <img src="data:image/png;base64,{encoded}" class="logo-img">
-    </div>
-    """, unsafe_allow_html=True)
 
 def empty_history_df():
     return pd.DataFrame(columns=[
@@ -81,7 +54,14 @@ def save_diary_data(df):
     df.to_csv(DIARY_FILE, index=False)
 
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
-set_logo_top_right(image_path)
+
+# Logo anzeigen
+set_logo(
+    image_path,
+    top=-40,
+    right=-20,
+    width=140
+)
 
 st.markdown("""
 <style>

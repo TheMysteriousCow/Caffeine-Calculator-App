@@ -3,39 +3,18 @@ import base64
 import os
 import re
 from difflib import SequenceMatcher
+from functions.logo import set_logo
 
 # Logo Function
-def set_logo_top_right(image_file: str):
-    if not os.path.exists(image_file):
-        st.warning(f"Image could not be loaded. Path: {image_file}")
-        return
-
-    with open(image_file, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode()
-
-    st.markdown(f"""
-    <style>
-    .logo-container {{
-        position: absolute;
-        top: -30px;
-        right: -20px;
-        z-index: 100;
-    }}
-
-    .logo-img {{
-        width: 140px;
-        height: auto;
-    }}
-    </style>
-
-    <div class="logo-container">
-        <img src="data:image/png;base64,{encoded}" class="logo-img">
-    </div>
-    """, unsafe_allow_html=True)
-
 
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
-set_logo_top_right(image_path)
+
+set_logo(
+    image_path,
+    top=-30,
+    right=-20,
+    width=140
+)
 
 # Styling
 st.markdown("""

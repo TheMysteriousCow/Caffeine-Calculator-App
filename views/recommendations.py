@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+from functions.logo import set_logo
 
 st.set_page_config(page_title="Recommendations", layout="wide")
 
@@ -19,35 +20,6 @@ CRASH_HOURS = 4
 RECOVERY_HOURS = 8
 TOTAL_HOURS = 10
 HALF_LIFE = 5.0
-
-
-def set_logo_top_right(image_file: str):
-    if not os.path.exists(image_file):
-        st.warning(f"Bild konnte nicht geladen werden. Pfad: {image_file}")
-        return
-
-    with open(image_file, "rb") as f:
-        encoded = base64.b64encode(f.read()).decode()
-
-    st.markdown(f"""
-    <style>
-    .logo-container {{
-        position: absolute;
-        top: -40px;
-        right: -20px;
-        z-index: 100;
-    }}
-
-    .logo-img {{
-        width: 140px;
-        height: auto;
-    }}
-    </style>
-
-    <div class="logo-container">
-        <img src="data:image/png;base64,{encoded}" class="logo-img">
-    </div>
-    """, unsafe_allow_html=True)
 
 
 def empty_current_data():
@@ -99,7 +71,13 @@ def load_history_data():
 
 
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
-set_logo_top_right(image_path)
+# Logo anzeigen
+set_logo(
+    image_path,
+    top=-40,
+    right=-20,
+    width=140
+)
 
 st.markdown("""
 <style>

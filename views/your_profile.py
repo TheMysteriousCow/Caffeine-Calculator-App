@@ -1,5 +1,16 @@
 import streamlit as st
 from utils.profile_utils import load_profile, save_profile
+from functions.logo import set_logo
+import os
+
+image_path = os.path.join(os.getcwd(), "images", "logo.png")
+
+set_logo(
+    image_path,
+    top=0,
+    right=-10,
+    width=140
+)
 
 # Styling
 st.markdown("""
