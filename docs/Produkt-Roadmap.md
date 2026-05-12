@@ -14,7 +14,7 @@ Logins:
 - Datensicherung: Speicherung der Daten pro Nutzer
 
 Profilseite (Your Profile):
-- Name, Alter, Gewicht 
+- Name, Alter, Gewicht (kg), Grösse (cm) 
 - Geschlecht 
 
 Zusätzliche Daten (Additional Data):
@@ -25,19 +25,27 @@ Diese Version bildet die Basis der App.
 
 ## Version 1.0 - Calculator - MVP (Minimal Viable Product)
 Eingaben:
-- Auswahl der verschiedenen koffeinhaltigen Getränke (z. B. Kaffee, Energy Drink, Mate)
-- Eingabe der konsumierten Menge (ml) 
-- Eingabe des Zeitpunkts der Einnahme
-- Eingabe des gewünschten Zeitraums für die Berechnung
+- Auswahl der verschiedenen koffeinhaltigen Getränke (z. B. Kaffee, Energy Drink, Mate) -> jedes Getränk hat bereits hinterlegte Werte
+- Datum und Uhrzeit des Konsums
+- Körpergewicht aus dem Profil wird für eine personalisierte Berechnung verwendet
+- Suchbegriff -> Nutzer:innen können Getränke suchen, Suche erkennt auch kleine Tippfehler
 
 Berechnung:
-- Berechnung des aktuellen Koffeinlevels im Körper
-- Berechnung des Verlaufs des Koffeinlevels im Körper
-- Berechnung basierend auf der Halbwertszeit von Koffein 
+- Gesamte aktuelle Koffeinmenge -> alle aktuell ausgewählten Getränke werden zusammengerechnet
+- Wirkungsdauer des Koffeins -> Countdown (zählt in Echtzeit runter)
+- Remaining Effect -> App berechnet die verbleibende Wirkungszeit
+- Koffeinmenge pro Kilogramm Körpergewicht und persönlicher Tagesrichtwert wird berechnet
+- Risikoeinschätzung -> App bewertet die Koffeinmenge anhand mg/kg
 
 Ausgabe:
-- Anzeige des verbleibenden Koffeins 
-- Einfache Rückmeldung in Textform
+- Ausgewähltes Getränk
+- Koffeinmenge und Volumen
+- Caffeine Timeline -> App zeigt die wichtigsten Wirkungsphasen
+- Animierter Countdown -> Zeigt die verbleibende Wirkungszeit in Stunden, Minuten und Sekunden (inkl. visueller Darstellung anhand eines Gefässes bei dem der Flüssigkeitsstand mit der verbleibenden Wirkung sinkt)
+- Current Calculator Entries -> zeigt aktuell gespeicherte Koffeinmenge im Rechner
+- Clear Button -> Nutzer:innen können die aktuellen Einträge direkt löschen
+- Personalized Caffeine Impact -> zeigt persönliche Werte
+- Fortschrittsbalken zeigt, wie viel Prozent des persönlichen richtwerts bereits erreicht wurde
 
 Ziel: Funktionierender Kern der App
 
@@ -45,7 +53,10 @@ Ziel: Funktionierender Kern der App
 Datenspeicherung:
 - Speicherung der eingegebenen Koffeinwerte
 - Darstellung der Werte in Tabellenform und Grafik
-- Sortierung nach Datum und Zeit (Timestamp) 
+- Sortierung nach Datum und Zeit (Timestamp)
+
+My Diary:
+- Tagebuch, um seine persönlichen Gedanken, Symptome und Gefühle zum Koffeinkonsum festzuhalten
 
 Ziel: langfristiges Tracking des Konsums
 
@@ -82,20 +93,14 @@ Informationsbereich:
 
 Ziel: bewusster Konsum statt nur Berechnung
 
-Alternativen nach Farben sortieren:
-- Grün = gesunde Alternative
-- Gelb = weniger gesunde Alternative
-- Rot = ungesunde Alternative
-
-Ziel: schnelle, intuitive Bewertung von Alternativen für bewussteren Konsum
-
-## Version 4.0: Optional - Weiterführende Ideen (nicht Teil des aktuellen Zeitrahmens)
-Diese weiterführenden Ideen zeigen das Potenzial der App und mögliche Ausbaustufen, die im Rahmen dieses Projekts nicht umgesetzt werden, aber zukünftige Weiterentwicklungen ermöglichen.
-
+## Version 4.0: Erweiterung: Professionelle Hilfe
 Verknüpfung mit Fachpersonen:
 - Weiterleitung zu Ernährungsberater:innen oder medizinischen Fachstellen
 
 Ziel: Unterstützung bei starkem Koffeinkonsum oder gesundheitlichen Problemen
+
+## Version 5.0: Optional - Weiterführende Ideen (nicht Teil des aktuellen Zeitrahmens)
+Diese weiterführenden Ideen zeigen das Potenzial der App und mögliche Ausbaustufen, die im Rahmen dieses Projekts nicht umgesetzt werden, aber zukünftige Weiterentwicklungen ermöglichen.
 
 Soziale Funktionen:
 - Verbindung mit Freund:innen
@@ -107,5 +112,3 @@ Spielerische Elemente:
 - Belohnungssystem (z. B. Punkte, Levels, Streaks)
 
 Ziel: Motivation und Durchhaltevermögen fördern
-
-
