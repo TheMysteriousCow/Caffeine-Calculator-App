@@ -11,5 +11,6 @@ __pycache__/
 *.so
 *.egg
 *.egg-info/
-
-
+profiles/
+*.csv
+current_caffeine_*.json

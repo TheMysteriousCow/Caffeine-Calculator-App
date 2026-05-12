@@ -3,39 +3,16 @@ import streamlit as st
 from datetime import datetime
 import base64
 import os
-import json
+from utils.profile_utils import load_profile
 
-DIARY_FILE = "diary.csv"
-PROFILE_FILE = "profile.json"
+username = st.session_state.get("username", "default_user")
 
-# PROFILE LOAD
-def load_profile():
-    if os.path.exists(PROFILE_FILE):
-        try:
-            with open(PROFILE_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except:
-            pass
+DATA_FILE = f"data_{username}.csv"
+DIARY_FILE = f"diary_{username}.csv"
 
-    return {
-        "name": "",
-        "first_name": "",
-        "gender": "Female",
-        "weight": "",
-        "height": ""
-    }
-
-
-profile = load_profile()
+profile = load_profile(username)
 first_name = str(profile.get("first_name", "")).strip()
-
-if first_name:
-    diary_title = f"{first_name}'s Diary"
-else:
-    diary_title = "My Diary"
-
-# FILES
-DATA_FILE = "data.csv"
+diary_title = f"{first_name}'s Diary" if first_name else "My Diary"
 
 def set_logo_top_right(image_file: str):
     if not os.path.exists(image_file):
@@ -45,7 +22,7 @@ def set_logo_top_right(image_file: str):
     with open(image_file, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
 
-    css = f"""
+    st.markdown(f"""
     <style>
     .logo-container {{
         position: absolute;
@@ -63,10 +40,7 @@ def set_logo_top_right(image_file: str):
     <div class="logo-container">
         <img src="data:image/png;base64,{encoded}" class="logo-img">
     </div>
-    """
-
-    st.markdown(css, unsafe_allow_html=True)
-
+    """, unsafe_allow_html=True)
 
 def empty_history_df():
     return pd.DataFrame(columns=[
@@ -76,22 +50,13 @@ def empty_history_df():
         "Volume (ml)"
     ])
 
-
 def empty_diary_df():
-    return pd.DataFrame(columns=["timestamp", "Diary Entry"])
-
+    return pd.DataFrame(columns=[
+        "timestamp",
+        "Diary Entry"
+    ])
 
 def load_history_data():
-    if "data_manager" in st.session_state:
-        try:
-            data_manager = st.session_state["data_manager"]
-            df = data_manager.load_user_data(DATA_FILE)
-
-            if df is not None:
-                return df
-        except:
-            pass
-
     if os.path.exists(DATA_FILE):
         try:
             return pd.read_csv(DATA_FILE)
@@ -100,30 +65,10 @@ def load_history_data():
 
     return empty_history_df()
 
-
 def save_history_data(df):
-    if "data_manager" in st.session_state:
-        try:
-            data_manager = st.session_state["data_manager"]
-            data_manager.save_user_data(df, DATA_FILE)
-            return
-        except:
-            pass
-
     df.to_csv(DATA_FILE, index=False)
 
-
 def load_diary_data():
-    if "data_manager" in st.session_state:
-        try:
-            data_manager = st.session_state["data_manager"]
-            df = data_manager.load_user_data(DIARY_FILE)
-
-            if df is not None and not df.empty:
-                return df
-        except:
-            pass
-
     if os.path.exists(DIARY_FILE):
         try:
             return pd.read_csv(DIARY_FILE)
@@ -132,23 +77,12 @@ def load_diary_data():
 
     return empty_diary_df()
 
-
 def save_diary_data(df):
-    if "data_manager" in st.session_state:
-        try:
-            data_manager = st.session_state["data_manager"]
-            data_manager.save_user_data(df, DIARY_FILE)
-            return
-        except:
-            pass
-
     df.to_csv(DIARY_FILE, index=False)
 
-# LOGO
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
 
-# CSS
 st.markdown("""
 <style>
 .stApp {
@@ -193,10 +127,8 @@ div.stButton > button {
 </style>
 """, unsafe_allow_html=True)
 
-# TITLE
 st.markdown("<div class='main-title'>History</div>", unsafe_allow_html=True)
 
-# HISTORY DATA
 if "data_df" not in st.session_state:
     st.session_state["data_df"] = load_history_data()
 
@@ -231,27 +163,21 @@ else:
         hide_index=True
     )
 
-# DELETE HISTORY
 if st.button("🗑️ Clear History"):
     empty_df = empty_history_df()
-
     st.session_state["data_df"] = empty_df
     save_history_data(empty_df)
-
     st.success("History has been cleared!")
     st.rerun()
 
-# DIARY
 st.markdown(f"<div class='section-title'>{diary_title}</div>", unsafe_allow_html=True)
 
-# LOAD DIARY DATA
 if "diary_df" not in st.session_state:
     st.session_state["diary_df"] = load_diary_data()
 
-if "diary_df" not in st.session_state or st.session_state["diary_df"] is None:
+if st.session_state["diary_df"] is None:
     st.session_state["diary_df"] = empty_diary_df()
 
-# DATE + TIME INPUT
 col_date, col_time = st.columns(2)
 
 with col_date:
@@ -268,14 +194,12 @@ with col_time:
 
 diary_timestamp = datetime.combine(diary_date, diary_time)
 
-# DIARY TEXT INPUT
 diary_text = st.text_area(
     "Write your diary entry here:",
     height=180,
     placeholder="How do you feel today? Did caffeine affect your energy, sleep, mood or concentration?"
 )
 
-# SAVE DIARY ENTRY
 if st.button("💾 Save Diary Entry"):
     if diary_text.strip() == "":
         st.warning("Please write something before saving.")
@@ -295,7 +219,6 @@ if st.button("💾 Save Diary Entry"):
         st.success("Diary entry saved!")
         st.rerun()
 
-# SHOW + DELETE DIARY ENTRIES
 diary_df = st.session_state["diary_df"]
 
 if not diary_df.empty:
@@ -326,9 +249,7 @@ if not diary_df.empty:
         if st.button("🗑️ Delete Entry", key=f"delete_diary_{index}"):
             st.session_state["diary_df"] = diary_df.drop(index).reset_index(drop=True)
             save_diary_data(st.session_state["diary_df"])
-
             st.success("Diary entry deleted!")
             st.rerun()
-
 else:
     st.info("No diary entries yet.")
