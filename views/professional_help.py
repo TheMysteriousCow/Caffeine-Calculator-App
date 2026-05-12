@@ -15,9 +15,9 @@ def set_logo_top_right(image_file: str):
     css = f"""
     <style>
     .logo-container {{
-        position: fixed;
-        top: 70px;
-        right: 25px;
+        position: absolute;
+        top: 15px;
+        right: -22px;
         z-index: 9999;
     }}
 
@@ -35,17 +35,11 @@ def set_logo_top_right(image_file: str):
 
     st.markdown(css, unsafe_allow_html=True)
 
-
-# =========================
 # Logo anzeigen
-# =========================
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
 
-
-# -----------------------------
 # PAGE STYLE
-# -----------------------------
 st.markdown(
     """
     <style>
@@ -71,14 +65,14 @@ st.markdown(
         .help-subtitle {
             text-align: center;
             font-size: 1.15rem;
-            color: #6b7280;
+            color: #5C4033;
             margin-bottom: 2.5rem;
         }
 
         .section-title {
             font-size: 2rem;
             font-weight: 700;
-            color: #6b4a3b;
+            color: #5C4033;
             margin-top: 0.4rem;
             margin-bottom: 1rem;
         }
@@ -127,7 +121,7 @@ st.markdown(
         .card-title {
             font-size: 1.55rem;
             font-weight: 800;
-            color: #6b4a3b;
+            color: #5C4033;
             margin-bottom: 0.25rem;
         }
 
@@ -156,18 +150,14 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# -----------------------------
 # HEADER
-# -----------------------------
 st.markdown('<div class="help-title">Professional Help</div>', unsafe_allow_html=True)
 st.markdown(
     '<div class="help-subtitle">Find trusted support and quick access to professional help when you need it.</div>',
     unsafe_allow_html=True,
 )
 
-# -----------------------------
 # INTRO
-# -----------------------------
 st.markdown(
     """
     <div class="intro-box">
@@ -192,9 +182,7 @@ st.markdown(
 
 st.markdown('<div class="section-title">Professional help & support</div>', unsafe_allow_html=True)
 
-# -----------------------------
 # CARDS
-# -----------------------------
 col1, col2, col3 = st.columns(3, gap="large")
 
 with col1:
@@ -279,9 +267,7 @@ with col3:
     )
     st.link_button("Call / visit AERZTEFON", "https://www.aerztefon.ch/", use_container_width=True)
 
-# -----------------------------
 # FOOTNOTE
-# -----------------------------
 st.markdown(
     """
     <div class="note-text">

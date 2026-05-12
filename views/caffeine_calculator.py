@@ -12,18 +12,12 @@ from datetime import datetime
 
 st.set_page_config(page_title="Caffeine Calculator", layout="wide")
 
-
-# =========================
 # FILES
-# =========================
 PROFILE_FILE = "profile.json"
 DATA_FILE = "data.csv"
 CURRENT_FILE = "current_caffeine.json"
 
-
-# =========================
 # PROFILE LOAD
-# =========================
 def load_profile():
     if os.path.exists(PROFILE_FILE):
         with open(PROFILE_FILE, "r", encoding="utf-8") as f:
@@ -49,10 +43,7 @@ profile = load_profile()
 profile_weight = safe_float(profile.get("weight", ""))
 profile_height = safe_float(profile.get("height", ""))
 
-
-# =========================
 # HISTORY DATA LOAD / SAVE
-# =========================
 def load_data():
     if os.path.exists(DATA_FILE):
         try:
@@ -74,10 +65,7 @@ def load_data():
 def save_data(df):
     df.to_csv(DATA_FILE, index=False)
 
-
-# =========================
 # CURRENT CALCULATOR DATA
-# =========================
 def empty_current_data():
     return {
         "entries": [],
@@ -126,10 +114,7 @@ def clear_current_data():
     st.session_state.scroll_to_timeline = False
     st.session_state.current_data = data
 
-
-# =========================
 # LOGO
-# =========================
 def set_logo_top_right(image_file: str):
     if not os.path.exists(image_file):
         st.warning(f"Bild konnte nicht geladen werden. Pfad: {image_file}")
@@ -164,10 +149,7 @@ def set_logo_top_right(image_file: str):
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
 
-
-# =========================
 # STYLE
-# =========================
 st.markdown("""
 <style>
 .stApp {
@@ -292,17 +274,11 @@ div.stButton > button:hover {
 </style>
 """, unsafe_allow_html=True)
 
-
-# =========================
 # TITLE
-# =========================
 st.markdown("<div class='main-title'>Caffeine Calculator</div>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Choose your drink and calculate your caffeine intake.</div>", unsafe_allow_html=True)
 
-
-# =========================
 # DRINK DATA
-# =========================
 drinks = {
     "Red Bull": {"image": "Redbull.png", "caffeine_mg": 114, "volume_ml": 355},
     "Monster": {"image": "Monster.png", "caffeine_mg": 160, "volume_ml": 500},
@@ -321,10 +297,7 @@ drinks = {
     "Cold Brew": {"image": "ColdBrew.png", "caffeine_mg": 140, "volume_ml": 250}
 }
 
-
-# =========================
 # SEARCH FUNCTION
-# =========================
 def normalize_text(text):
     text = text.lower()
     text = unicodedata.normalize("NFKD", text)
@@ -346,10 +319,7 @@ def search_matches(search_text, drink_name):
     similarity = SequenceMatcher(None, search_clean, drink_clean).ratio()
     return similarity >= 0.45
 
-
-# =========================
 # CALCULATION SETTINGS
-# =========================
 PEAK_MINUTES = 45
 CRASH_HOURS = 4
 RECOVERY_HOURS = 8
@@ -382,10 +352,7 @@ def get_risk_level(mg_per_kg):
     else:
         return "High", "This is a high caffeine dose for your body weight."
 
-
-# =========================
 # SESSION STATE
-# =========================
 if "selected_drink" not in st.session_state:
     st.session_state.selected_drink = None
 
@@ -413,8 +380,6 @@ if "data_df" not in st.session_state:
 if "current_data" not in st.session_state:
     st.session_state.current_data = load_current_data()
 
-# Wichtig: Datum/Uhrzeit nur EINMAL setzen,
-# damit deine Auswahl nicht bei jedem Rerun überschrieben wird.
 if "intake_date" not in st.session_state:
     st.session_state.intake_date = datetime.now().date()
 
@@ -444,10 +409,7 @@ else:
         st.session_state.selected_volume_ml = last_drink.get("Volume (ml)", 0)
         st.session_state.drink_start_time = last_drink.get("start_time", now_check)
 
-
-# =========================
 # CHOOSE DRINK
-# =========================
 st.markdown("<div class='section-title'>Choose your Drink</div>", unsafe_allow_html=True)
 
 left, center, right = st.columns([1, 4, 1])
@@ -570,10 +532,7 @@ with center:
 
                 st.markdown("</div>", unsafe_allow_html=True)
 
-
-# =========================
 # CURRENT TOTAL
-# =========================
 current_data = load_current_data()
 current_entries = current_data.get("entries", [])
 
@@ -584,10 +543,7 @@ else:
     current_df = pd.DataFrame(columns=["timestamp", "Drink", "Caffeine (mg)", "Volume (ml)"])
     current_total = 0
 
-
-# =========================
 # RESULT + COUNTDOWN
-# =========================
 now = int(time.time())
 end_time = current_data.get("countdown_end_time")
 has_active_current_entries = bool(current_entries) and end_time and end_time > now
@@ -761,10 +717,7 @@ if has_active_current_entries:
         f"This drink adds about **{format_hours(effect_hours)}** to your caffeine effect countdown."
     )
 
-
-# =========================
 # CLEAR CURRENT CALCULATOR ENTRIES
-# =========================
 st.markdown("<div class='clear-card'>", unsafe_allow_html=True)
 st.markdown("<div class='personal-title'>Current Calculator Entries</div>", unsafe_allow_html=True)
 
@@ -779,10 +732,7 @@ else:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-
-# =========================
 # PERSONALIZED CALCULATION
-# =========================
 st.markdown("<div class='personal-card'>", unsafe_allow_html=True)
 st.markdown("<div class='personal-title'>Personalized Caffeine Impact</div>", unsafe_allow_html=True)
 

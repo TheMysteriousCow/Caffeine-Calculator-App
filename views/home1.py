@@ -50,7 +50,7 @@ div[data-testid="stPageLink"] a {
 /* Text mittig */
 div[data-testid="stPageLink"] a p {
     font-size: 1.5rem !important;
-    color: #6b4a3b !important;
+    color: #5C4033 !important;
 }
 
 /* Farben */

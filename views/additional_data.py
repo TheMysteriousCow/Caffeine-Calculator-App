@@ -4,10 +4,7 @@ import os
 import re
 from difflib import SequenceMatcher
 
-
-# =========================
 # Logo Function
-# =========================
 def set_logo_top_right(image_file: str):
     if not os.path.exists(image_file):
         st.warning(f"Image could not be loaded. Path: {image_file}")
@@ -40,10 +37,7 @@ def set_logo_top_right(image_file: str):
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
 
-
-# =========================
 # Styling
-# =========================
 st.markdown("""
 <style>
 html, body, [class*="css"] {
@@ -53,7 +47,7 @@ html, body, [class*="css"] {
 
 h1, h2, h3, h4, h5, h6, p, label {
     color: #5C4033 !important;
-}
+    }
 
 .main-title {
     text-align: center;
@@ -68,7 +62,7 @@ h1, h2, h3, h4, h5, h6, p, label {
 .subtitle {
     text-align: center;
     font-size: 1.05rem;
-    color: #6B4E3D;
+    color: #5C4033;
     margin-bottom: 2rem;
 }
 
@@ -113,10 +107,7 @@ h1, h2, h3, h4, h5, h6, p, label {
 </style>
 """, unsafe_allow_html=True)
 
-
-# =========================
 # Title
-# =========================
 st.markdown("<div class='main-title'>Additional Data</div>", unsafe_allow_html=True)
 
 st.markdown("""
@@ -125,10 +116,7 @@ Add relevant health information so the app can give more personalised caffeine g
 </div>
 """, unsafe_allow_html=True)
 
-
-# =========================
 # Text Helpers
-# =========================
 def normalize_text(text):
     text = str(text).lower()
     text = text.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue")
@@ -200,11 +188,7 @@ def remove_duplicates(recommendations):
 
     return unique
 
-
-# =========================
 # Medical Knowledge Base
-# =========================
-
 CONDITION_RULES = [
     {
         "keywords": [
@@ -541,10 +525,7 @@ NO_CAFFEINE_WARNING_MEDICATIONS = [
     }
 ]
 
-
-# =========================
 # Recommendation Logic
-# =========================
 def check_rules(input_text, rules):
     matches = []
 
@@ -552,7 +533,6 @@ def check_rules(input_text, rules):
         matched, matched_keyword = fuzzy_match(input_text, rule["keywords"])
         if matched:
             rule_copy = rule.copy()
-            rule_copy["matched_keyword"] = matched_keyword
             matches.append(rule_copy)
 
     return matches
@@ -590,10 +570,7 @@ def box_class(level):
         return "info-box"
     return "good-box"
 
-
-# =========================
 # Input Fields
-# =========================
 st.markdown("<h3>Previous illness</h3>", unsafe_allow_html=True)
 illness_list = st.text_area(
     "Enter previous illnesses or health conditions, one per line",
@@ -612,10 +589,7 @@ medication_list = st.text_area(
     placeholder="Example: bisoprolol, methylphenidate, ciprofloxacin, theophylline, Augmentin..."
 )
 
-
-# =========================
 # Disclaimer
-# =========================
 st.markdown("""
 <div class='info-box'>
 <b>Important note:</b><br>
@@ -625,10 +599,7 @@ pharmacist or another qualified healthcare professional.
 </div>
 """, unsafe_allow_html=True)
 
-
-# =========================
 # Button + Output
-# =========================
 if st.button("Check caffeine recommendations"):
 
     recommendations = check_user_data(illness_list, allergy_list, medication_list)

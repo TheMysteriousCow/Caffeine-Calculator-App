@@ -3,9 +3,7 @@ import streamlit as st
 import streamlit_authenticator as stauth
 from utils.data_manager import DataManager
 
-# =========================
 # Login Manager
-# =========================
 class LoginManager:
     def __new__(cls, *args, **kwargs):
         if 'login_manager' in st.session_state:
@@ -51,9 +49,7 @@ class LoginManager:
             self.auth_credentials_file
         )
 
-    # =========================
     # Hauptsteuerung
-    # =========================
     def login_register(self, login_title='Login', register_title='Register new user'):
         if st.session_state.get("authentication_status") is True:
             with st.sidebar:
@@ -63,9 +59,7 @@ class LoginManager:
             self._login_register_page(login_title, register_title)
             st.stop()
 
-    # =========================
     # Login/Register Seite
-    # =========================
     def _login_register_page(self, login_title, register_title):
         login_tab, register_tab = st.tabs((login_title, register_title))
 
@@ -75,9 +69,7 @@ class LoginManager:
         with register_tab:
             self._register()
 
-    # =========================
     # Login
-    # =========================
     def _login(self):
         self.authenticator.login()
 
@@ -88,9 +80,7 @@ class LoginManager:
         elif status is None:
             st.warning("Please enter your username and password")
 
-    # =========================
     # Registrierung
-    # =========================
     def _register(self):
         st.info("""
         Password requirements:

@@ -44,7 +44,7 @@ st.markdown("""
 <style>
 html, body, [class*="css"] {
     font-family: 'Georgia', 'Times New Roman', serif;
-    color: #5a3e36;
+    color: #5C4033;
 }
 
 .main-title {
@@ -61,7 +61,7 @@ html, body, [class*="css"] {
     text-align: center;
     font-size: 1.1rem;
     font-family: Arial, sans-serif;
-    color: #6b7280;
+    color: #5C4033;
     margin-bottom: 2rem;
 }
 
@@ -71,28 +71,28 @@ h2, h3 {
 }
 
 p, span, label {
-    color: #5a3e36 !important;
+    color: #5C4033 !important;
 }
 
 [data-testid="stMetricLabel"] {
-    color: #5a3e36 !important;
+    color: #5C4033 !important;
     font-family: 'Georgia', serif;
 }
 
 [data-testid="stMetricValue"] {
-    color: #5a3e36 !important;
+    color: #5C4033 !important;
     font-family: 'Georgia', serif;
 }
 
 .stButton > button {
     font-family: 'Georgia', serif;
-    color: #5a3e36;
+    color: #5C4033;
     border-radius: 10px;
 }
 
 .streamlit-expanderHeader {
     font-family: 'Georgia', serif;
-    color: #5a3e36 !important;
+    color: #5C4033 !important;
 }
 </style>
 """, unsafe_allow_html=True)

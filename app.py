@@ -42,7 +42,7 @@ section[data-testid="stSidebar"] a {
     padding: 8px 12px !important;
     margin-bottom: 6px;
     display: block;
-    color: black !important;
+    color: #5C4033 !important;
     text-decoration: none !important;
 }
 
@@ -85,7 +85,7 @@ section[data-testid="stSidebar"] a:hover {
 /* NUR Logout Button in der Sidebar */
 section[data-testid="stSidebar"] div[data-testid="stButton"] button {
     background-color: #CDECCF !important;
-    color: black !important;
+    color: #5C4033 !important;
 
     border-radius: 14px !important;
     border: none !important;

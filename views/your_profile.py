@@ -3,10 +3,7 @@ import base64
 import os
 import json
 
-
-# =========================
 # Profil speichern/laden
-# =========================
 PROFILE_FILE = "profile.json"
 
 
@@ -31,10 +28,7 @@ def save_profile(profile):
 
 profile = load_profile()
 
-
-# =========================
 # Logo Funktion
-# =========================
 def set_logo_top_right(image_file: str):
     if not os.path.exists(image_file):
         st.warning(f"Bild konnte nicht geladen werden. Pfad: {image_file}")
@@ -67,17 +61,11 @@ def set_logo_top_right(image_file: str):
 
     st.markdown(css, unsafe_allow_html=True)
 
-
-# =========================
 # Logo einfügen
-# =========================
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
 
-
-# =========================
 # Styling
-# =========================
 st.markdown("""
 <style>
 
@@ -134,10 +122,7 @@ div[data-baseweb="select"] > div {
 </style>
 """, unsafe_allow_html=True)
 
-
-# =========================
 # Titel
-# =========================
 st.markdown(
     "<div class='main-title'>Your Profile</div>",
     unsafe_allow_html=True
@@ -145,10 +130,7 @@ st.markdown(
 
 st.write("")
 
-
-# =========================
 # Eingabefelder
-# =========================
 name = st.text_input(
     "Name",
     value=profile["name"]
@@ -177,10 +159,7 @@ height = st.text_input(
     value=profile["height"]
 )
 
-
-# =========================
 # Save Button
-# =========================
 if st.button("Save"):
 
     new_profile = {

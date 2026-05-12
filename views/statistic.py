@@ -8,10 +8,7 @@ import json
 DIARY_FILE = "diary.csv"
 PROFILE_FILE = "profile.json"
 
-
-# =========================
 # PROFILE LOAD
-# =========================
 def load_profile():
     if os.path.exists(PROFILE_FILE):
         try:
@@ -37,12 +34,8 @@ if first_name:
 else:
     diary_title = "My Diary"
 
-
-# =========================
 # FILES
-# =========================
 DATA_FILE = "data.csv"
-
 
 def set_logo_top_right(image_file: str):
     if not os.path.exists(image_file):
@@ -151,17 +144,11 @@ def save_diary_data(df):
 
     df.to_csv(DIARY_FILE, index=False)
 
-
-# =========================
 # LOGO
-# =========================
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 set_logo_top_right(image_path)
 
-
-# =========================
 # CSS
-# =========================
 st.markdown("""
 <style>
 .stApp {
@@ -201,21 +188,15 @@ div.stButton > button {
 
 [data-testid="stSidebar"] button {
     background-color: white !important;
-    color: black !important;
+    color: #5C4033 !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-
-# =========================
 # TITLE
-# =========================
 st.markdown("<div class='main-title'>History</div>", unsafe_allow_html=True)
 
-
-# =========================
 # HISTORY DATA
-# =========================
 if "data_df" not in st.session_state:
     st.session_state["data_df"] = load_history_data()
 
@@ -250,10 +231,7 @@ else:
         hide_index=True
     )
 
-
-# =========================
 # DELETE HISTORY
-# =========================
 if st.button("🗑️ Clear History"):
     empty_df = empty_history_df()
 
@@ -263,26 +241,17 @@ if st.button("🗑️ Clear History"):
     st.success("History has been cleared!")
     st.rerun()
 
-
-# =========================
 # DIARY
-# =========================
 st.markdown(f"<div class='section-title'>{diary_title}</div>", unsafe_allow_html=True)
 
-
-# =========================
 # LOAD DIARY DATA
-# =========================
 if "diary_df" not in st.session_state:
     st.session_state["diary_df"] = load_diary_data()
 
 if "diary_df" not in st.session_state or st.session_state["diary_df"] is None:
     st.session_state["diary_df"] = empty_diary_df()
 
-
-# =========================
 # DATE + TIME INPUT
-# =========================
 col_date, col_time = st.columns(2)
 
 with col_date:
@@ -299,20 +268,14 @@ with col_time:
 
 diary_timestamp = datetime.combine(diary_date, diary_time)
 
-
-# =========================
 # DIARY TEXT INPUT
-# =========================
 diary_text = st.text_area(
     "Write your diary entry here:",
     height=180,
     placeholder="How do you feel today? Did caffeine affect your energy, sleep, mood or concentration?"
 )
 
-
-# =========================
 # SAVE DIARY ENTRY
-# =========================
 if st.button("💾 Save Diary Entry"):
     if diary_text.strip() == "":
         st.warning("Please write something before saving.")
@@ -332,10 +295,7 @@ if st.button("💾 Save Diary Entry"):
         st.success("Diary entry saved!")
         st.rerun()
 
-
-# =========================
 # SHOW + DELETE DIARY ENTRIES
-# =========================
 diary_df = st.session_state["diary_df"]
 
 if not diary_df.empty:
