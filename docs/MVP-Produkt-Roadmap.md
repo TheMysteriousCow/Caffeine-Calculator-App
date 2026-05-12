@@ -1,4 +1,4 @@
-# Produkt-Roadmap
+# MVP-Produkt-Roadmap
 Diese Roadmap zeigt die geplanten Entwicklungsschritte für unsere App zur Berechnung und zum bewussten Umgang mit Koffein.
 Die Funktionen wurden nach Priorität und Nutzermehrwert in mehrere aufeinanderfolgende Versionen gegliedert.
 Jede Version ist funktionsfähig und erweiterbar.
