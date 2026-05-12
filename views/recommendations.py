@@ -1,10 +1,13 @@
 import os
-import streamlit as st 
+import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import base64
+from datetime import datetime
+
+st.set_page_config(page_title="Recommendations", layout="wide")
 
 def set_logo_top_right(image_file: str):
     if not os.path.exists(image_file):
@@ -42,9 +45,20 @@ set_logo_top_right(image_path)
 
 st.markdown("""
 <style>
-html, body, [class*="css"] {
-    font-family: 'Georgia', 'Times New Roman', serif;
-    color: #5C4033;
+.stApp {
+    background-color: white;
+    color: #5C4033 !important;
+}
+
+html, body, p, div, span, label,
+h1, h2, h3, h4, h5, h6,
+.stMarkdown, .stText, .stCaption,
+[data-testid="stMarkdownContainer"],
+[data-testid="stText"],
+[data-testid="stMetricLabel"],
+[data-testid="stMetricValue"],
+[data-testid="stWidgetLabel"] {
+    color: #5C4033 !important;
 }
 
 .main-title {
@@ -52,7 +66,7 @@ html, body, [class*="css"] {
     font-size: 3.4rem;
     font-family: 'Georgia', 'Times New Roman', serif;
     font-weight: 600;
-    color: #5C4033;
+    color: #5C4033 !important;
     margin-bottom: 0.3rem;
     letter-spacing: 1px;
 }
@@ -61,33 +75,30 @@ html, body, [class*="css"] {
     text-align: center;
     font-size: 1.1rem;
     font-family: Arial, sans-serif;
-    color: #5C4033;
+    color: #5C4033 !important;
     margin-bottom: 2rem;
 }
 
 h2, h3 {
     font-family: 'Georgia', serif;
-    color: #5a3e36 !important;
-}
-
-p, span, label {
     color: #5C4033 !important;
 }
 
-[data-testid="stMetricLabel"] {
+div.stButton > button {
+    width: 100%;
+    height: 50px;
+    background-color: #CDECCF;
     color: #5C4033 !important;
-    font-family: 'Georgia', serif;
+    border: none;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+    font-weight: 600;
 }
 
-[data-testid="stMetricValue"] {
+div.stButton > button:hover {
+    background-color: #BEE6C2;
     color: #5C4033 !important;
-    font-family: 'Georgia', serif;
-}
-
-.stButton > button {
-    font-family: 'Georgia', serif;
-    color: #5C4033;
-    border-radius: 10px;
 }
 
 .streamlit-expanderHeader {
@@ -112,14 +123,22 @@ if "recommendation_detail" not in st.session_state:
 
 data_df = st.session_state["data_df"]
 
+PEAK_HOURS = 0.75
+CRASH_HOURS = 4
+RECOVERY_HOURS = 8
+TOTAL_HOURS = 10
 HALF_LIFE = 5.0
+
 
 def caffeine_remaining(initial_mg: float, hours_passed: float, half_life: float = 5.0) -> float:
     if initial_mg <= 0:
         return 0.0
+
     if hours_passed < 0:
         hours_passed = 0.0
+
     return initial_mg * (0.5 ** (hours_passed / half_life))
+
 
 def get_latest_entry(df: pd.DataFrame):
     if df.empty:
@@ -136,63 +155,63 @@ def get_latest_entry(df: pd.DataFrame):
 
     return df_copy.iloc[-1]
 
+
 def get_hours_since_latest_entry(entry) -> float:
     if entry is None or "timestamp" not in entry:
         return 0.0
 
     ts = pd.to_datetime(entry["timestamp"], errors="coerce")
+
     if pd.isna(ts):
         return 0.0
 
     now = pd.Timestamp.now()
     hours_passed = (now - ts).total_seconds() / 3600
+
     return max(0.0, hours_passed)
+
 
 def get_initial_caffeine(entry) -> float:
     if entry is None:
         return 0.0
 
-    value = entry.get("Caffeine (mg)", entry.get("Koffeinmenge zu Beginn (mg)", 0))
+    value = entry.get("Caffeine (mg)", 0)
 
     try:
         return float(value)
-    except (TypeError, ValueError):
+    except:
         return 0.0
 
+
 def get_phase_info(hours_passed: float):
-    if hours_passed < 2:
-        return "Start", "Caffeine is just entering your body."
-    elif hours_passed < 4:
-        return "Increase", "The effect is building up."
-    elif hours_passed < 6:
-        return "Peak", "The caffeine effect is strongest now."
-    elif hours_passed < 8:
-        return "Crash", "The effect is going down again."
+    if hours_passed < PEAK_HOURS:
+        return "Increase", "The caffeine effect is building up and has not reached the peak yet."
+
+    elif hours_passed < CRASH_HOURS:
+        return "Peak", "The caffeine effect is strong now."
+
+    elif hours_passed < RECOVERY_HOURS:
+        return "Crash", "The caffeine effect is going down again."
+
     else:
-        return "Recovery", "Your body is slowly calming down."
+        return "Recovery", "Your body is slowly calming down again."
 
-def smoothstep(x, edge0, edge1):
-    t = np.clip((x - edge0) / (edge1 - edge0), 0, 1)
-    return t * t * (3 - 2 * t)
 
-def build_curve(initial_mg: float, total_hours: int = 10):
-    x = np.linspace(0, total_hours, 800)
+def build_curve(total_hours: int = 10):
+    x = np.linspace(0, total_hours, 1000)
 
-    rise = smoothstep(x, 0.0, 5.0)
-    t_after_peak = np.clip(x - 5.0, 0, None)
-    decay = np.exp(-0.22 * (t_after_peak ** 1.6))
+    y = np.zeros_like(x)
 
-    y = rise * decay
-
-    if np.max(y) > 0:
-        y = y / np.max(y)
-
-    scale = max(0.85, min(initial_mg / 100, 1.15))
-    y = y * scale
+    for i, hour in enumerate(x):
+        if hour <= PEAK_HOURS:
+            y[i] = hour / PEAK_HOURS
+        else:
+            y[i] = np.exp(-0.32 * (hour - PEAK_HOURS))
 
     return x, y
 
-def add_vertical_gradient(ax, x0, x1, y0, y1, color_rgb, alpha_top=0.40, alpha_bottom=0.18, zorder=0):
+
+def add_vertical_gradient(ax, x0, x1, y0, y1, color_rgb, alpha_top=0.35, alpha_bottom=0.15, zorder=0):
     n = 256
     gradient = np.ones((n, 2, 4))
     gradient[..., 0] = color_rgb[0]
@@ -208,16 +227,16 @@ def add_vertical_gradient(ax, x0, x1, y0, y1, color_rgb, alpha_top=0.40, alpha_b
         zorder=zorder
     )
 
+
 def draw_phase_bar(ax):
-    bar_y = -0.02
-    bar_height = 0.12
+    bar_y = -0.10
+    bar_height = 0.08
 
     phase_specs = [
-        ("Start", 0, 2, "#b7df72"),
-        ("Increase", 2, 4, "#76bb2d"),
-        ("Peak", 4, 6, "#ff4338"),
-        ("Crash", 6, 8, "#ff9d35"),
-        ("Recovery", 8, 10, "#7aa8cf"),
+        ("Increase", 0, PEAK_HOURS, "#76bb2d"),
+        ("Peak", PEAK_HOURS, CRASH_HOURS, "#ff4338"),
+        ("Crash", CRASH_HOURS, RECOVERY_HOURS, "#ff9d35"),
+        ("Recovery", RECOVERY_HOURS, TOTAL_HOURS, "#7aa8cf"),
     ]
 
     for label, x0, x1, color in phase_specs:
@@ -230,36 +249,94 @@ def draw_phase_bar(ax):
             alpha=0.95,
             zorder=3
         )
+
         ax.add_patch(rect)
+
         ax.text(
             (x0 + x1) / 2,
             bar_y + bar_height / 2,
             label,
             ha="center",
             va="center",
-            fontsize=13,
-            color="white" if label != "Start" else "#1f1f1f",
+            fontsize=11,
+            color="white",
             zorder=4
         )
 
+
 def plot_colored_segments(ax, x, y):
     phase_segments = [
-        (0, 2, "#7da61b"),
-        (2, 4, "#76bb2d"),
-        (4, 6, "#ff4338"),
-        (6, 8, "#ff9d35"),
-        (8, 10, "#2f6fb0"),
+        (0, PEAK_HOURS, "#76bb2d"),
+        (PEAK_HOURS, CRASH_HOURS, "#ff4338"),
+        (CRASH_HOURS, RECOVERY_HOURS, "#ff9d35"),
+        (RECOVERY_HOURS, TOTAL_HOURS, "#2f6fb0"),
     ]
 
     for x0, x1, color in phase_segments:
         mask = (x >= x0) & (x <= x1)
         ax.plot(x[mask], y[mask], color=color, linewidth=3, zorder=5)
 
+
+def draw_recommendation_chart(hours_passed: float):
+    x, y = build_curve(TOTAL_HOURS)
+
+    fig, ax = plt.subplots(figsize=(11, 6), dpi=150)
+
+    y_max = 1.1
+
+    add_vertical_gradient(ax, 0, PEAK_HOURS, 0, y_max, (118/255, 187/255, 45/255))
+    add_vertical_gradient(ax, PEAK_HOURS, CRASH_HOURS, 0, y_max, (1.0, 67/255, 56/255))
+    add_vertical_gradient(ax, CRASH_HOURS, RECOVERY_HOURS, 0, y_max, (1.0, 157/255, 53/255))
+    add_vertical_gradient(ax, RECOVERY_HOURS, TOTAL_HOURS, 0, y_max, (122/255, 168/255, 207/255))
+
+    for border_x in [PEAK_HOURS, CRASH_HOURS, RECOVERY_HOURS]:
+        ax.axvline(border_x, color=(0, 0, 0, 0.15), linewidth=1)
+
+    plot_colored_segments(ax, x, y)
+
+    current_x = min(max(hours_passed, 0), TOTAL_HOURS)
+    current_y = np.interp(current_x, x, y)
+
+    ax.scatter(current_x, current_y, s=120, color="#0d4f8b", zorder=6)
+
+    text_x = current_x + 0.15 if current_x < 8.7 else current_x - 0.25
+    text_ha = "left" if current_x < 8.7 else "right"
+
+    ax.text(
+        text_x,
+        current_y + 0.06,
+        "You are here",
+        fontsize=14,
+        color="#1f1f1f",
+        ha=text_ha,
+        va="bottom",
+        zorder=7
+    )
+
+    draw_phase_bar(ax)
+
+    ax.set_title("Caffeine state over time", fontsize=20, pad=12, color="#5C4033")
+    ax.set_xlabel("Hours after caffeine intake", fontsize=14, color="#5C4033")
+    ax.set_ylabel("Effect strength", fontsize=14, color="#5C4033")
+
+    ax.set_xlim(0, TOTAL_HOURS)
+    ax.set_ylim(-0.12, y_max)
+
+    ax.set_xticks([0, PEAK_HOURS, 2, CRASH_HOURS, 6, RECOVERY_HOURS, 10])
+    ax.set_xticklabels(["0", "0.75", "2", "4", "6", "8", "10"])
+
+    ax.tick_params(axis="both", labelsize=11, colors="#5C4033")
+    ax.grid(True, alpha=0.12)
+
+    st.pyplot(fig, clear_figure=True)
+
+
 def show_detail_page(title: str, intro: str, tips: list[str], warning: str):
     st.subheader(title)
     st.write(intro)
 
     st.markdown("### What can help?")
+
     for tip in tips:
         st.write(f"• {tip}")
 
@@ -270,23 +347,22 @@ def show_detail_page(title: str, intro: str, tips: list[str], warning: str):
         st.session_state["recommendation_detail"] = None
         st.rerun()
 
+
 def show_phase_help():
     st.markdown("### Help: What do the phases mean?")
 
-    with st.expander("Start"):
-        st.write("Caffeine has just entered your body. You usually do not feel the full effect yet.")
-
     with st.expander("Increase"):
-        st.write("The caffeine effect is getting stronger. You may start to feel more awake, focused or active.")
+        st.write("Caffeine is entering your body. The effect is rising and usually reaches its peak after about 45 minutes.")
 
     with st.expander("Peak"):
-        st.write("This is the strongest phase. The caffeine effect is highest now.")
+        st.write("This is the strongest phase. In this app, the peak starts after about 45 minutes and lasts until around 4 hours.")
 
     with st.expander("Crash"):
-        st.write("The caffeine effect starts to go down again. Some people feel more tired, unfocused or low in energy here.")
+        st.write("The caffeine effect is going down. Some people feel tired, unfocused or low in energy here.")
 
     with st.expander("Recovery"):
-        st.write("Your body is slowly calming down again. The caffeine level is lower and the effect becomes weaker.")
+        st.write("Your body is slowly calming down again. The caffeine effect is weaker now.")
+
 
 selected_detail = st.session_state["recommendation_detail"]
 
@@ -307,12 +383,12 @@ if selected_detail == "Peak":
 elif selected_detail == "Increase":
     show_detail_page(
         title="Increase",
-        intro="Your caffeine effect is currently building up. You may start to feel more awake, focused or physically activated.",
+        intro="Your caffeine effect is currently building up. The peak is usually reached after about 45 minutes.",
         tips=[
-            "Use this phase for light productivity or planned focus tasks.",
-            "Do not take more caffeine too quickly, because the full effect may still be coming.",
+            "Do not take more caffeine too quickly.",
+            "Wait until the full effect arrives.",
             "Drink water alongside caffeine.",
-            "Notice whether your body feels calm, energized or already overstimulated."
+            "Notice whether your body feels calm, energized or overstimulated."
         ],
         warning="Taking more caffeine during the increase phase can make the later peak stronger than expected."
     )
@@ -335,7 +411,7 @@ elif selected_detail == "Crash":
 elif selected_detail == "I can't fall asleep":
     show_detail_page(
         title="I can't fall asleep",
-        intro="There may still be too much caffeine in your body, especially if you consumed it late in the day.",
+        intro="There may still be caffeine in your body, especially if you consumed it late in the day.",
         tips=[
             "Do not take more caffeine today.",
             "Avoid screens and bright light before sleep.",
@@ -405,7 +481,7 @@ elif selected_detail == "Recovery":
 elif selected_detail == "Stomach discomfort or acidity":
     show_detail_page(
         title="Stomach discomfort or acidity",
-        intro="Caffeine can irritate the stomach in some people and may feel worse if you drink it on an empty stomach or combine it with stress.",
+        intro="Caffeine can irritate the stomach in some people and may feel worse if you drink it on an empty stomach.",
         tips=[
             "Avoid more caffeine for now, especially coffee or energy drinks.",
             "Drink water slowly.",
@@ -439,63 +515,14 @@ elif selected_detail == "I am training soon or doing sports":
         tips=[
             "Avoid taking extra caffeine if you already feel shaky, anxious or overstimulated.",
             "Drink water before and during training.",
-            "Do not train on a very full stomach or after a large caffeine dose if your stomach feels sensitive.",
-            "For intense training, keep caffeine moderate and avoid experimenting with high doses.",
-            "After training, focus on hydration, food and recovery instead of automatically taking more caffeine."
+            "Do not train after a large caffeine dose if your stomach feels sensitive.",
+            "Keep caffeine moderate and avoid experimenting with high doses.",
+            "After training, focus on hydration, food and recovery."
         ],
         warning="Stop exercising and seek help if you feel chest pain, faintness, severe shortness of breath, irregular heartbeat or unusual strong symptoms."
     )
     st.stop()
 
-def draw_recommendation_chart(initial_mg: float, hours_passed: float):
-    x, y = build_curve(initial_mg)
-
-    fig, ax = plt.subplots(figsize=(10, 6), dpi=150)
-
-    y_max = max(1.08, float(np.max(y) + 0.08))
-
-    add_vertical_gradient(ax, 0, 2, 0, y_max, (183/255, 223/255, 114/255))
-    add_vertical_gradient(ax, 2, 4, 0, y_max, (190/255, 214/255, 84/255))
-    add_vertical_gradient(ax, 4, 6, 0, y_max, (1.0, 84/255, 78/255))
-    add_vertical_gradient(ax, 6, 8, 0, y_max, (243/255, 176/255, 104/255))
-    add_vertical_gradient(ax, 8, 10, 0, y_max, (163/255, 194/255, 223/255))
-
-    for border_x in [2, 4, 6, 8]:
-        ax.axvline(border_x, color=(0, 0, 0, 0.08), linewidth=1)
-
-    plot_colored_segments(ax, x, y)
-
-    current_x = min(hours_passed, 10)
-    current_y = np.interp(current_x, x, y)
-
-    ax.scatter(current_x, current_y, s=110, color="#0d4f8b", zorder=6)
-
-    text_x = current_x + 0.12 if current_x < 8.8 else current_x - 1.25
-    text_ha = "left" if current_x < 8.8 else "right"
-
-    ax.text(
-        text_x,
-        current_y + 0.08,
-        "You are here",
-        fontsize=16,
-        color="#1f1f1f",
-        ha=text_ha,
-        va="bottom",
-        zorder=7
-    )
-
-    draw_phase_bar(ax)
-
-    ax.set_title("Caffeine state over time", fontsize=20, pad=8)
-    ax.set_xlabel("Hours", fontsize=16)
-    ax.set_ylabel("Effect", fontsize=16)
-    ax.set_xlim(0, 10)
-    ax.set_ylim(0, y_max)
-    ax.set_xticks(np.arange(0, 11, 2))
-    ax.tick_params(axis="both", labelsize=12)
-    ax.grid(True, alpha=0.12)
-
-    st.pyplot(fig, clear_figure=True)
 
 latest_entry = get_latest_entry(data_df)
 
@@ -520,7 +547,7 @@ with col2:
 with col3:
     st.metric("Current phase", phase_name)
 
-draw_recommendation_chart(initial_mg, hours_passed)
+draw_recommendation_chart(hours_passed)
 
 show_phase_help()
 
