@@ -1,13 +1,25 @@
 import os
+import json
+import time
+import base64
 import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import base64
-from datetime import datetime
 
 st.set_page_config(page_title="Recommendations", layout="wide")
+
+username = st.session_state.get("username", "default_user")
+DATA_FILE = f"data_{username}.csv"
+CURRENT_FILE = f"current_caffeine_{username}.json"
+
+PEAK_HOURS = 0.75
+CRASH_HOURS = 4
+RECOVERY_HOURS = 8
+TOTAL_HOURS = 10
+HALF_LIFE = 5.0
+
 
 def set_logo_top_right(image_file: str):
     if not os.path.exists(image_file):
@@ -17,7 +29,7 @@ def set_logo_top_right(image_file: str):
     with open(image_file, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
 
-    css = f"""
+    st.markdown(f"""
     <style>
     .logo-container {{
         position: absolute;
@@ -35,9 +47,55 @@ def set_logo_top_right(image_file: str):
     <div class="logo-container">
         <img src="data:image/png;base64,{encoded}" class="logo-img">
     </div>
-    """
+    """, unsafe_allow_html=True)
 
-    st.markdown(css, unsafe_allow_html=True)
+
+def empty_current_data():
+    return {
+        "entries": [],
+        "countdown_end_time": None,
+        "countdown_total_seconds": 0,
+        "last_drink": None
+    }
+
+
+def load_current_data():
+    if os.path.exists(CURRENT_FILE):
+        try:
+            with open(CURRENT_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            if not isinstance(data, dict):
+                return empty_current_data()
+
+            data.setdefault("entries", [])
+            data.setdefault("countdown_end_time", None)
+            data.setdefault("countdown_total_seconds", 0)
+            data.setdefault("last_drink", None)
+
+            return data
+        except:
+            return empty_current_data()
+
+    return empty_current_data()
+
+
+def load_history_data():
+    if os.path.exists(DATA_FILE):
+        try:
+            df = pd.read_csv(DATA_FILE)
+            df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
+            df = df.dropna(subset=["timestamp"])
+            return df
+        except:
+            pass
+
+    return pd.DataFrame(columns=[
+        "timestamp",
+        "Drink",
+        "Caffeine (mg)",
+        "Volume (ml)"
+    ])
 
 
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
@@ -111,33 +169,30 @@ div.stButton > button:hover {
 st.markdown("<div class='main-title'>Recommendations</div>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Understand your caffeine state and get direct help.</div>", unsafe_allow_html=True)
 
-if "data_df" not in st.session_state:
-    st.session_state["data_df"] = pd.DataFrame(columns=[
-        "timestamp",
-        "Drink",
-        "Caffeine (mg)"
-    ])
-
 if "recommendation_detail" not in st.session_state:
     st.session_state["recommendation_detail"] = None
 
-data_df = st.session_state["data_df"]
-
-PEAK_HOURS = 0.75
-CRASH_HOURS = 4
-RECOVERY_HOURS = 8
-TOTAL_HOURS = 10
-HALF_LIFE = 5.0
+if "data_df" not in st.session_state:
+    st.session_state["data_df"] = load_history_data()
 
 
 def caffeine_remaining(initial_mg: float, hours_passed: float, half_life: float = 5.0) -> float:
     if initial_mg <= 0:
         return 0.0
 
-    if hours_passed < 0:
-        hours_passed = 0.0
-
+    hours_passed = max(hours_passed, 0.0)
     return initial_mg * (0.5 ** (hours_passed / half_life))
+
+
+def get_phase_info(hours_passed: float):
+    if hours_passed < PEAK_HOURS:
+        return "Increase", "The caffeine effect is building up and has not reached the peak yet."
+    elif hours_passed < CRASH_HOURS:
+        return "Peak", "The caffeine effect is strong now."
+    elif hours_passed < RECOVERY_HOURS:
+        return "Crash", "The caffeine effect is going down again."
+    else:
+        return "Recovery", "Your body is slowly calming down again."
 
 
 def get_latest_entry(df: pd.DataFrame):
@@ -145,10 +200,8 @@ def get_latest_entry(df: pd.DataFrame):
         return None
 
     df_copy = df.copy()
-
-    if "timestamp" in df_copy.columns:
-        df_copy["timestamp"] = pd.to_datetime(df_copy["timestamp"], errors="coerce")
-        df_copy = df_copy.dropna(subset=["timestamp"]).sort_values("timestamp")
+    df_copy["timestamp"] = pd.to_datetime(df_copy["timestamp"], errors="coerce")
+    df_copy = df_copy.dropna(subset=["timestamp"]).sort_values("timestamp")
 
     if df_copy.empty:
         return None
@@ -156,50 +209,24 @@ def get_latest_entry(df: pd.DataFrame):
     return df_copy.iloc[-1]
 
 
-def get_hours_since_latest_entry(entry) -> float:
-    if entry is None or "timestamp" not in entry:
-        return 0.0
-
-    ts = pd.to_datetime(entry["timestamp"], errors="coerce")
+def get_hours_since_timestamp(timestamp) -> float:
+    ts = pd.to_datetime(timestamp, errors="coerce")
 
     if pd.isna(ts):
         return 0.0
 
-    now = pd.Timestamp.now()
-    hours_passed = (now - ts).total_seconds() / 3600
-
-    return max(0.0, hours_passed)
+    return max(0.0, (pd.Timestamp.now() - ts).total_seconds() / 3600)
 
 
 def get_initial_caffeine(entry) -> float:
-    if entry is None:
-        return 0.0
-
-    value = entry.get("Caffeine (mg)", 0)
-
     try:
-        return float(value)
+        return float(entry.get("Caffeine (mg)", 0))
     except:
         return 0.0
 
 
-def get_phase_info(hours_passed: float):
-    if hours_passed < PEAK_HOURS:
-        return "Increase", "The caffeine effect is building up and has not reached the peak yet."
-
-    elif hours_passed < CRASH_HOURS:
-        return "Peak", "The caffeine effect is strong now."
-
-    elif hours_passed < RECOVERY_HOURS:
-        return "Crash", "The caffeine effect is going down again."
-
-    else:
-        return "Recovery", "Your body is slowly calming down again."
-
-
 def build_curve(total_hours: int = 10):
     x = np.linspace(0, total_hours, 1000)
-
     y = np.zeros_like(x)
 
     for i, hour in enumerate(x):
@@ -281,7 +308,6 @@ def draw_recommendation_chart(hours_passed: float):
     x, y = build_curve(TOTAL_HOURS)
 
     fig, ax = plt.subplots(figsize=(11, 6), dpi=150)
-
     y_max = 1.1
 
     add_vertical_gradient(ax, 0, PEAK_HOURS, 0, y_max, (118/255, 187/255, 45/255))
@@ -299,12 +325,16 @@ def draw_recommendation_chart(hours_passed: float):
 
     ax.scatter(current_x, current_y, s=120, color="#0d4f8b", zorder=6)
 
-    text_x = current_x + 0.15 if current_x < 8.7 else current_x - 0.25
-    text_ha = "left" if current_x < 8.7 else "right"
+    if current_x < 8.7:
+        text_x = current_x + 0.15
+        text_ha = "left"
+    else:
+        text_x = current_x - 0.25
+        text_ha = "right"
 
     ax.text(
         text_x,
-        current_y + 0.06,
+        min(current_y + 0.06, 1.05),
         "You are here",
         fontsize=14,
         color="#1f1f1f",
@@ -321,7 +351,6 @@ def draw_recommendation_chart(hours_passed: float):
 
     ax.set_xlim(0, TOTAL_HOURS)
     ax.set_ylim(-0.12, y_max)
-
     ax.set_xticks([0, PEAK_HOURS, 2, CRASH_HOURS, 6, RECOVERY_HOURS, 10])
     ax.set_xticklabels(["0", "0.75", "2", "4", "6", "8", "10"])
 
@@ -524,19 +553,60 @@ elif selected_detail == "I am training soon or doing sports":
     st.stop()
 
 
-latest_entry = get_latest_entry(data_df)
+current_data = load_current_data()
+current_entries = current_data.get("entries", [])
+end_time = current_data.get("countdown_end_time")
+now_unix = int(time.time())
 
-if latest_entry is None:
-    st.info("No caffeine data available yet. Please use the Caffeine Calculator first.")
-    st.stop()
+has_active_countdown = bool(current_entries) and end_time and end_time > now_unix
 
-initial_mg = get_initial_caffeine(latest_entry)
-hours_passed = get_hours_since_latest_entry(latest_entry)
-current_mg = caffeine_remaining(initial_mg, hours_passed, HALF_LIFE)
+if has_active_countdown:
+    current_df = pd.DataFrame(current_entries)
+
+    current_df["timestamp"] = pd.to_datetime(
+        current_df["timestamp"],
+        errors="coerce"
+    )
+
+    current_df = current_df.dropna(subset=["timestamp"])
+
+    if current_df.empty:
+        st.info("No valid active caffeine data found. Please use the Caffeine Calculator first.")
+        st.stop()
+
+    current_df = current_df.sort_values("timestamp")
+
+    first_timestamp = current_df.iloc[0]["timestamp"]
+    latest_entry = current_df.iloc[-1]
+
+    initial_mg = current_df["Caffeine (mg)"].sum()
+    hours_passed = get_hours_since_timestamp(first_timestamp)
+    current_mg = caffeine_remaining(initial_mg, hours_passed, HALF_LIFE)
+
+    remaining_seconds = max(end_time - now_unix, 0)
+    remaining_hours = remaining_seconds / 3600
+
+    st.success("Active caffeine countdown found from your Caffeine Calculator.")
+
+else:
+    data_df = load_history_data()
+    st.session_state["data_df"] = data_df
+
+    latest_entry = get_latest_entry(data_df)
+
+    if latest_entry is None:
+        st.info("No active caffeine countdown found. Please use the Caffeine Calculator first.")
+        st.stop()
+
+    initial_mg = get_initial_caffeine(latest_entry)
+    hours_passed = get_hours_since_timestamp(latest_entry["timestamp"])
+    current_mg = caffeine_remaining(initial_mg, hours_passed, HALF_LIFE)
+    remaining_hours = 0
+
 
 phase_name, phase_text = get_phase_info(hours_passed)
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.metric("Initial caffeine", f"{initial_mg:.1f} mg")
@@ -547,11 +617,26 @@ with col2:
 with col3:
     st.metric("Current phase", phase_name)
 
+with col4:
+    if has_active_countdown:
+        st.metric("Countdown remaining", f"{int(remaining_hours)} h {int((remaining_hours % 1) * 60)} min")
+    else:
+        st.metric("Countdown remaining", "No active countdown")
+
 draw_recommendation_chart(hours_passed)
 
 show_phase_help()
 
 st.success(f"Current interpretation: **{phase_name}** — {phase_text}")
+
+if has_active_countdown:
+    last_drink = current_data.get("last_drink", {})
+    drink_name = last_drink.get("Drink", "Selected drink")
+
+    st.info(
+        f"Last selected drink: **{drink_name}**. "
+        "This recommendation page is using the saved active countdown from your Caffeine Calculator."
+    )
 
 st.markdown("### Choose how you feel")
 
