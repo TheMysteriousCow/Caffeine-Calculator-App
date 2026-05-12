@@ -1,4 +1,4 @@
-# App Nutzertest
+# Nutzertest Prototyp
 
 Mit dem Nutzertest möchten wir prüfen, ob unsere App ohne Erklärung verständlich und benutzerfreundlich ist. Im Fokus steht nicht die Bestätigung der Idee, sondern das frühzeitige Erkennen von Problemen, Missverständnissen und Schwächen im Ablauf. So können wir die App gezielt verbessern.
 
