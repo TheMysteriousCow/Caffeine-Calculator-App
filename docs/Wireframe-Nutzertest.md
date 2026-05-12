@@ -47,7 +47,7 @@ Die Notwendigkeit der Angabe des vollständigen Namens wird hinterfragt. Eine an
 Es wird angemerkt, dass bei den Empfehlungen (z. B. „I feel tired“) unklar ist, ob eine vorgegebene Auswahl oder eine freie Eingabe sinnvoller wäre. Zudem wird eine grössere Auswahl an Getränken gewünscht, beispielsweise auch Cola, Alkohol oder eine freie Getränkewahl, sodass der gesamte Konsum eines Tages zusammen berechnet werden kann. Die optionalen Erweiterungen werden grundsätzlich positiv bewertet. Ergänzend wird ein Belohnungssystem (z. B. Streaks oder ähnliche Mechanismen) vorgeschlagen, um die Motivation der Nutzer:innen zu steigern.
 
 ### Neue Probleme?
-Eine grössere Auswahl an Alternativen können wir sehr gut umsetzen. Mehrere Getränke zusammen zu berechnen könnte schwer werden in der Umsetzung. Das Belohnungssystem ist eine sehr gute Idee, welche wir aber auch in so kurzer Zeit nicht umsetzen können.
+Eine grössere Auswahl an Alternativen können wir sehr gut umsetzen. Mehrere Getränke zusammen zu berechnen ist ebenfalls gut umsetzbar. Das Belohnungssystem ist eine sehr gute Idee, welche wir aber auch in so kurzer Zeit nicht umsetzen können.
 
 <img width="694" height="320" alt="image" src="https://github.com/user-attachments/assets/555e4f06-9179-4daf-898f-2239b101e793" />
 
@@ -65,7 +65,7 @@ Für ältere Nutzer:innen könnte die App teilweise überfordernd wirken. Die vi
 Alternativen könnten durch ein Farbsystem (Grün = gut, Orange = mittel, Rot = eher schlechter) schnell verständlich gemacht werden. So können Nutzer:innen auf einen Blick erkennen, wie geeignet eine Option ist, ohne lange nachdenken zu müssen.
 
 ### Neue Probleme?
-Die Idee mit der Farbcodierung ist ein sehr guter Ansatz und gut umsetzbar für uns.
+Die Idee der Farbcodierung ist ein sehr guter Ansatz und wird in anderen Bereichen der App umgesetzt. Im Bereich der Alternativen hatten wir innerhalb des gegebenen Zeitrahmens jedoch nur die Möglichkeit, positive beziehungsweise empfehlenswerte Alternativen grün hervorzuheben.
 
 <img width="698" height="319" alt="image" src="https://github.com/user-attachments/assets/25b2b543-e14b-44a1-9092-710bcb47255a" />
 
