@@ -9,7 +9,7 @@ st.set_page_config(page_title="Caffeine Calculator", layout="wide")
 
 data_manager = DataManager(
     fs_protocol="webdav",
-    fs_root_folder="diagnosticdetective"
+    fs_root_folder="caffeine_calculator_app"
 )
 
 st.session_state["data_manager"] = data_manager
