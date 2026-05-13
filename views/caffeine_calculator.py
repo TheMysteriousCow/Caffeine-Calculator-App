@@ -11,6 +11,7 @@ from difflib import SequenceMatcher
 from datetime import datetime
 from utils.profile_utils import load_profile
 from functions.logo import set_logo
+from utils.data_manager import DataManager
 
 st.set_page_config(page_title="Caffeine Calculator", layout="wide")
 
@@ -460,7 +461,12 @@ with center:
                         ignore_index=True
                     )
 
+    
+
                     save_data(st.session_state["data_df"])
+
+                    data_manager = DataManager()
+                    data_manager.save_user_data(st.session_state["data_df"], DATA_FILE)
 
                     st.rerun()
 

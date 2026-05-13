@@ -5,6 +5,8 @@ import base64
 import os
 from utils.profile_utils import load_profile
 from functions.logo import set_logo
+from utils.data_manager import DataManager
+
 
 username = st.session_state.get("username", "default_user")
 
@@ -200,6 +202,9 @@ if st.button("💾 Save Diary Entry"):
         )
 
         save_diary_data(st.session_state["diary_df"])
+
+        data_manager = DataManager()
+        data_manager.save_user_data(st.session_state["diary_df"], DIARY_FILE)
 
         st.success("Diary entry saved!")
         st.rerun()
