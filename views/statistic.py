@@ -8,6 +8,11 @@ from functions.logo import set_logo
 
 username = st.session_state.get("username", "default_user")
 
+if st.session_state.get("history_username") != username:
+    st.session_state.pop("data_df", None)
+    st.session_state.pop("diary_df", None)
+    st.session_state["history_username"] = username
+
 DATA_FILE = f"data_{username}.csv"
 DIARY_FILE = f"diary_{username}.csv"
 
