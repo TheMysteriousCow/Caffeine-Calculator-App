@@ -3,7 +3,7 @@ import streamlit as st
 
 from functions.logo import set_logo
 
-from functions.profile_functions import (
+from functions.your_profile_functions import (
     apply_profile_style,
     check_user_logged_in,
     get_data_manager,
