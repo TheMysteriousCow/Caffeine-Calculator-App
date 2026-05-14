@@ -1,50 +1,71 @@
 import streamlit as st
 import pandas as pd
+
 from pandas.errors import EmptyDataError
 
 from utils.data_manager import DataManager
 from utils.login_manager import LoginManager
 
-st.set_page_config(page_title="Caffeine Calculator", layout="wide")
 
-data_manager = DataManager(
-    fs_protocol="webdav",
-    fs_root_folder="caffeine_calculator_app"
+st.set_page_config(
+    page_title="Caffeine Calculator",
+    layout="wide"
 )
 
-st.session_state["data_manager"] = data_manager
-
-login_manager = LoginManager(data_manager)
-login_manager.login_register()
-
-if "data_df" not in st.session_state:
-    try:
-        df = data_manager.load_user_data(
-            "data.csv",
-            initial_value=pd.DataFrame()
-        )
-    except EmptyDataError:
-        df = pd.DataFrame()
-
-    if not df.empty and "timestamp" in df.columns:
-        df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
-
-    st.session_state["data_df"] = df
 
 st.markdown("""
 <style>
+
+.stApp {
+    background-color: white;
+}
+
+html, body, [class*="css"] {
+    background-color: white;
+    color: #5C4033;
+}
+
+
+/* TOP BAR */
+
+header[data-testid="stHeader"] {
+    background-color: white !important;
+}
+
+header[data-testid="stHeader"] * {
+    color: #5C4033 !important;
+}
+
+
+/* SIDEBAR */
+
 section[data-testid="stSidebar"] {
     background-color: #f3f4f6;
 }
+
+
+/* SIDEBAR LINKS */
 
 section[data-testid="stSidebar"] a {
     border-radius: 10px;
     padding: 8px 12px !important;
     margin-bottom: 6px;
     display: block;
-    color: #5C4033 !important;
     text-decoration: none !important;
+    color: #5C4033 !important;
+    font-weight: 500 !important;
 }
+
+
+/* FORCE DARK BROWN TEXT */
+
+section[data-testid="stSidebar"] a * {
+    color: #5C4033 !important;
+    fill: #5C4033 !important;
+}
+
+
+/* SIDEBAR PAGE COLORS */
 
 section[data-testid="stSidebar"] a[href*="home"] {
     background-color: #FFE5B4 !important;
@@ -78,9 +99,15 @@ section[data-testid="stSidebar"] a[href*="professional_help"] {
     background-color: #6FA3CC !important;
 }
 
+
+/* SIDEBAR HOVER */
+
 section[data-testid="stSidebar"] a:hover {
     opacity: 0.85;
 }
+
+
+/* SIDEBAR BUTTONS */
 
 section[data-testid="stSidebar"] div[data-testid="stButton"] button {
     background-color: #CDECCF !important;
@@ -94,33 +121,110 @@ section[data-testid="stSidebar"] div[data-testid="stButton"] button {
 
 section[data-testid="stSidebar"] div[data-testid="stButton"] button:hover {
     background-color: #BFE3C1 !important;
-    color: black !important;
+    color: #5C4033 !important;
     border: none !important;
 }
 
 section[data-testid="stSidebar"] div[data-testid="stButton"] button:focus {
     background-color: #CDECCF !important;
-    color: black !important;
+    color: #5C4033 !important;
     border: none !important;
     box-shadow: none !important;
 }
 
 section[data-testid="stSidebar"] div[data-testid="stButton"] button:active {
     background-color: #BFE3C1 !important;
-    color: black !important;
+    color: #5C4033 !important;
     border: none !important;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
-home = st.Page("views/home1.py", title="Home", url_path="home", default=True)
-your_profile = st.Page("views/your_profile.py", title="Your Profile", url_path="your_profile")
-additional_data = st.Page("views/additional_data.py", title="Additional Data", url_path="additional_data")
-calculator = st.Page("views/caffeine_calculator.py", title="Caffeine Calculator", url_path="caffeine_calculator")
-statistics = st.Page("views/statistic.py", title="History", url_path="statistic")
-recommendations = st.Page("views/recommendations.py", title="Recommendations", url_path="recommendations")
-alternatives = st.Page("views/alternatives.py", title="Alternatives", url_path="alternatives")
-professional_help = st.Page("views/professional_help.py", title="Professional Help", url_path="professional_help")
+
+data_manager = DataManager(
+    fs_protocol="webdav",
+    fs_root_folder="caffeine_calculator_app"
+)
+
+st.session_state["data_manager"] = data_manager
+
+
+login_manager = LoginManager(data_manager)
+
+login_manager.login_register()
+
+
+if "data_df" not in st.session_state:
+
+    try:
+        df = data_manager.load_user_data(
+            "data.csv",
+            initial_value=pd.DataFrame()
+        )
+
+    except EmptyDataError:
+        df = pd.DataFrame()
+
+    if not df.empty and "timestamp" in df.columns:
+
+        df["timestamp"] = pd.to_datetime(
+            df["timestamp"],
+            errors="coerce"
+        )
+
+    st.session_state["data_df"] = df
+
+
+home = st.Page(
+    "views/home1.py",
+    title="Home",
+    url_path="home",
+    default=True
+)
+
+your_profile = st.Page(
+    "views/your_profile.py",
+    title="Your Profile",
+    url_path="your_profile"
+)
+
+additional_data = st.Page(
+    "views/additional_data.py",
+    title="Additional Data",
+    url_path="additional_data"
+)
+
+calculator = st.Page(
+    "views/caffeine_calculator.py",
+    title="Caffeine Calculator",
+    url_path="caffeine_calculator"
+)
+
+statistics = st.Page(
+    "views/statistic.py",
+    title="History",
+    url_path="statistic"
+)
+
+recommendations = st.Page(
+    "views/recommendations.py",
+    title="Recommendations",
+    url_path="recommendations"
+)
+
+alternatives = st.Page(
+    "views/alternatives.py",
+    title="Alternatives",
+    url_path="alternatives"
+)
+
+professional_help = st.Page(
+    "views/professional_help.py",
+    title="Professional Help",
+    url_path="professional_help"
+)
+
 
 pg = st.navigation([
     home,
@@ -132,5 +236,6 @@ pg = st.navigation([
     alternatives,
     professional_help
 ])
+
 
 pg.run()
