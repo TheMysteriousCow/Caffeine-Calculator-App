@@ -10,11 +10,7 @@ DEFAULT_PROFILE = {
 
 
 def load_profile(username):
-    data_manager = st.session_state.get("data_manager")
-
-    if data_manager is None:
-        st.error("Profile error: DataManager not found in session_state.")
-        return DEFAULT_PROFILE.copy()
+    data_manager = st.session_state["data_manager"]
 
     return data_manager.load_user_data(
         "profile.json",
@@ -23,11 +19,7 @@ def load_profile(username):
 
 
 def save_profile(username, profile_data):
-    data_manager = st.session_state.get("data_manager")
-
-    if data_manager is None:
-        st.error("Profile error: DataManager not found in session_state.")
-        return
+    data_manager = st.session_state["data_manager"]
 
     data_manager.save_user_data(
         profile_data,
