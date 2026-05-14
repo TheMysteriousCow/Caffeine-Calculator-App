@@ -13,6 +13,8 @@ from utils.profile_utils import load_profile
 from functions.logo import set_logo
 from utils.data_manager import DataManager
 
+data_manager = DataManager(fs_protocol="webdav", fs_root_folder="caffeine_calculator_app")
+
 st.set_page_config(page_title="Caffeine Calculator", layout="wide")
 
 username = st.session_state.get("username", "default_user")
@@ -29,25 +31,7 @@ profile = load_profile(username)
 profile_weight = safe_float(profile.get("weight", ""))
 profile_height = safe_float(profile.get("height", ""))
 
-def load_data():
-    if os.path.exists(DATA_FILE):
-        try:
-            df = pd.read_csv(DATA_FILE)
-            df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
-            df = df.dropna(subset=["timestamp"])
-            return df
-        except:
-            pass
 
-    return pd.DataFrame(columns=[
-        "timestamp",
-        "Drink",
-        "Caffeine (mg)",
-        "Volume (ml)"
-    ])
-
-def save_data(df):
-    df.to_csv(DATA_FILE, index=False)
 
 def empty_current_data():
     return {
@@ -57,33 +41,12 @@ def empty_current_data():
         "last_drink": None
     }
 
-def load_current_data():
-    if os.path.exists(CURRENT_FILE):
-        try:
-            with open(CURRENT_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
 
-            if not isinstance(data, dict):
-                return empty_current_data()
-
-            data.setdefault("entries", [])
-            data.setdefault("countdown_end_time", None)
-            data.setdefault("countdown_total_seconds", 0)
-            data.setdefault("last_drink", None)
-
-            return data
-        except:
-            return empty_current_data()
-
-    return empty_current_data()
-
-def save_current_data(data):
-    with open(CURRENT_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4)
 
 def clear_current_data():
     data = empty_current_data()
-    save_current_data(data)
+    
+    data_manager.save_user_data(data, CURRENT_FILE)
 
     st.session_state.selected_drink = None
     st.session_state.selected_caffeine_mg = 0
@@ -314,10 +277,22 @@ if "scroll_to_timeline" not in st.session_state:
     st.session_state.scroll_to_timeline = False
 
 if "data_df" not in st.session_state:
-    st.session_state["data_df"] = load_data()
+    st.session_state["data_df"] = data_manager.load_user_data(
+        DATA_FILE, 
+        initial_value=pd.DataFrame(columns=[
+            "timestamp", 
+            "Drink", 
+            "Caffeine (mg)", 
+            "Volume (ml)"
+        ])
+    )
 
 if "current_data" not in st.session_state:
-    st.session_state.current_data = load_current_data()
+    
+    st.session_state.current_data = data_manager.load_user_data(
+        CURRENT_FILE,
+        initial_value=empty_current_data()
+    )
 
 if "intake_date" not in st.session_state:
     st.session_state.intake_date = datetime.now().date()
@@ -325,8 +300,11 @@ if "intake_date" not in st.session_state:
 if "intake_time" not in st.session_state:
     st.session_state.intake_time = datetime.now().time().replace(microsecond=0)
 
-current_data = load_current_data()
-st.session_state.current_data = current_data
+current_data = data_manager.load_user_data(
+    CURRENT_FILE, 
+    initial_value=empty_current_data()
+)
+
 
 current_entries = current_data.get("entries", [])
 last_drink = current_data.get("last_drink")
@@ -416,7 +394,10 @@ with center:
                     effect_hours = caffeine_effect_duration_hours(caffeine_mg)
                     effect_seconds = int(effect_hours * 3600)
 
-                    current_data = load_current_data()
+                    current_data = data_manager.load_user_data(
+                        CURRENT_FILE, 
+                        initial_value=empty_current_data()
+                    )
                     current_end_time = current_data.get("countdown_end_time")
 
                     if current_end_time and current_end_time > selected_unix_time:
@@ -438,7 +419,7 @@ with center:
                     current_data["countdown_total_seconds"] = max(new_end_time - selected_unix_time, 1)
                     current_data["last_drink"] = entry
 
-                    save_current_data(current_data)
+                    data_manager.save_user_data(current_data, CURRENT_FILE)
 
                     st.session_state.current_data = current_data
                     st.session_state.selected_drink = drink_name
@@ -461,18 +442,15 @@ with center:
                         ignore_index=True
                     )
 
-    
 
-                    save_data(st.session_state["data_df"])
-
-                    data_manager = DataManager()
                     data_manager.save_user_data(st.session_state["data_df"], DATA_FILE)
+
 
                     st.rerun()
 
                 st.markdown("</div>", unsafe_allow_html=True)
 
-current_data = load_current_data()
+current_data = data_manager.load_user_data(CURRENT_FILE, initial_value=empty_current_data())
 current_entries = current_data.get("entries", [])
 
 if current_entries:

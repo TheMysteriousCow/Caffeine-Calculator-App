@@ -7,6 +7,8 @@ from utils.profile_utils import load_profile
 from functions.logo import set_logo
 from utils.data_manager import DataManager
 
+data_manager = DataManager(fs_protocol="webdav", fs_root_folder="caffeine_calculator_app")
+
 
 username = st.session_state.get("username", "default_user")
 
@@ -36,29 +38,11 @@ def empty_diary_df():
         "Diary Entry"
     ])
 
-def load_history_data():
-    if os.path.exists(DATA_FILE):
-        try:
-            return pd.read_csv(DATA_FILE)
-        except:
-            return empty_history_df()
+
 
     return empty_history_df()
 
-def save_history_data(df):
-    df.to_csv(DATA_FILE, index=False)
 
-def load_diary_data():
-    if os.path.exists(DIARY_FILE):
-        try:
-            return pd.read_csv(DIARY_FILE)
-        except:
-            return empty_diary_df()
-
-    return empty_diary_df()
-
-def save_diary_data(df):
-    df.to_csv(DIARY_FILE, index=False)
 
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 
@@ -117,7 +101,10 @@ div.stButton > button {
 st.markdown("<div class='main-title'>History</div>", unsafe_allow_html=True)
 
 if "data_df" not in st.session_state:
-    st.session_state["data_df"] = load_history_data()
+    st.session_state["data_df"] = data_manager.load_user_data(
+        DATA_FILE, 
+        initial_value=empty_history_df()
+    )
 
 if st.session_state["data_df"] is None:
     st.session_state["data_df"] = empty_history_df()
@@ -153,14 +140,17 @@ else:
 if st.button("🗑️ Clear History"):
     empty_df = empty_history_df()
     st.session_state["data_df"] = empty_df
-    save_history_data(empty_df)
+    data_manager.save_user_data(empty_df, DATA_FILE)
     st.success("History has been cleared!")
     st.rerun()
 
 st.markdown(f"<div class='section-title'>{diary_title}</div>", unsafe_allow_html=True)
 
 if "diary_df" not in st.session_state:
-    st.session_state["diary_df"] = load_diary_data()
+    st.session_state["diary_df"] = data_manager.load_user_data(
+        DIARY_FILE,
+        initial_value=empty_diary_df()
+    )
 
 if st.session_state["diary_df"] is None:
     st.session_state["diary_df"] = empty_diary_df()
@@ -201,10 +191,8 @@ if st.button("💾 Save Diary Entry"):
             ignore_index=True
         )
 
-        save_diary_data(st.session_state["diary_df"])
-
-        data_manager = DataManager()
         data_manager.save_user_data(st.session_state["diary_df"], DIARY_FILE)
+
 
         st.success("Diary entry saved!")
         st.rerun()
