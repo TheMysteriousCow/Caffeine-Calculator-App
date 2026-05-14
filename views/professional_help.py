@@ -6,7 +6,7 @@ from functions.logo import set_logo
 st.set_page_config(page_title="Professional Help", layout="wide")
 
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
-# Logo anzeigen
+
 set_logo(
     image_path,
     top=15,
@@ -119,6 +119,27 @@ st.markdown(
             color: #6b7280;
             line-height: 1.6;
             margin-top: 1.4rem;
+        }
+
+        /* Link Buttons */
+        div[data-testid="stLinkButton"] a {
+            background-color: white !important;
+            color: #5C4033 !important;
+            border: 1.5px solid #5C4033 !important;
+            border-radius: 14px !important;
+            font-family: 'Georgia', 'Times New Roman', serif !important;
+            font-weight: 600 !important;
+            box-shadow: none !important;
+        }
+
+        div[data-testid="stLinkButton"] a:hover {
+            background-color: #F7F3EF !important;
+            color: #5C4033 !important;
+            border: 1.5px solid #5C4033 !important;
+        }
+
+        div[data-testid="stLinkButton"] a:visited {
+            color: #5C4033 !important;
         }
     </style>
     """,
