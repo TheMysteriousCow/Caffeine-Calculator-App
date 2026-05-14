@@ -1,7 +1,6 @@
 import pandas as pd
 import streamlit as st
 from datetime import datetime
-import base64
 import os
 from utils.profile_utils import load_profile
 from functions.logo import set_logo

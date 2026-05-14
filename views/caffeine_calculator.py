@@ -3,10 +3,8 @@ import pandas as pd
 import os
 import time
 import streamlit.components.v1 as components
-import base64
 import re
 import unicodedata
-import json
 from difflib import SequenceMatcher
 from datetime import datetime
 from utils.profile_utils import load_profile
