@@ -1,5 +1,4 @@
 import streamlit as st
-from utils.profile_utils import load_profile, save_profile
 from functions.logo import set_logo
 import os
 
@@ -67,7 +66,20 @@ if username is None:
     st.error("No user logged in.")
     st.stop()
 
-profile = load_profile(username)
+data_manager = st.session_state["data_manager"]
+
+DEFAULT_PROFILE = {
+    "name": "",
+    "first_name": "",
+    "gender": "Female",
+    "weight": 60,
+    "height": 1.70
+}
+
+profile = data_manager.load_user_data(
+    "profile.json",
+    initial_value=DEFAULT_PROFILE.copy()
+)
 
 st.markdown(
     "<div class='main-title'>Your Profile</div>",
@@ -129,6 +141,9 @@ if st.button("Save"):
         "height": height_saved
     }
 
-    save_profile(username, profile_data)
+    data_manager.save_user_data(
+        profile_data,
+        "profile.json"
+    )
 
     st.success("Profile saved")
