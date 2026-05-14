@@ -33,14 +33,78 @@ def apply_profile_style():
         letter-spacing: 1px;
     }
 
-    .stTextInput label {
+    .stTextInput label,
+    .stSelectbox label,
+    .stTextArea label {
         color: #5C4033 !important;
         font-family: 'Georgia', 'Times New Roman', serif;
     }
 
-    .stSelectbox label {
+    /* Textfelder */
+    .stTextInput input {
+        background-color: #EDEFF2 !important;
         color: #5C4033 !important;
-        font-family: 'Georgia', 'Times New Roman', serif;
+        border: none !important;
+        border-radius: 10px !important;
+        box-shadow: none !important;
+    }
+
+    .stTextInput input:focus {
+        background-color: #EDEFF2 !important;
+        color: #5C4033 !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    /* Textarea */
+    .stTextArea textarea {
+        background-color: #EDEFF2 !important;
+        color: #5C4033 !important;
+        border: none !important;
+        border-radius: 10px !important;
+        box-shadow: none !important;
+    }
+
+    .stTextArea textarea:focus {
+        background-color: #EDEFF2 !important;
+        color: #5C4033 !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    .stTextInput input::placeholder,
+    .stTextArea textarea::placeholder {
+        color: #8B8B8B !important;
+    }
+
+    /* Selectbox */
+    .stSelectbox div[data-baseweb="select"] {
+        background-color: #EDEFF2 !important;
+        border: none !important;
+        border-radius: 10px !important;
+        box-shadow: none !important;
+    }
+
+    .stSelectbox div[data-baseweb="select"] * {
+        background-color: #EDEFF2 !important;
+        color: #5C4033 !important;
+    }
+
+    /* Dropdown Menü */
+    div[role="listbox"] {
+        background-color: #EDEFF2 !important;
+        border: none !important;
+    }
+
+    div[role="option"] {
+        background-color: #EDEFF2 !important;
+        color: #5C4033 !important;
+    }
+
+    div[role="option"]:hover {
+        background-color: #DCDCDC !important;
     }
 
     div.stButton > button {
