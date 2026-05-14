@@ -1,30 +1,33 @@
-import json
-import os
+from utils.data_manager import DataManager
 
-
-def get_profile_path(username):
-    os.makedirs("profiles", exist_ok=True)
-    return f"profiles/{username}.json"
+DEFAULT_PROFILE = {
+    "name": "",
+    "first_name": "",
+    "gender": "Female",
+    "weight": 60,
+    "height": 1.70
+}
 
 
 def load_profile(username):
-    path = get_profile_path(username)
+    data_manager = DataManager(
+        fs_protocol="webdav",
+        fs_root_folder="caffeine_calculator_app"
+    )
 
-    if not os.path.exists(path):
-        return {
-            "name": "",
-            "first_name": "",
-            "gender": "Female",
-            "weight": 60,
-            "height": 1.70
-        }
-
-    with open(path, "r") as f:
-        return json.load(f)
+    return data_manager.load_user_data(
+        "profile.json",
+        initial_value=DEFAULT_PROFILE
+    )
 
 
 def save_profile(username, profile_data):
-    path = get_profile_path(username)
+    data_manager = DataManager(
+        fs_protocol="webdav",
+        fs_root_folder="caffeine_calculator_app"
+    )
 
-    with open(path, "w") as f:
-        json.dump(profile_data, f)
+    data_manager.save_user_data(
+        profile_data,
+        "profile.json"
+    )

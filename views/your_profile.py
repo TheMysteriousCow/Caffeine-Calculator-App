@@ -12,7 +12,6 @@ set_logo(
     width=140
 )
 
-# Styling
 st.markdown("""
 <style>
 html, body, [class*="css"] {
@@ -34,19 +33,16 @@ h1, h2, h3, h4, h5, h6, p, label {
     letter-spacing: 1px;
 }
 
-/* Input Text */
 .stTextInput label {
     color: #5C4033 !important;
     font-family: 'Georgia', 'Times New Roman', serif;
 }
 
-/* Selectbox Label */
 .stSelectbox label {
     color: #5C4033 !important;
     font-family: 'Georgia', 'Times New Roman', serif;
 }
 
-/* Button */
 div.stButton > button {
     background-color: #CDECCF;
     color: #5C4033;
@@ -65,10 +61,14 @@ div.stButton > button:hover {
 </style>
 """, unsafe_allow_html=True)
 
-username = st.session_state.get("username", "default_user")
+username = st.session_state.get("username")
+
+if username is None:
+    st.error("No user logged in.")
+    st.stop()
+
 profile = load_profile(username)
 
-# Titel wie im anderen Code
 st.markdown(
     "<div class='main-title'>Your Profile</div>",
     unsafe_allow_html=True
@@ -84,12 +84,16 @@ first_name = st.text_input(
     value=profile.get("first_name", "")
 )
 
+gender_options = ["Female", "Male", "Other"]
+saved_gender = profile.get("gender", "Female")
+
+if saved_gender not in gender_options:
+    saved_gender = "Female"
+
 gender = st.selectbox(
     "Gender",
-    ["Female", "Male", "Other"],
-    index=["Female", "Male", "Other"].index(
-        profile.get("gender", "Female")
-    )
+    gender_options,
+    index=gender_options.index(saved_gender)
 )
 
 weight_value = profile.get("weight", "")
@@ -108,21 +112,21 @@ height = st.text_input(
 if st.button("Save"):
 
     try:
-        weight = float(str(weight).replace(",", "."))
+        weight_saved = float(str(weight).replace(",", "."))
     except:
-        weight = ""
+        weight_saved = ""
 
     try:
-        height = float(str(height).replace(",", "."))
+        height_saved = float(str(height).replace(",", "."))
     except:
-        height = ""
+        height_saved = ""
 
     save_profile(username, {
         "name": name,
         "first_name": first_name,
         "gender": gender,
-        "weight": weight,
-        "height": height
+        "weight": weight_saved,
+        "height": height_saved
     })
 
     st.success("Profile saved")

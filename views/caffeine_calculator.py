@@ -5,19 +5,29 @@ import time
 import streamlit.components.v1 as components
 import re
 import unicodedata
+
 from difflib import SequenceMatcher
 from datetime import datetime
 from utils.profile_utils import load_profile
 from functions.logo import set_logo
 from utils.data_manager import DataManager
 
-data_manager = DataManager(fs_protocol="webdav", fs_root_folder="caffeine_calculator_app")
+data_manager = DataManager(
+    fs_protocol="webdav",
+    fs_root_folder="caffeine_calculator_app"
+)
 
 st.set_page_config(page_title="Caffeine Calculator", layout="wide")
 
-username = st.session_state.get("username", "default_user")
-DATA_FILE = f"data_{username}.csv"
-CURRENT_FILE = f"current_caffeine_{username}.json"
+username = st.session_state.get("username")
+
+if username is None:
+    st.error("No user logged in.")
+    st.stop()
+
+DATA_FILE = "data.csv"
+CURRENT_FILE = "current_caffeine.json"
+
 
 def safe_float(value):
     try:
@@ -25,10 +35,10 @@ def safe_float(value):
     except:
         return None
 
+
 profile = load_profile(username)
 profile_weight = safe_float(profile.get("weight", ""))
 profile_height = safe_float(profile.get("height", ""))
-
 
 
 def empty_current_data():
@@ -40,10 +50,9 @@ def empty_current_data():
     }
 
 
-
 def clear_current_data():
     data = empty_current_data()
-    
+
     data_manager.save_user_data(data, CURRENT_FILE)
 
     st.session_state.selected_drink = None
@@ -55,9 +64,9 @@ def clear_current_data():
     st.session_state.scroll_to_timeline = False
     st.session_state.current_data = data
 
+
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 
-# Logo anzeigen
 set_logo(
     image_path,
     top=-40,
@@ -205,12 +214,14 @@ drinks = {
     "Cold Brew": {"image": "ColdBrew.png", "caffeine_mg": 140, "volume_ml": 250}
 }
 
+
 def normalize_text(text):
     text = text.lower()
     text = unicodedata.normalize("NFKD", text)
     text = "".join(c for c in text if not unicodedata.combining(c))
     text = re.sub(r"[^a-z0-9]", "", text)
     return text
+
 
 def search_matches(search_text, drink_name):
     if search_text.strip() == "":
@@ -225,12 +236,14 @@ def search_matches(search_text, drink_name):
     similarity = SequenceMatcher(None, search_clean, drink_clean).ratio()
     return similarity >= 0.45
 
+
 PEAK_MINUTES = 45
 CRASH_HOURS = 4
 RECOVERY_HOURS = 8
 BASE_EFFECT_HOURS = 3.0
 REFERENCE_CAFFEINE_MG = 80
 MAX_EFFECT_HOURS = 6.0
+
 
 def caffeine_effect_duration_hours(caffeine_mg):
     if caffeine_mg <= 0:
@@ -239,11 +252,13 @@ def caffeine_effect_duration_hours(caffeine_mg):
     effect_hours = BASE_EFFECT_HOURS + (caffeine_mg / REFERENCE_CAFFEINE_MG) * 1.2
     return min(effect_hours, MAX_EFFECT_HOURS)
 
+
 def format_hours(hours):
     total_minutes = int(round(hours * 60))
     h = total_minutes // 60
     m = total_minutes % 60
     return f"{h} h {m} min"
+
 
 def get_risk_level(mg_per_kg):
     if mg_per_kg < 1:
@@ -252,6 +267,7 @@ def get_risk_level(mg_per_kg):
         return "Moderate", "Your caffeine dose is moderate for your body weight."
     else:
         return "High", "This is a high caffeine dose for your body weight."
+
 
 if "selected_drink" not in st.session_state:
     st.session_state.selected_drink = None
@@ -276,17 +292,16 @@ if "scroll_to_timeline" not in st.session_state:
 
 if "data_df" not in st.session_state:
     st.session_state["data_df"] = data_manager.load_user_data(
-        DATA_FILE, 
+        DATA_FILE,
         initial_value=pd.DataFrame(columns=[
-            "timestamp", 
-            "Drink", 
-            "Caffeine (mg)", 
+            "timestamp",
+            "Drink",
+            "Caffeine (mg)",
             "Volume (ml)"
         ])
     )
 
 if "current_data" not in st.session_state:
-    
     st.session_state.current_data = data_manager.load_user_data(
         CURRENT_FILE,
         initial_value=empty_current_data()
@@ -299,10 +314,9 @@ if "intake_time" not in st.session_state:
     st.session_state.intake_time = datetime.now().time().replace(microsecond=0)
 
 current_data = data_manager.load_user_data(
-    CURRENT_FILE, 
+    CURRENT_FILE,
     initial_value=empty_current_data()
 )
-
 
 current_entries = current_data.get("entries", [])
 last_drink = current_data.get("last_drink")
@@ -393,9 +407,10 @@ with center:
                     effect_seconds = int(effect_hours * 3600)
 
                     current_data = data_manager.load_user_data(
-                        CURRENT_FILE, 
+                        CURRENT_FILE,
                         initial_value=empty_current_data()
                     )
+
                     current_end_time = current_data.get("countdown_end_time")
 
                     if current_end_time and current_end_time > selected_unix_time:
@@ -440,15 +455,20 @@ with center:
                         ignore_index=True
                     )
 
-
-                    data_manager.save_user_data(st.session_state["data_df"], DATA_FILE)
-
+                    data_manager.save_user_data(
+                        st.session_state["data_df"],
+                        DATA_FILE
+                    )
 
                     st.rerun()
 
                 st.markdown("</div>", unsafe_allow_html=True)
 
-current_data = data_manager.load_user_data(CURRENT_FILE, initial_value=empty_current_data())
+current_data = data_manager.load_user_data(
+    CURRENT_FILE,
+    initial_value=empty_current_data()
+)
+
 current_entries = current_data.get("entries", [])
 
 if current_entries:

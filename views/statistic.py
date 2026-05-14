@@ -2,26 +2,34 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime
 import os
+
 from utils.profile_utils import load_profile
 from functions.logo import set_logo
 from utils.data_manager import DataManager
 
-data_manager = DataManager(fs_protocol="webdav", fs_root_folder="caffeine_calculator_app")
+data_manager = DataManager(
+    fs_protocol="webdav",
+    fs_root_folder="caffeine_calculator_app"
+)
 
+username = st.session_state.get("username")
 
-username = st.session_state.get("username", "default_user")
+if username is None:
+    st.error("No user logged in.")
+    st.stop()
 
 if st.session_state.get("history_username") != username:
     st.session_state.pop("data_df", None)
     st.session_state.pop("diary_df", None)
     st.session_state["history_username"] = username
 
-DATA_FILE = f"data_{username}.csv"
-DIARY_FILE = f"diary_{username}.csv"
+DATA_FILE = "data.csv"
+DIARY_FILE = "diary.csv"
 
 profile = load_profile(username)
 first_name = str(profile.get("first_name", "")).strip()
 diary_title = f"{first_name}'s Diary" if first_name else "My Diary"
+
 
 def empty_history_df():
     return pd.DataFrame(columns=[
@@ -31,6 +39,7 @@ def empty_history_df():
         "Volume (ml)"
     ])
 
+
 def empty_diary_df():
     return pd.DataFrame(columns=[
         "timestamp",
@@ -38,14 +47,8 @@ def empty_diary_df():
     ])
 
 
-
-    return empty_history_df()
-
-
-
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 
-# Logo anzeigen
 set_logo(
     image_path,
     top=-40,
@@ -101,7 +104,7 @@ st.markdown("<div class='main-title'>History</div>", unsafe_allow_html=True)
 
 if "data_df" not in st.session_state:
     st.session_state["data_df"] = data_manager.load_user_data(
-        DATA_FILE, 
+        DATA_FILE,
         initial_value=empty_history_df()
     )
 
@@ -190,8 +193,10 @@ if st.button("💾 Save Diary Entry"):
             ignore_index=True
         )
 
-        data_manager.save_user_data(st.session_state["diary_df"], DIARY_FILE)
-
+        data_manager.save_user_data(
+            st.session_state["diary_df"],
+            DIARY_FILE
+        )
 
         st.success("Diary entry saved!")
         st.rerun()
@@ -225,7 +230,12 @@ if not diary_df.empty:
 
         if st.button("🗑️ Delete Entry", key=f"delete_diary_{index}"):
             st.session_state["diary_df"] = diary_df.drop(index).reset_index(drop=True)
-            save_diary_data(st.session_state["diary_df"])
+
+            data_manager.save_user_data(
+                st.session_state["diary_df"],
+                DIARY_FILE
+            )
+
             st.success("Diary entry deleted!")
             st.rerun()
 else:
