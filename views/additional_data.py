@@ -1,12 +1,11 @@
 import streamlit as st
-import base64
 import os
 import re
 from difflib import SequenceMatcher
 from functions.logo import set_logo
 
-# Logo Function
 
+# Logo Function
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
 
 set_logo(
@@ -15,6 +14,7 @@ set_logo(
     right=-20,
     width=140
 )
+
 
 # Styling
 st.markdown("""
@@ -26,7 +26,7 @@ html, body, [class*="css"] {
 
 h1, h2, h3, h4, h5, h6, p, label {
     color: #5C4033 !important;
-    }
+}
 
 .main-title {
     text-align: center;
@@ -43,6 +43,34 @@ h1, h2, h3, h4, h5, h6, p, label {
     font-size: 1.05rem;
     color: #5C4033;
     margin-bottom: 2rem;
+}
+
+/* Textarea labels */
+.stTextArea label {
+    color: #5C4033 !important;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+/* Grey textarea boxes with border and brown text */
+.stTextArea textarea {
+    background-color: #EDEFF2 !important;
+    color: #5C4033 !important;
+    border: 1.5px solid #B8B8B8 !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+    font-family: Arial, sans-serif !important;
+}
+
+.stTextArea textarea:focus {
+    background-color: #EDEFF2 !important;
+    color: #5C4033 !important;
+    border: 1.5px solid #5C4033 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.stTextArea textarea::placeholder {
+    color: #8B8B8B !important;
 }
 
 .info-box, .warning-box, .good-box, .avoid-box, .neutral-box {
@@ -83,8 +111,25 @@ h1, h2, h3, h4, h5, h6, p, label {
     font-size: 0.9rem;
     color: #6B4E3D;
 }
+
+div.stButton > button {
+    background-color: #CDECCF;
+    color: #5C4033;
+    border-radius: 14px;
+    height: 45px;
+    font-size: 15px;
+    border: none;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-weight: 600;
+}
+
+div.stButton > button:hover {
+    background-color: #BFE3C1;
+    color: #5C4033;
+}
 </style>
 """, unsafe_allow_html=True)
+
 
 # Title
 st.markdown("<div class='main-title'>Additional Data</div>", unsafe_allow_html=True)
@@ -94,6 +139,7 @@ st.markdown("""
 Add relevant health information so the app can give more personalised caffeine guidance.
 </div>
 """, unsafe_allow_html=True)
+
 
 # Text Helpers
 def normalize_text(text):
@@ -117,32 +163,24 @@ def similarity(a, b):
 
 
 def fuzzy_match(input_text, keywords, threshold=0.82):
-    """
-    Recognises exact matches, brand names, generic names and small spelling mistakes.
-    Example: 'cirpofloxacin' will still match 'ciprofloxacin'.
-    """
     input_text_norm = normalize_text(input_text)
     input_items = split_user_input(input_text)
 
     for keyword in keywords:
         keyword_norm = normalize_text(keyword)
 
-        # Exact phrase match
         if keyword_norm in input_text_norm:
             return True, keyword
 
-        # Fuzzy phrase match per line/item
         for item in input_items:
             if len(item) >= 5 and len(keyword_norm) >= 5:
                 if similarity(item, keyword_norm) >= threshold:
                     return True, keyword
 
-            # Partial match for longer medication names
             if len(keyword_norm) >= 6 and len(item) >= 6:
                 if keyword_norm in item or item in keyword_norm:
                     return True, keyword
 
-        # Word-level fuzzy matching
         words = input_text_norm.split()
         keyword_words = keyword_norm.split()
 
@@ -166,6 +204,7 @@ def remove_duplicates(recommendations):
             unique.append(rec)
 
     return unique
+
 
 # Medical Knowledge Base
 CONDITION_RULES = [
@@ -504,12 +543,14 @@ NO_CAFFEINE_WARNING_MEDICATIONS = [
     }
 ]
 
+
 # Recommendation Logic
 def check_rules(input_text, rules):
     matches = []
 
     for rule in rules:
         matched, matched_keyword = fuzzy_match(input_text, rule["keywords"])
+
         if matched:
             rule_copy = rule.copy()
             matches.append(rule_copy)
@@ -522,6 +563,7 @@ def check_no_warning_medications(medication_text):
 
     for med in NO_CAFFEINE_WARNING_MEDICATIONS:
         matched, matched_keyword = fuzzy_match(medication_text, med["keywords"])
+
         if matched:
             med_copy = med.copy()
             med_copy["matched_keyword"] = matched_keyword
@@ -543,30 +585,38 @@ def check_user_data(illness_text, allergy_text, medication_text):
 def box_class(level):
     if level == "avoid":
         return "avoid-box"
+
     if level == "warning":
         return "warning-box"
+
     if level == "info":
         return "info-box"
+
     return "good-box"
+
 
 # Input Fields
 st.markdown("<h3>Previous illness</h3>", unsafe_allow_html=True)
+
 illness_list = st.text_area(
     "Enter previous illnesses or health conditions, one per line",
     placeholder="Example: high blood pressure, tachycardia, anxiety, reflux, insomnia..."
 )
 
 st.markdown("<h3>Allergies or sensitivities</h3>", unsafe_allow_html=True)
+
 allergy_list = st.text_area(
     "Enter allergies or sensitivities, one per line",
     placeholder="Example: caffeine sensitivity, guarana allergy, cocoa allergy, green tea allergy..."
 )
 
 st.markdown("<h3>Medication</h3>", unsafe_allow_html=True)
+
 medication_list = st.text_area(
     "Enter medications, one per line",
     placeholder="Example: bisoprolol, methylphenidate, ciprofloxacin, theophylline, Augmentin..."
 )
+
 
 # Disclaimer
 st.markdown("""
@@ -578,10 +628,16 @@ pharmacist or another qualified healthcare professional.
 </div>
 """, unsafe_allow_html=True)
 
+
 # Button + Output
 if st.button("Check caffeine recommendations"):
 
-    recommendations = check_user_data(illness_list, allergy_list, medication_list)
+    recommendations = check_user_data(
+        illness_list,
+        allergy_list,
+        medication_list
+    )
+
     no_warning_meds = check_no_warning_medications(medication_list)
 
     st.markdown("<h3>Your caffeine guidance</h3>", unsafe_allow_html=True)
