@@ -60,18 +60,143 @@ st.markdown("""
 <style>
 .stApp {
     background-color: white;
-}
-
-h1, h2, h3, h4, h5, h6, p, label, span {
     color: #5C4033 !important;
 }
 
+/* Alles dunkelbraun */
+html, body, p, div, span, label, input, textarea,
+h1, h2, h3, h4, h5, h6,
+.stMarkdown, .stText, .stCaption,
+[data-testid="stMarkdownContainer"],
+[data-testid="stText"],
+[data-testid="stWidgetLabel"],
+[data-testid="stCaptionContainer"],
+[data-testid="stDataFrame"],
+[data-testid="stTable"] {
+    color: #5C4033 !important;
+}
+
+/* Labels */
+[data-testid="stWidgetLabel"] label,
+[data-testid="stWidgetLabel"] p {
+    color: #5C4033 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: 400 !important;
+}
+
+/* Input Kacheln allgemein */
+div[data-baseweb="input"],
+div[data-baseweb="base-input"],
+div[data-baseweb="textarea"],
+div[data-baseweb="select"] {
+    background-color: #EDEFF2 !important;
+    border-radius: 14px !important;
+    color: #5C4033 !important;
+}
+
+/* Input Innenflächen */
+div[data-baseweb="input"] > div,
+div[data-baseweb="base-input"] > div,
+div[data-baseweb="textarea"] > div,
+div[data-baseweb="select"] > div {
+    background-color: #EDEFF2 !important;
+    border-radius: 14px !important;
+    color: #5C4033 !important;
+}
+
+/* Text in Inputs */
+div[data-baseweb="input"] input,
+div[data-baseweb="base-input"] input,
+div[data-baseweb="textarea"] textarea,
+textarea,
+input {
+    background-color: #EDEFF2 !important;
+    color: #5C4033 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: 400 !important;
+}
+
+/* Placeholder */
+input::placeholder,
+textarea::placeholder {
+    color: #8B6F63 !important;
+}
+
+/* Date Input hellgrau */
+[data-testid="stDateInput"] {
+    background-color: transparent !important;
+}
+
+[data-testid="stDateInput"] div[data-baseweb="input"] {
+    background-color: #EDEFF2 !important;
+    border-radius: 14px !important;
+}
+
+[data-testid="stDateInput"] div[data-baseweb="input"] > div {
+    background-color: #EDEFF2 !important;
+    border-radius: 14px !important;
+}
+
+[data-testid="stDateInput"] input {
+    background-color: #EDEFF2 !important;
+    color: #5C4033 !important;
+}
+
+/* Time Input hellgrau */
+[data-testid="stTimeInput"] {
+    background-color: transparent !important;
+}
+
+[data-testid="stTimeInput"] div[data-baseweb="input"] {
+    background-color: #EDEFF2 !important;
+    border-radius: 14px !important;
+}
+
+[data-testid="stTimeInput"] div[data-baseweb="input"] > div {
+    background-color: #EDEFF2 !important;
+    border-radius: 14px !important;
+}
+
+[data-testid="stTimeInput"] input {
+    background-color: #EDEFF2 !important;
+    color: #5C4033 !important;
+}
+
+/* Textarea hellgrau */
+[data-testid="stTextArea"] textarea {
+    background-color: #EDEFF2 !important;
+    color: #5C4033 !important;
+    border-radius: 14px !important;
+}
+
+/* Icons in Inputs */
+div[data-baseweb="input"] svg,
+div[data-baseweb="select"] svg {
+    color: #5C4033 !important;
+    fill: #5C4033 !important;
+}
+
+/* Kalender / Time Popover */
+div[data-baseweb="popover"],
+div[data-baseweb="menu"],
+div[data-baseweb="calendar"] {
+    background-color: #EDEFF2 !important;
+    color: #5C4033 !important;
+}
+
+div[data-baseweb="popover"] *,
+div[data-baseweb="menu"] *,
+div[data-baseweb="calendar"] * {
+    color: #5C4033 !important;
+}
+
+/* Titel */
 .main-title {
     text-align: center;
     font-size: 3.4rem;
     font-family: 'Georgia', 'Times New Roman', serif;
     font-weight: 600;
-    color: #5C4033;
+    color: #5C4033 !important;
     margin-bottom: 0.3rem;
     letter-spacing: 1px;
 }
@@ -80,21 +205,84 @@ h1, h2, h3, h4, h5, h6, p, label, span {
     font-size: 1.8rem;
     font-family: 'Georgia', serif;
     font-weight: 600;
-    color: #5C4033;
+    color: #5C4033 !important;
     margin-top: 2rem;
     margin-bottom: 1rem;
 }
 
+/* Buttons */
 div.stButton > button {
-    background-color: #CDECCF;
-    color: #5C4033;
-    border: none;
-    border-radius: 12px;
-    font-weight: 600;
+    background-color: #CDECCF !important;
+    color: #5C4033 !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+}
+
+div.stButton > button:hover {
+    background-color: #BEE6C2 !important;
+    color: #5C4033 !important;
 }
 
 [data-testid="stSidebar"] button {
     background-color: white !important;
+    color: #5C4033 !important;
+}
+
+/* Alerts grau */
+[data-testid="stAlert"] {
+    background-color: #EDEFF2 !important;
+    color: #5C4033 !important;
+    border-radius: 14px !important;
+    border: none !important;
+}
+
+[data-testid="stAlert"] * {
+    color: #5C4033 !important;
+}
+
+/* Dataframe Container hellgrau */
+[data-testid="stDataFrame"] {
+    background-color: #EDEFF2 !important;
+    border-radius: 14px !important;
+    padding: 10px !important;
+    color: #5C4033 !important;
+}
+
+[data-testid="stDataFrame"] * {
+    color: #5C4033 !important;
+}
+
+/* Dataframe Toolbar / Innenbereiche */
+[data-testid="stDataFrame"] div,
+[data-testid="stDataFrame"] span,
+[data-testid="stDataFrame"] button {
+    color: #5C4033 !important;
+}
+
+/* Falls Streamlit normale Tabellen rendert */
+table {
+    background-color: #EDEFF2 !important;
+    color: #5C4033 !important;
+    border-radius: 14px !important;
+}
+
+thead, tbody, tr, th, td {
+    background-color: #EDEFF2 !important;
+    color: #5C4033 !important;
+}
+
+/* Diary Kacheln */
+.diary-card {
+    border: 2px solid #D7D9DD;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+    background-color: #EDEFF2;
+    color: #5C4033 !important;
+}
+
+.diary-card * {
     color: #5C4033 !important;
 }
 </style>
@@ -102,11 +290,11 @@ div.stButton > button {
 
 st.markdown("<div class='main-title'>History</div>", unsafe_allow_html=True)
 
-if "data_df" not in st.session_state:
-    st.session_state["data_df"] = data_manager.load_user_data(
-        DATA_FILE,
-        initial_value=empty_history_df()
-    )
+# Wichtig: immer frisch aus data.csv laden, damit es mit dem Calculator verbunden bleibt
+st.session_state["data_df"] = data_manager.load_user_data(
+    DATA_FILE,
+    initial_value=empty_history_df()
+)
 
 if st.session_state["data_df"] is None:
     st.session_state["data_df"] = empty_history_df()
@@ -168,7 +356,8 @@ with col_date:
 with col_time:
     diary_time = st.time_input(
         "Choose a time:",
-        value=datetime.now().time().replace(second=0, microsecond=0)
+        value=datetime.now().time().replace(second=0, microsecond=0),
+        step=60
     )
 
 diary_timestamp = datetime.combine(diary_date, diary_time)
@@ -216,13 +405,7 @@ if not diary_df.empty:
         entry = row["Diary Entry"]
 
         st.markdown(f"""
-        <div style="
-            border: 2px solid #CDECCF;
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 10px;
-            background-color: #FAFFFA;
-        ">
+        <div class="diary-card">
             <strong>{date_time}</strong><br><br>
             {entry}
         </div>
