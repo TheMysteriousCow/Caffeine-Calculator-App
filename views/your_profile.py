@@ -121,12 +121,14 @@ if st.button("Save"):
     except:
         height_saved = ""
 
-    save_profile(username, {
+    profile_data = {
         "name": name,
         "first_name": first_name,
         "gender": gender,
         "weight": weight_saved,
         "height": height_saved
-    })
+    }
+
+    save_profile(username, profile_data)
 
     st.success("Profile saved")
