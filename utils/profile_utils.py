@@ -10,22 +10,16 @@ DEFAULT_PROFILE = {
 
 
 def load_profile(username):
-    data_manager = DataManager(
-        fs_protocol="webdav",
-        fs_root_folder="caffeine_calculator_app"
-    )
+    data_manager = DataManager()
 
     return data_manager.load_user_data(
         "profile.json",
-        initial_value=DEFAULT_PROFILE
+        initial_value=DEFAULT_PROFILE.copy()
     )
 
 
 def save_profile(username, profile_data):
-    data_manager = DataManager(
-        fs_protocol="webdav",
-        fs_root_folder="caffeine_calculator_app"
-    )
+    data_manager = DataManager()
 
     data_manager.save_user_data(
         profile_data,
