@@ -96,21 +96,73 @@ h1, h2, h3, h4, h5, h6,
 
 input {
     color: #5C4033 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: 400 !important;
 }
 
 input::placeholder {
     color: #8B6F63 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: 400 !important;
+}
+
+/* Date, Time und Search Drink Kacheln grau machen */
+div[data-baseweb="input"],
+div[data-baseweb="select"] {
+    background-color: #EDEFF2 !important;
+    border-radius: 14px !important;
+    color: #5C4033 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: 400 !important;
+}
+
+div[data-baseweb="input"] > div,
+div[data-baseweb="select"] > div {
+    background-color: #EDEFF2 !important;
+    border-radius: 14px !important;
+    color: #5C4033 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: 400 !important;
 }
 
 div[data-baseweb="input"] input {
+    background-color: #EDEFF2 !important;
     color: #5C4033 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: 400 !important;
+}
+
+div[data-baseweb="input"] svg,
+div[data-baseweb="select"] svg {
+    color: #5C4033 !important;
+    fill: #5C4033 !important;
+}
+
+/* Labels Date, Time, Search drink normale Schrift */
+[data-testid="stWidgetLabel"] label,
+[data-testid="stWidgetLabel"] p {
+    color: #5C4033 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: 400 !important;
+}
+
+/* Streamlit Date/Time Input Wrapper */
+[data-testid="stDateInput"] div[data-baseweb="input"],
+[data-testid="stTimeInput"] div[data-baseweb="input"],
+[data-testid="stTextInput"] div[data-baseweb="input"] {
+    background-color: #EDEFF2 !important;
+    border-radius: 14px !important;
+    color: #5C4033 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: 400 !important;
 }
 
 div[data-baseweb="popover"],
 div[data-baseweb="menu"],
-div[data-baseweb="select"],
 div[data-baseweb="calendar"] {
     color: #5C4033 !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: 400 !important;
 }
 
 .main-title {
