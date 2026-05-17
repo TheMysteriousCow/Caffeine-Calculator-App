@@ -1,19 +1,23 @@
 import os
-import json
 import time
-import base64
 import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from functions.logo import set_logo
+from utils.data_manager import DataManager
 
 st.set_page_config(page_title="Recommendations", layout="wide")
 
 username = st.session_state.get("username", "default_user")
 DATA_FILE = f"data_{username}.csv"
 CURRENT_FILE = f"current_caffeine_{username}.json"
+
+data_manager = DataManager(
+    fs_protocol="webdav",
+    fs_root_folder="caffeine_calculator_app"
+)
 
 PEAK_HOURS = 0.75
 CRASH_HOURS = 4
@@ -32,42 +36,38 @@ def empty_current_data():
 
 
 def load_current_data():
-    if os.path.exists(CURRENT_FILE):
-        try:
-            with open(CURRENT_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
+    data = data_manager.load_user_data(
+        CURRENT_FILE,
+        initial_value=empty_current_data()
+    )
 
-            if not isinstance(data, dict):
-                return empty_current_data()
+    if not isinstance(data, dict):
+        return empty_current_data()
 
-            data.setdefault("entries", [])
-            data.setdefault("countdown_end_time", None)
-            data.setdefault("countdown_total_seconds", 0)
-            data.setdefault("last_drink", None)
+    data.setdefault("entries", [])
+    data.setdefault("countdown_end_time", None)
+    data.setdefault("countdown_total_seconds", 0)
+    data.setdefault("last_drink", None)
 
-            return data
-        except:
-            return empty_current_data()
-
-    return empty_current_data()
+    return data
 
 
 def load_history_data():
-    if os.path.exists(DATA_FILE):
-        try:
-            df = pd.read_csv(DATA_FILE)
-            df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
-            df = df.dropna(subset=["timestamp"])
-            return df
-        except:
-            pass
+    df = data_manager.load_user_data(
+        DATA_FILE,
+        initial_value=pd.DataFrame(columns=[
+            "timestamp",
+            "Drink",
+            "Caffeine (mg)",
+            "Volume (ml)"
+        ])
+    )
 
-    return pd.DataFrame(columns=[
-        "timestamp",
-        "Drink",
-        "Caffeine (mg)",
-        "Volume (ml)"
-    ])
+    if not df.empty:
+        df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
+        df = df.dropna(subset=["timestamp"])
+
+    return df
 
 
 image_path = os.path.join(os.getcwd(), "images", "logo.png")
