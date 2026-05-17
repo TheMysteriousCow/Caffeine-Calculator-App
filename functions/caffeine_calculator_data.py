@@ -1,11 +1,12 @@
+import streamlit as st
 import pandas as pd
-
 from utils.data_manager import DataManager
 from functions.caffeine_calculator_math import caffeine_effect_duration_hours
 
 
-DATA_FILE = "data.csv"
-CURRENT_FILE = "current_caffeine.json"
+username = st.session_state.get("username", "default_user")
+DATA_FILE = f"data_{username}.csv"
+CURRENT_FILE = f"current_caffeine_{username}.json"
 
 data_manager = DataManager(
     fs_protocol="webdav",

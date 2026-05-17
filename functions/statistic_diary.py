@@ -4,7 +4,8 @@ import streamlit as st
 from datetime import datetime
 
 
-DIARY_FILE = "diary.csv"
+username = st.session_state.get("username", "default_user")
+DIARY_FILE = f"diary_{username}.csv"
 
 
 def empty_diary_df():
