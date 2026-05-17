@@ -58,10 +58,22 @@ def save_history(df):
 
 
 def load_current():
-    return data_manager.load_user_data(
+    data = data_manager.load_user_data(
         CURRENT_FILE,
         initial_value=empty_current_data()
     )
+
+    if isinstance(data, str):
+        try:
+            import json
+            data = json.loads(data)
+        except:
+            return empty_current_data()
+
+    if not isinstance(data, dict):
+        return empty_current_data()
+
+    return data
 
 
 def save_current(data):

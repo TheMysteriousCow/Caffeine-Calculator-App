@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from functions.logo import set_logo
 from utils.data_manager import DataManager
+from functions.caffeine_calculator_data import empty_current_data
 
 st.set_page_config(page_title="Recommendations", layout="wide")
 
@@ -24,15 +25,6 @@ CRASH_HOURS = 4
 RECOVERY_HOURS = 8
 TOTAL_HOURS = 10
 HALF_LIFE = 5.0
-
-
-def empty_current_data():
-    return {
-        "entries": [],
-        "countdown_end_time": None,
-        "countdown_total_seconds": 0,
-        "last_drink": None
-    }
 
 
 def load_current_data():
